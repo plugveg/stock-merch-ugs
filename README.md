@@ -30,7 +30,7 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 - [x] Step 0 : Create a new Vite project with React + TypeScript : [SETSUMAFU-104](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-104)
 - [x] Step 1 : Install all the dependencies for the front development : [SETSUMAFU-108](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-108)
 - [x] Step 2 : Install all the dependencies for the backend development : [SETSUMAFU-109](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-109)
-- [ ] Step 3 : Install all the dependencies for test development + CI/CD + commitlint + husky + lint-staged : [SETSUMAFU-110](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-110)
+- [x] Step 3 : Install all the dependencies for test development + CI/CD + commitlint + husky + lint-staged : [SETSUMAFU-110](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-110)
 - [x] Step 4 : Create a Convex project and deploy it to Convex : [SETSUMAFU-115](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-115)
 - [x] Step 5 : Create a TanStack Query project and deploy it to Convex : [SETSUMAFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
 
