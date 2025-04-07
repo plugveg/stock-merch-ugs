@@ -9,6 +9,12 @@ export default defineConfig({
     setupFiles: "./vitest.setup.ts",
     coverage: {
       reporter: ["text", "json", "html"],
+      exclude: [
+        "convex/_generated/**",
+        "commitlint.config.cjs",
+        "postcss.config.js",
+        "tailwind.config.js",
+      ],
     },
   },
 });
