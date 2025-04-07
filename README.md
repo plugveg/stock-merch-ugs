@@ -2,9 +2,14 @@
 
 _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query_
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Things to know
 
-While this project uses React, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+- This project is a work in progress and is not yet complete.
+- The project is being developed using [Convex](https://docs.convex.dev/) as the backend and [TanStack Query](https://tanstack.com/query/latest) for data fetching.
+- The project is being developed using [Vite](https://vitejs.dev/) as the build tool and [React](https://reactjs.org/) as the frontend framework.
+- The project is being developed using [TypeScript](https://www.typescriptlang.org/) as the programming language.
+- The project is being developed using [Tailwind CSS](https://tailwindcss.com/) as the CSS framework.
+- The project is being developed using [Vercel](https://vercel.com/) as the hosting platform.
 
 ## Deploying From Your Terminal
 
@@ -24,10 +29,10 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 
 - [x] Step 0 : Create a new Vite project with React + TypeScript : [SETSUMAFU-104](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-104)
 - [x] Step 1 : Install all the dependencies for the front development : [SETSUMAFU-108](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-108)
-- [ ] Step 2 : Install all the dependencies for the backend development : [SETSUMAFU-109](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-109)
+- [x] Step 2 : Install all the dependencies for the backend development : [SETSUMAFU-109](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-109)
 - [ ] Step 3 : Install all the dependencies for test development + CI/CD + commitlint + husky + lint-staged : [SETSUMAFU-110](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-110)
-- [x] Step 4 : Create a Convex project and deploy it to Convex :
-- [ ] Step 5 : Create a TanStack Query project and deploy it to Convex :
+- [x] Step 4 : Create a Convex project and deploy it to Convex : [SETSUMAFU-115](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-115)
+- [x] Step 5 : Create a TanStack Query project and deploy it to Convex : [SETSUMEFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
 
 ## Tutorials
 

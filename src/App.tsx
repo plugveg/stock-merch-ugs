@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Github, Twitter } from "lucide-react";
-import { useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
+import { Github } from "lucide-react";
+import { useTasks } from "./hooks/useTasks";
 
 function App() {
   const [count, setCount] = useState(0);
-  const tasks = useQuery(api.tasks.get);
+  const { tasks, isLoading, showSkeleton, error } = useTasks();
+  console.log("isPending", isLoading, "error", error, "tasks", tasks);
 
   return (
     <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-indigo-100 tw-to-purple-100">
@@ -74,16 +74,36 @@ function App() {
                 Seamlessly integrates with Convex for real-time data fetching
                 and state management.
               </p>
-              <p>
-                <strong>Tasks from Convex:</strong>
-                <ul className="tw-list-disc tw-list-inside tw-text-gray-600">
-                  {tasks?.map((task) => (
-                    <li key={task._id} className="tw-mb-2">
-                      {task.text} - {task.isCompleted ? "Completed" : "Pending"}
-                    </li>
-                  ))}
-                </ul>
-              </p>
+              <div>
+                <strong className="tw-block tw-mb-2">Tasks from Convex:</strong>
+                {showSkeleton && (
+                  <ul className="tw-space-y-2 tw-mt-2 tw-justify-items-center">
+                    {[...Array(3)].map((_, i) => (
+                      <li
+                        key={i}
+                        className="tw-h-4 tw-bg-gray-300 tw-rounded tw-animate-pulse tw-w-3/4 mx-auto"
+                      />
+                    ))}
+                  </ul>
+                )}
+
+                {error && (
+                  <p className="tw-text-red-500 tw-mt-2">
+                    Error: {error.message}
+                  </p>
+                )}
+
+                {!isLoading && !error && (
+                  <ul className="tw-list-disc tw-list-inside tw-text-gray-600 tw-mt-2">
+                    {tasks.map((task) => (
+                      <li key={task._id} className="tw-mb-2">
+                        {task.text} -{" "}
+                        {task.isCompleted ? "Completed" : "Pending"}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
         </div>
