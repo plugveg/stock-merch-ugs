@@ -5,13 +5,14 @@ import { api } from "../../convex/_generated/api";
 
 export function useTasks() {
   const queryClient = useQueryClient();
+  const convexQueryConfig = convexQuery(api.functions.tasks.get, {});
 
   const {
     data: tasks,
     isLoading,
     error,
   } = useQuery({
-    ...convexQuery(api.functions.tasks.get, {}),
+    ...convexQueryConfig,
     gcTime: 10000,
   });
 
@@ -27,7 +28,7 @@ export function useTasks() {
   }, [isLoading]);
 
   const refetchTasks = () => {
-    queryClient.invalidateQueries({ queryKey: ["api/functions/tasks/get"] });
+    queryClient.invalidateQueries({ queryKey: convexQueryConfig.queryKey });
   };
 
   return {
