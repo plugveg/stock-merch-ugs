@@ -5,8 +5,6 @@ import { useTasks } from "./hooks/useTasks";
 function App() {
   const [count, setCount] = useState(0);
   const { tasks, isLoading, showSkeleton, error } = useTasks();
-  console.log("isPending", isLoading, "error", error, "tasks", tasks);
-
   return (
     <div className="tw-min-h-screen tw-bg-gradient-to-br tw-from-indigo-100 tw-to-purple-100">
       <nav className="tw-bg-white tw-shadow-md tw-py-4">
