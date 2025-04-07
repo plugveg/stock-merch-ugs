@@ -7,13 +7,17 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./vitest.setup.ts",
-    include: [
-      "src/**/*.{test,spec}.{ts,tsx}",
-      "convex/functions/**/*.{test,spec}.{ts,tsx}",
-    ],
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
     coverage: {
+      provider: "istanbul",
       reporter: ["text", "json", "html"],
-      include: ["src/**", "convex/functions/**"],
+      include: ["src/**"],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
     },
   },
 });
