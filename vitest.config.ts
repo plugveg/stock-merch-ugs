@@ -7,14 +7,13 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./vitest.setup.ts",
+    include: [
+      "src/**/*.{test,spec}.{ts,tsx}",
+      "convex/functions/**/*.{test,spec}.{ts,tsx}",
+    ],
     coverage: {
       reporter: ["text", "json", "html"],
-      exclude: [
-        "convex/_generated/**",
-        "commitlint.config.cjs",
-        "postcss.config.js",
-        "tailwind.config.js",
-      ],
+      include: ["src/**", "convex/functions/**"],
     },
   },
 });
