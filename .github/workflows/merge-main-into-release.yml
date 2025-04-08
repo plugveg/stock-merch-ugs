@@ -1,7 +1,10 @@
 name: Merge main into release
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - completed
 
 jobs:
   merge:
