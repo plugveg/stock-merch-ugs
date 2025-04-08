@@ -12,6 +12,7 @@ jobs:
 
     env:
       VITE_CONVEX_URL: "http://localhost:1337/mock"
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
