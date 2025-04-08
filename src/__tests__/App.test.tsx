@@ -3,16 +3,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import App from "../App";
 import { useTasks } from "../hooks/useTasks";
+const useTasksMock = useTasks as unknown as ReturnType<typeof vi.fn>;
 
 vi.mock("../hooks/useTasks", () => ({
   useTasks: vi.fn(),
 }));
 
-const mockUseTasks = useTasks as ReturnType<typeof vi.fn>;
-
 describe("App component", () => {
   beforeEach(() => {
-    mockUseTasks.mockReturnValue({
+    useTasksMock.mockReturnValue({
       tasks: [],
       isLoading: false,
       showSkeleton: false,
@@ -49,7 +48,7 @@ describe("App component", () => {
   });
 
   it("displays error message when error exists", () => {
-    mockUseTasks.mockReturnValueOnce({
+    useTasksMock.mockReturnValueOnce({
       tasks: [],
       isLoading: false,
       showSkeleton: false,
@@ -61,7 +60,7 @@ describe("App component", () => {
   });
 
   it("displays loading skeleton", () => {
-    mockUseTasks.mockReturnValueOnce({
+    useTasksMock.mockReturnValueOnce({
       tasks: [],
       isLoading: true,
       showSkeleton: true,
@@ -73,7 +72,7 @@ describe("App component", () => {
   });
 
   it("displays loading skeleton when showSkeleton is true", () => {
-    mockUseTasks.mockReturnValue({
+    useTasksMock.mockReturnValue({
       tasks: [],
       isLoading: true,
       showSkeleton: true,
@@ -87,7 +86,7 @@ describe("App component", () => {
   });
 
   it("displays error when error is present", () => {
-    mockUseTasks.mockReturnValue({
+    useTasksMock.mockReturnValue({
       tasks: [],
       isLoading: false,
       showSkeleton: false,
@@ -100,7 +99,7 @@ describe("App component", () => {
   });
 
   it("displays tasks when loaded", () => {
-    mockUseTasks.mockReturnValue({
+    useTasksMock.mockReturnValue({
       tasks: [
         { _id: "1", text: "Task A", isCompleted: true },
         { _id: "2", text: "Task B", isCompleted: false },
@@ -117,7 +116,7 @@ describe("App component", () => {
   });
 
   it("displays tasks", () => {
-    mockUseTasks.mockReturnValueOnce({
+    useTasksMock.mockReturnValueOnce({
       tasks: [
         { _id: "1", text: "Test 1", isCompleted: true },
         { _id: "2", text: "Test 2", isCompleted: false },
