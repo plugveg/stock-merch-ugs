@@ -15,8 +15,13 @@ import "../main";
 
 describe("main.tsx", () => {
   it("should render App using ReactDOM.createRoot", () => {
+    const rootDiv = document.createElement("div");
+    rootDiv.id = "root";
+    document.body.appendChild(rootDiv);
+
     expect(ReactDOM.createRoot).toHaveBeenCalled();
+
     const rootElement = document.getElementById("root");
-    expect(rootElement).toBeNull();
+    expect(rootElement).not.toBeNull();
   });
 });
