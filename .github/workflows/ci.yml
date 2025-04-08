@@ -15,11 +15,26 @@ jobs:
       VITE_CONVEX_URL: "http://localhost:1337/mock"
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test:coverage
+      - name: Clean install
+        run: npm ci
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test:coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
