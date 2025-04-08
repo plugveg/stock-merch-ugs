@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.1029532502">
+    <testsuite name="src/__tests__/App.test.tsx" timestamp="2025-04-08T08:54:58.624Z" hostname="MacBook-Pro-de-Thomas.local" tests="7" failures="0" errors="0" skipped="0" time="0.0817762089">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; renders counter and increments on click" time="0.039105">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; renders title and description" time="0.0042522919">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error message when error exists" time="0.0033169169">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays loading skeleton" time="0.0252979581">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays loading skeleton when showSkeleton is true" time="0.004928791">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error when error is present" time="0.001952708">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays tasks when loaded" time="0.0020965421">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/main.test.tsx" timestamp="2025-04-08T08:54:58.626Z" hostname="MacBook-Pro-de-Thomas.local" tests="1" failures="0" errors="0" skipped="0" time="0.0017175832">
+        <testcase classname="src/__tests__/main.test.tsx" name="main.tsx &gt; should render App using ReactDOM.createRoot" time="0.0012849998">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useTasks.test.ts" timestamp="2025-04-08T08:54:58.627Z" hostname="MacBook-Pro-de-Thomas.local" tests="3" failures="0" errors="0" skipped="0" time="0.0194594581">
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; returns tasks and default state" time="0.013196125">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; check if there is no showSkeleton after 100ms if loading" time="0.002766459">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; calls invalidateQueries when refetchTasks is triggered" time="0.0023215001">
+        </testcase>
+    </testsuite>
+</testsuites>
