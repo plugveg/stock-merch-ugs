@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.0.0...v1.1.0) (2025-04-08)
+
+
+### Features
+
+* create dependabot.yml ([#13](https://github.com/plugveg/stock-merch-ugs/issues/13)) ([a44b64e](https://github.com/plugveg/stock-merch-ugs/commit/a44b64e0e8454d52dfb99f1ceda4dfebd2b5ffd8))
+
 # 1.0.0 (2025-04-08)
 
 
