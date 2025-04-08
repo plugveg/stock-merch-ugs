@@ -1,3 +1,18 @@
+# 1.0.0 (2025-04-08)
+
+
+### Bug Fixes
+
+* remove console.log ([e41d68f](https://github.com/plugveg/stock-merch-ugs/commit/e41d68fc40d4020d1a57b011521d331e49ceeae4))
+* return from copilot ([e79f3fe](https://github.com/plugveg/stock-merch-ugs/commit/e79f3fe1e7f56e90231831e416b8b00fb162390e))
+
+
+### Features
+
+* [SETSUMAFU-110] add testing libraries pre hook ([#4](https://github.com/plugveg/stock-merch-ugs/issues/4)) ([c504c1f](https://github.com/plugveg/stock-merch-ugs/commit/c504c1f24399cb1b7511abbc625b0862c8015867))
+* add backend dependencies ([8aef337](https://github.com/plugveg/stock-merch-ugs/commit/8aef33781d61a4ebab0e520aa611a963564f67ce))
+* add TanStack Query ([b7dc4d4](https://github.com/plugveg/stock-merch-ugs/commit/b7dc4d4a333a5c7b65166a40de353100ec707225))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
