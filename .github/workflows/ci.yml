@@ -11,6 +11,9 @@ jobs:
     name: Lint and Test
     runs-on: ubuntu-latest
 
+    env:
+      VITE_CONVEX_URL: "http://localhost:1337/mock"
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
