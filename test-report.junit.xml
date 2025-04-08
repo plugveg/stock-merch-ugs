@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="0.0789653332">
+    <testsuite name="src/__tests__/App.test.tsx" timestamp="2025-04-08T08:18:36.851Z" hostname="MacBook-Pro-de-Thomas.local" tests="8" failures="0" errors="0" skipped="0" time="0.0690105">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; renders counter and increments on click" time="0.023235666">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; renders title and description" time="0.003226167">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error message when error exists" time="0.002186167">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays loading skeleton" time="0.0251542501">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays loading skeleton when showSkeleton is true" time="0.0052514999">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error when error is present" time="0.002500875">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays tasks when loaded" time="0.0024667909">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays tasks" time="0.004094125">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/main.test.tsx" timestamp="2025-04-08T08:18:36.852Z" hostname="MacBook-Pro-de-Thomas.local" tests="1" failures="0" errors="0" skipped="0" time="0.0017320001">
+        <testcase classname="src/__tests__/main.test.tsx" name="main.tsx &gt; should render App using ReactDOM.createRoot" time="0.0012919159">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useTasks.test.ts" timestamp="2025-04-08T08:18:36.852Z" hostname="MacBook-Pro-de-Thomas.local" tests="1" failures="0" errors="0" skipped="0" time="0.0082228332">
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; returns tasks and default state" time="0.0076092081">
+        </testcase>
+    </testsuite>
+</testsuites>

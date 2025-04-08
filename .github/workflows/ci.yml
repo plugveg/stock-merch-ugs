@@ -31,11 +31,25 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
-      - name: Run Tests
+      - name: Run Tests Coverage
         run: npm run test:coverage
 
+      - name: Upload JUnit Test Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: test-report.junit.xml
+
       - name: Upload coverage reports to Codecov
+        if: ${{ always() }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: plugveg/stock-merch-ugs
+
+      - name: Upload test results to Codecov
+        if: ${{ always() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

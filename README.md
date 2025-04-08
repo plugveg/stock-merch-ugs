@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/plugveg/stock-merch-ugs/branch/main/graph/badge.svg)](https://codecov.io/gh/plugveg/stock-merch-ugs)
+
 # StockMerchUGS
 
 _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query_
