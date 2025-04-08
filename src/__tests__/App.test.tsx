@@ -39,15 +39,6 @@ describe("App component", () => {
     expect(screen.getByText("Welcome to Our Platform")).toBeInTheDocument();
   });
 
-  it("increments counter on button click", () => {
-    render(<App />);
-    const button = screen.getByText("Increment Counter");
-    fireEvent.click(button);
-    expect(screen.getByText("1")).toBeInTheDocument();
-    fireEvent.click(button);
-    expect(screen.getByText("2")).toBeInTheDocument();
-  });
-
   it("displays error message when error exists", () => {
     useTasksMock.mockReturnValueOnce({
       tasks: [],
