@@ -10,6 +10,9 @@ jobs:
     name: Semantic Release
     runs-on: ubuntu-latest
 
+    env:
+      VITE_CONVEX_URL: "http://localhost:1337/mock"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
