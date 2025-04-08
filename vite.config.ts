@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-      bundleName: "stock-merch-ugs",
+      bundleName: "StockMerchUGS",
       uploadToken: process.env.CODECOV_TOKEN,
     }),
   ],

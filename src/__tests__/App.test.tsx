@@ -106,20 +106,4 @@ describe("App component", () => {
     expect(screen.getByText("Task A - Completed")).toBeInTheDocument();
     expect(screen.getByText("Task B - Pending")).toBeInTheDocument();
   });
-
-  it("displays tasks", () => {
-    useTasksMock.mockReturnValueOnce({
-      tasks: [
-        { _id: "1", text: "Test 1", isCompleted: true },
-        { _id: "2", text: "Test 2", isCompleted: false },
-      ],
-      isLoading: false,
-      showSkeleton: false,
-      error: null,
-      refetchTasks: vi.fn(),
-    });
-    render(<App />);
-    expect(screen.getByText("Test 1 - Completed")).toBeInTheDocument();
-    expect(screen.getByText("Test 2 - Pending")).toBeInTheDocument();
-  });
 });
