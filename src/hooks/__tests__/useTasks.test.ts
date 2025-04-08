@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { useTasks } from "../useTasks";
 import {
   afterEach,
@@ -9,23 +9,24 @@ import {
   vi,
   type Mock,
 } from "vitest";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 vi.mock("@tanstack/react-query", async () => {
   const actual = await vi.importActual("@tanstack/react-query");
   return {
     ...actual,
     useQuery: vi.fn(),
-    useQueryClient: () => ({
-      invalidateQueries: vi.fn(),
-    }),
+    useQueryClient: vi.fn(),
   };
 });
 
 const mockUseQuery = useQuery as Mock;
+const mockUseQueryClient = useQueryClient as Mock;
 
 describe("useTasks hook", () => {
   beforeEach(() => {
+    vi.useFakeTimers();
+
     mockUseQuery.mockImplementation(() => ({
       data: [{ _id: "1", text: "Task 1", isCompleted: true }],
       isLoading: false,
@@ -35,6 +36,7 @@ describe("useTasks hook", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    vi.useRealTimers();
   });
 
   it("returns tasks and default state", () => {
@@ -44,5 +46,49 @@ describe("useTasks hook", () => {
     expect(result.current.error).toBeNull();
     expect(result.current.showSkeleton).toBe(false);
     expect(typeof result.current.refetchTasks).toBe("function");
+  });
+
+  it("sets showSkeleton to true after 100ms if loading", () => {
+    mockUseQuery
+      .mockReturnValueOnce({
+        data: undefined,
+        isLoading: true,
+        error: null,
+      })
+      .mockReturnValueOnce({
+        data: undefined,
+        isLoading: true,
+        error: null,
+      });
+
+    const { result, rerender } = renderHook(() => useTasks());
+
+    expect(result.current.showSkeleton).toBe(false);
+
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+
+    rerender();
+
+    expect(result.current.showSkeleton).toBe(false);
+  });
+
+  it("calls invalidateQueries when refetchTasks is triggered", () => {
+    const invalidateMock = vi.fn();
+
+    mockUseQueryClient.mockReturnValue({
+      invalidateQueries: invalidateMock,
+    });
+
+    const { result } = renderHook(() => useTasks());
+
+    act(() => {
+      result.current.refetchTasks();
+    });
+
+    expect(invalidateMock).toHaveBeenCalledWith({
+      queryKey: expect.any(Array),
+    });
   });
 });
