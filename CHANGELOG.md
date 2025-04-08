@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.1.0...v1.1.1) (2025-04-08)
+
+
+### Bug Fixes
+
+* security issue on yml ([#20](https://github.com/plugveg/stock-merch-ugs/issues/20)) ([a7a0a0f](https://github.com/plugveg/stock-merch-ugs/commit/a7a0a0f81736b7b3e4581ce7a78599428ff80ee1))
+
 # [1.1.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.0.0...v1.1.0) (2025-04-08)
 
 
