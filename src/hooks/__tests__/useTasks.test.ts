@@ -1,6 +1,14 @@
 import { renderHook } from "@testing-library/react";
 import { useTasks } from "../useTasks";
-import { afterEach, beforeEach, describe, expect, it, vi, Mock } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type Mock,
+} from "vitest";
 import { useQuery } from "@tanstack/react-query";
 
 vi.mock("@tanstack/react-query", async () => {

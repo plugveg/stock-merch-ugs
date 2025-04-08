@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import App from "../App";
 import { useTasks } from "../hooks/useTasks";
-const useTasksMock = useTasks as unknown as ReturnType<typeof vi.fn>;
+
+const useTasksMock = useTasks as Mock;
 
 vi.mock("../hooks/useTasks", () => ({
   useTasks: vi.fn(),
