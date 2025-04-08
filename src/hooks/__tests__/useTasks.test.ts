@@ -48,7 +48,7 @@ describe("useTasks hook", () => {
     expect(typeof result.current.refetchTasks).toBe("function");
   });
 
-  it("sets showSkeleton to true after 100ms if loading", () => {
+  it("check if there is no showSkeleton after 100ms if loading", () => {
     mockUseQuery
       .mockReturnValueOnce({
         data: undefined,
