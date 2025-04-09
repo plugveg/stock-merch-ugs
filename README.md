@@ -37,6 +37,17 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 - [x] Step 5 : Create a TanStack Query project and deploy it to Convex : [SETSUMAFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
 - [x] Step 6 : Synchronize the multiple environments accross different OS and machines : [SETSUMAFU-113](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-113)
 
+## Roadmap Tech
+
+There aren't always a ticket for each tech steps.
+
+- [x] Create all the CI/CD for checking the code quality and the code coverage
+- [x] Add Dependabot for checking the dependencies
+- [x] Add CodeQL for error detection and security vulnerabilities
+- [x] Add Snyk for error detection and security vulnerabilities
+- [ ] Explain why we use each of the tools in the project and how to use them
+- [ ] Add a tutorial to launch the project locally
+
 ## Tutorials
 
 ### Importing Large Data Sets into Your Database
