@@ -49,8 +49,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add CodeQL for error detection and security vulnerabilities
 - [x] Add Snyk for error detection and security vulnerabilities
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
-- [x] Add Codecov for code coverage
-- [ ] Explain why we use each of the tools in the project and how to use them
+- [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [ ] Add a tutorial to launch the project locally
 
 ## Tutorials
