@@ -1,4 +1,5 @@
 [![codecov](https://codecov.io/gh/plugveg/stock-merch-ugs/branch/main/graph/badge.svg)](https://codecov.io/gh/plugveg/stock-merch-ugs)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
 
 # StockMerchUGS
 
@@ -36,6 +37,8 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 - [x] Step 4 : Create a Convex project and deploy it to Convex : [SETSUMAFU-115](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-115)
 - [x] Step 5 : Create a TanStack Query project and deploy it to Convex : [SETSUMAFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
 - [x] Step 6 : Synchronize the multiple environments accross different OS and machines : [SETSUMAFU-113](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-113)
+- [x] Step 7 : Update tailwind from v3 to v4 [SETSUMAFU-123](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-123)
+- [x] Step 8 : Add OpenSSF Scorecard [SETSUMAFU-117](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-117)
 
 ## Roadmap Tech
 
@@ -45,7 +48,8 @@ There aren't always a ticket for each tech steps.
 - [x] Add Dependabot for checking the dependencies
 - [x] Add CodeQL for error detection and security vulnerabilities
 - [x] Add Snyk for error detection and security vulnerabilities
-- [ ] Explain why we use each of the tools in the project and how to use them
+- [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
+- [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [ ] Add a tutorial to launch the project locally
 
 ## Tutorials
