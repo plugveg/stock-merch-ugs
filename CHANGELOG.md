@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.1.2...v1.2.0) (2025-04-14)
+
+
+### Features
+
+* [SETSUMAFU-117] add OpenSSF ([#26](https://github.com/plugveg/stock-merch-ugs/issues/26)) ([e1ec0cc](https://github.com/plugveg/stock-merch-ugs/commit/e1ec0cc9422ff7d0f4ada488c9420c678b94a0f9))
+
 ## [1.1.2](https://github.com/plugveg/stock-merch-ugs/compare/v1.1.1...v1.1.2) (2025-04-14)
 
 
