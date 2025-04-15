@@ -1,0 +1,12 @@
+homepage: "https://github.com/plugveg/stock-merch-ugs"
+language: "javascript"
+description: "Stock Merch UGS is a web application that provides a user-friendly interface for managing and tracking stock merchandise."
+primary_contact: "united-glowstick@proton.me"
+auto_ccs:
+  - "plug.veg@gmail.com"
+sanitizers:
+  - address
+  - memory:
+      experimental: True
+  - undefined
+main_repo: "https://github.com/plugveg/stock-merch-ugs.git"
