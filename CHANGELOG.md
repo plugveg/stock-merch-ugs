@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.2.0...v1.2.1) (2025-04-16)
+
+
+### Bug Fixes
+
+* delete Untitled Diagram.drawio ([7658db7](https://github.com/plugveg/stock-merch-ugs/commit/7658db737ca0a137d31a7f93792c8d27d154d818))
+
 # [1.2.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.1.2...v1.2.0) (2025-04-14)
 
 
