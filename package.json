@@ -17,7 +17,7 @@
     "@convex-dev/react-query": "^0.0.0-alpha.8",
     "@tailwindcss/vite": "^4.1.4",
     "convex": "^1.23.0",
-    "lucide-react": "^0.500.0",
+    "lucide-react": "^0.503.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
