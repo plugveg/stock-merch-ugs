@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/plugveg/stock-merch-ugs/compare/v1.2.1...v1.2.2) (2025-04-22)
+
+
+### Bug Fixes
+
+* update vitest ([#51](https://github.com/plugveg/stock-merch-ugs/issues/51)) ([bb0e0e7](https://github.com/plugveg/stock-merch-ugs/commit/bb0e0e7dfdf011fb8fe2d344aeaa9a57dea3b144))
+
 ## [1.2.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.2.0...v1.2.1) (2025-04-16)
 
 
