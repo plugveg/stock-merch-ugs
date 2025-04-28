@@ -1,5 +1,6 @@
 [![codecov](https://codecov.io/gh/plugveg/stock-merch-ugs/branch/main/graph/badge.svg)](https://codecov.io/gh/plugveg/stock-merch-ugs)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 
 # StockMerchUGS
 
