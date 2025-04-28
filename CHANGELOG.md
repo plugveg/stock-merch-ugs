@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.3.0...v1.3.1) (2025-04-28)
+
+
+### Bug Fixes
+
+* delete BDD-StockMerchUGS.drawio ([93ea343](https://github.com/plugveg/stock-merch-ugs/commit/93ea343ec2ad0d3172a1363286a2fa30ede8f6b8))
+
 # [1.3.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.2.2...v1.3.0) (2025-04-28)
 
 
