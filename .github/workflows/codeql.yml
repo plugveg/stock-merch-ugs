@@ -76,3 +76,4 @@ jobs:
         uses: github/codeql-action/analyze@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
         with:
           category: "/language:${{matrix.language}}"
+          queries: +security-extended,security-and-quality
