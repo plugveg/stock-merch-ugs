@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.3.1...v1.4.0) (2025-04-28)
+
+
+### Features
+
+* update README.md with best pratices OpenSSF ([151d8e1](https://github.com/plugveg/stock-merch-ugs/commit/151d8e17d6cab26e12ddca8b5e2224da319a2cd0))
+
 ## [1.3.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.3.0...v1.3.1) (2025-04-28)
 
 
