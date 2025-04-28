@@ -28,8 +28,7 @@ The folder `docs` contains the documentation for the project. The documentation 
   - [Cahier des charges](docs/deliverables/Cahier-des-charges_StockMerchUGS.pdf): A file containing the cahier des charges for the project.
   - [Livrable1](docs/deliverables/Livrable1.pdf): A file containing the first deliverable for the project.
   - [Livrable2](docs/deliverables/Livrable2.pdf): A file containing the second deliverable for the project.
-- **[Folder Database](docs/database)**: A folder with the informations about the database.
-  - [Database](docs/database/BDD_Stock-merch-UGS.pdf): A file containing the description of database schema for the project.
+- **[Folder Database](docs/database)**: A folder with the information about the database.
   - [Database Diagram](docs/database/SchemaBDD-StochMerchUGS.png): A file containing the diagram of the database for the project. (see below for the updated diagram).
 
 ## Things to know
