@@ -63,6 +63,7 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 - [x] Update tailwind from v3 to v4 [SETSUMAFU-123](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-123)
 - [x] Add OpenSSF Scorecard [SETSUMAFU-117](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-117)
 - [x] Add documentation for the project & MCD [SETSUMAFU-131](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-131)
+- [x] Add security policy [SETSUMAFU-124](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-124)
 
 ## Roadmap Tech
 
