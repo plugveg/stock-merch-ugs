@@ -5,6 +5,33 @@
 
 _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query_
 
+## Table of contents of the README
+
+- [StockMerchUGS](#stockmerchugs)
+  - [Things to know](#things-to-know)
+  - [Diagram for the database](#diagram-for-the-database)
+  - [Track Progress](#track-progress)
+  - [Roadmap](#roadmap)
+  - [Roadmap Tech](#roadmap-tech)
+  - [Tutorials](#tutorials)
+    - [Importing Large Data Sets into Your Database](#importing-large-data-sets-into-your-database)
+      - [Supported Data Formats](#supported-data-formats)
+      - [Key Features](#key-features)
+      - [Example Commands](#example-commands)
+      - [Additional Resources](#additional-resources)
+
+## Table of contents of the documentation
+
+The folder `docs` contains the documentation for the project. The documentation is divided into several sections:
+
+- **[Folder Deliverables](docs/deliverables)**: A folder containing the deliverables for the project.
+  - [Cahier des charges](docs/deliverables/Cahier-des-charges_StockMerchUGS.pdf): A file containing the cahier des charges for the project.
+  - [Livrable1](docs/deliverables/Livrable1.pdf): A file containing the first deliverable for the project.
+  - [Livrable2](docs/deliverables/Livrable2.pdf): A file containing the second deliverable for the project.
+- **[Folder Database](docs/database)**: A folder with the informations about the database.
+  - [Database](docs/database/BDD_Stock-merch-UGS.pdf): A file containing the description of database schema for the project.
+  - [Database Diagram](docs/database/SchemaBDD-StochMerchUGS.png): A file containing the diagram of the database for the project. (see below for the updated diagram).
+
 ## Things to know
 
 - This project is a work in progress and is not yet complete.
@@ -14,13 +41,9 @@ _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query_
 - The project is being developed using [Tailwind CSS](https://tailwindcss.com/) as the CSS framework.
 - The project is being developed using [Vercel](https://vercel.com/) as the hosting platform.
 
-## Deploying From Your Terminal
+## Diagram for the database
 
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
-
-```shell
-$ vercel
-```
+![](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
 
 ## Track Progress
 
@@ -30,15 +53,16 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 
 ## Roadmap
 
-- [x] Step 0 : Create a new Vite project with React + TypeScript : [SETSUMAFU-104](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-104)
-- [x] Step 1 : Install all the dependencies for the front development : [SETSUMAFU-108](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-108)
-- [x] Step 2 : Install all the dependencies for the backend development : [SETSUMAFU-109](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-109)
-- [x] Step 3 : Install all the dependencies for test development + CI/CD + commitlint + husky + lint-staged : [SETSUMAFU-110](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-110)
-- [x] Step 4 : Create a Convex project and deploy it to Convex : [SETSUMAFU-115](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-115)
-- [x] Step 5 : Create a TanStack Query project and deploy it to Convex : [SETSUMAFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
-- [x] Step 6 : Synchronize the multiple environments accross different OS and machines : [SETSUMAFU-113](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-113)
-- [x] Step 7 : Update tailwind from v3 to v4 [SETSUMAFU-123](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-123)
-- [x] Step 8 : Add OpenSSF Scorecard [SETSUMAFU-117](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-117)
+- [x] Create a new Vite project with React + TypeScript : [SETSUMAFU-104](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-104)
+- [x] Install all the dependencies for the front development : [SETSUMAFU-108](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-108)
+- [x] Install all the dependencies for the backend development : [SETSUMAFU-109](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-109)
+- [x] Install all the dependencies for test development + CI/CD + commitlint + husky + lint-staged : [SETSUMAFU-110](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-110)
+- [x] Create a Convex project and deploy it to Convex : [SETSUMAFU-115](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-115)
+- [x] Create a TanStack Query project and deploy it to Convex : [SETSUMAFU-114](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-114)
+- [x] Synchronize the multiple environments accross different OS and machines : [SETSUMAFU-113](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-113)
+- [x] Update tailwind from v3 to v4 [SETSUMAFU-123](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-123)
+- [x] Add OpenSSF Scorecard [SETSUMAFU-117](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-117)
+- [x] Add documentation for the project & MCD [SETSUMAFU-131](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-131)
 
 ## Roadmap Tech
 
