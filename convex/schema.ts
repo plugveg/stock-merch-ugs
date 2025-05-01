@@ -51,7 +51,7 @@ const productTypes = v.union(
   v.literal("Accessory"),
   v.literal("Plushie"),
   v.literal("Linen"),
-  v.literal("Dishe"),
+  v.literal("Dish"),
   v.literal("Hanged up / On Wall"),
   v.literal("Apparel"),
   v.literal("Stationery"),
