@@ -1,7 +1,7 @@
 import { defineEnt, defineEntSchema } from "convex-ents";
 import { Infer, v } from "convex/values";
 
-// This constants are used to define the schema for the roles, conditions, status and productTypes entities.
+// These constants are used to define the schema for the roles, conditions, status, and productTypes entities.
 // They are used to validate the data that is being stored in the database. (ENUM)
 const roles = v.union(
   v.literal("Administrator"),
