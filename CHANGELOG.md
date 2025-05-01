@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.4.0...v1.5.0) (2025-05-01)
+
+
+### Features
+
+* [SETSUMAFU-135] add schema for database ([#65](https://github.com/plugveg/stock-merch-ugs/issues/65)) ([2eb3629](https://github.com/plugveg/stock-merch-ugs/commit/2eb36298aa1efe5d2d7b25eb2bd3afb495e38b98))
+
 # [1.4.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.3.1...v1.4.0) (2025-04-28)
 
 
