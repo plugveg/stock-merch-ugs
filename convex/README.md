@@ -151,4 +151,4 @@ directory. To learn more, launch the docs with `npx convex docs`.
 
 ### ProductTypes
 
-- Prepainted, Action/Doll, Trading Card, Garage Kit, Model Kit, Accessory, Plushie, Linen, Dishe, Hanged up / On Wall, Apparel, Stationery, Books, Music, Video, Game, Software, Miscellaneous
+- Prepainted, Action/Doll, Trading Card, Garage Kit, Model Kit, Accessory, Plushie, Linen, Dish, Hanged up / On Wall, Apparel, Stationery, Books, Music, Video, Game, Software, Miscellaneous
