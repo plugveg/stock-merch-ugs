@@ -96,7 +96,7 @@ export default defineEntSchema({
     productName: v.string(),
     description: v.string(),
     quantity: v.number(),
-    photo: v.optional(v.string()), // File path stored as string // Maybe use a URL or base64 string for images
+    photo: v.optional(v.string()), // Intended to store file paths as strings. Ensure consistency across the codebase.
     storageLocation: v.string(),
     condition: conditions,
     licenseName: v.array(v.string()),
