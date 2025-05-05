@@ -19,7 +19,7 @@
     "convex": "^1.23.0",
     "convex-ents": "^0.13.0",
     "convex-helpers": "^0.1.81",
-    "lucide-react": "^0.503.0",
+    "lucide-react": "^0.507.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
