@@ -16,7 +16,7 @@
   "dependencies": {
     "@convex-dev/react-query": "^0.0.0-alpha.8",
     "@tailwindcss/vite": "^4.1.5",
-    "convex": "^1.23.0",
+    "convex": "^1.24.1",
     "convex-ents": "^0.13.0",
     "convex-helpers": "^0.1.81",
     "lucide-react": "^0.507.0",
