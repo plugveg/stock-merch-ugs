@@ -90,7 +90,7 @@ function Content({
               <Github size={24} />
             </a>
             <UserButton />
-            Connecté en tant que {userInConvex?.nickname}
+            Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email ?? "Utilisateur"}
           </div>
         </div>
       </nav>
