@@ -6,7 +6,7 @@ import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 
 function App() {
-  const { isLoading, isAuthenticated } = useCurrentUser();
+  const { isLoading, isAuthenticated, userInConvex } = useCurrentUser();
   return (
     <main>
       {isLoading ? (
@@ -21,7 +21,7 @@ function App() {
         </AuthLoading>
       ) : isAuthenticated ? (
         <Authenticated>
-          <Content />
+          <Content userInConvex={userInConvex} />
         </Authenticated>
       ) : (
         <Unauthenticated>
@@ -66,12 +66,15 @@ function SignIn() {
   );
 }
 
-function Content() {
-  const [count, setCount] = useState(0);
-  const { tasks, isLoading, showSkeleton, error } = useTasks();
+function Content({
+  userInConvex,
+}: {
   // We can also use the useUser hook from Clerk to get the user information,
   // but here we are using the useCurrentUser hook from our Convex database.
-  const { userInConvex } = useCurrentUser();
+  userInConvex: ReturnType<typeof useCurrentUser>["userInConvex"];
+}) {
+  const [count, setCount] = useState(0);
+  const { tasks, isLoading, showSkeleton, error } = useTasks();
   return (
     <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100">
       <nav className="tw:bg-white tw:shadow-md tw:py-4">

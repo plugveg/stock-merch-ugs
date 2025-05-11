@@ -12,7 +12,7 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const event = await validateRequest(request);
     if (!event) {
-      return new Response("Error occured", { status: 400 });
+      return new Response("Error occurred", { status: 400 });
     }
     switch (event.type) {
       case "user.created": // intentional fallthrough
