@@ -71,7 +71,7 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
       return null;
     }
   } catch (error) {
-    console.error("Error verifying webhook event", error);
+    console.error("Error verifying webhook event:", error instanceof Error ? error.message : "Unknown error");
     return null;
   }
 }
