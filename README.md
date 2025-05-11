@@ -4,7 +4,7 @@
 
 # StockMerchUGS
 
-_with React + TypeScript + Vite + Tailwind + Convex + TanStack Query_
+_with React + TypeScript + Vite + Tailwind + Convex + TanStack Query + Clerk (for authentication)_
 
 ## Table of contents of the README
 
@@ -41,6 +41,7 @@ The folder `docs` contains the documentation for the project. The documentation 
 - The project is being developed using [TypeScript](https://www.typescriptlang.org/) as the programming language.
 - The project is being developed using [Tailwind CSS](https://tailwindcss.com/) as the CSS framework.
 - The project is being developed using [Vercel](https://vercel.com/) as the hosting platform.
+- The project is being developed using [Clerk](https://clerk.com/) for authentication.
 
 ## Diagram for the database
 
@@ -66,6 +67,7 @@ This project is being developed in a [Jira](https://www.atlassian.com/software/j
 - [x] Add documentation for the project & MCD [SETSUMAFU-131](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-131)
 - [x] Add security policy [SETSUMAFU-124](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-124)
 - [x] Create database in Convex [SETSUMAFU-135](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-135)
+- [x] Create the authentication with Clerk [SETSUMAFU-138](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-138)
 
 ## Roadmap Tech
 
@@ -77,7 +79,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add Snyk for error detection and security vulnerabilities
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
-- [ ] Add a tutorial to launch the project locally
+- [ ] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 
 ## Tutorials
 

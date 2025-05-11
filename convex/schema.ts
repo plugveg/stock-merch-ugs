@@ -81,14 +81,17 @@ export default defineEntSchema({
   }),
 
   users: defineEnt({
-    firstName: v.string(),
-    lastName: v.string(),
-    nickname: v.string(),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    nickname: v.optional(v.string()),
     email: v.string(),
-    password: v.string(),
+    phoneNumber: v.optional(v.string()),
+    imageUrl: v.string(),
+    // this the Clerk ID, stored in the subject JWT field
+    externalId: v.string(),
   })
     .field("role", roles, { default: "Guest" })
-    .index("by_email", ["email"])
+    .index("byExternalId", ["externalId"])
     .edges("collections", { ref: true }) // Add this line to define the inverse relationship
     .edges("events"),
 
