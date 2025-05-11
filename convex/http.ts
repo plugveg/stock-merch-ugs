@@ -23,7 +23,11 @@ http.route({
         break;
 
       case "user.deleted": {
-        const clerkUserId = event.data.id!;
+        if (!event.data.id) {
+          console.error("Missing 'id' in event.data for user.deleted event");
+          return new Response("Invalid event data", { status: 400 });
+        }
+        const clerkUserId = event.data.id;
         await ctx.runMutation(internal.users.deleteFromClerk, {
           clerkUserId,
         });
