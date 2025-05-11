@@ -52,8 +52,8 @@ function SignIn() {
       </nav>
       <div className="tw:flex-1 tw:flex tw:flex-col tw:items-center tw:justify-center tw:p-4">
         <p className="tw:text-xl tw:text-gray-700 tw:mb-6 tw:text-center">
-          Veuillez-vous connecter pour accéder aux fonctionnalités de
-          l'application !
+          Veuillez vous connecter pour accéder aux fonctionnalités de
+          l'application ! Authentification faite avec Clerk et Convex.
         </p>
         <SignInButton
           mode="modal"

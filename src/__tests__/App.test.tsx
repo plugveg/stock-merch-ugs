@@ -58,7 +58,7 @@ describe("App component", () => {
     render(<App />);
     expect(
       screen.getByText(
-        "Veuillez-vous connecter pour accéder aux fonctionnalités de l'application !",
+        "Veuillez vous connecter pour accéder aux fonctionnalités de l'application ! Authentification faite avec Clerk et Convex.",
       ),
     ).toBeInTheDocument();
     expect(
