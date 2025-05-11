@@ -96,8 +96,7 @@ function Content({
               <Github size={24} />
             </a>
             <UserButton aria-label="User menu" />
-            Connecté en tant que{" "}
-            {userInConvex?.nickname ?? userInConvex?.email ?? "Utilisateur"}
+            Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email}
           </div>
         </div>
       </nav>
