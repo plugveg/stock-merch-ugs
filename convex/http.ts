@@ -63,11 +63,27 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
   }
   const wh = new Webhook(clerkWebhookSecret);
   try {
-    return wh.verify(payloadString, svixHeaders) as unknown as WebhookEvent;
+    const verifiedPayload = wh.verify(payloadString, svixHeaders);
+    if (isValidWebhookEvent(verifiedPayload)) {
+      return verifiedPayload;
+    } else {
+      console.error("Invalid webhook event structure", verifiedPayload);
+      return null;
+    }
   } catch (error) {
     console.error("Error verifying webhook event", error);
     return null;
   }
+}
+
+function isValidWebhookEvent(payload: unknown): payload is WebhookEvent {
+  if (typeof payload !== "object" || payload === null) {
+    return false;
+  }
+  const p = payload as Record<string, unknown>;
+  return (
+    typeof p.type === "string" && typeof p.data === "object" && p.data !== null
+  );
 }
 
 export default http;

@@ -62,6 +62,12 @@ function SignIn() {
           Se connecter
         </SignInButton>
       </div>
+
+      <footer className="tw:bg-gray-800 tw:text-white tw:py-8 tw:mt-16">
+        <div className="tw:container tw:mx-auto tw:px-4 tw:text-center">
+          <p className="tw:text-gray-400">Built by UGS with ❤️</p>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -182,9 +188,7 @@ function Content({
 
       <footer className="tw:bg-gray-800 tw:text-white tw:py-8 tw:mt-16">
         <div className="tw:container tw:mx-auto tw:px-4 tw:text-center">
-          <p className="tw:text-gray-400">
-            Built with ❤️ using React and Tailwind CSS
-          </p>
+          <p className="tw:text-gray-400">Built by UGS with ❤️</p>
         </div>
       </footer>
     </div>
