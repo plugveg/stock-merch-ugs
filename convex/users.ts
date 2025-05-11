@@ -22,8 +22,8 @@ export const upsertFromClerk = internalMutation({
       phoneNumber: data.phone_numbers[0]?.phone_number ?? undefined,
       imageUrl: data.image_url,
       externalId: data.id,
-      // Si private_metadata.role n'est pas dans UserRole, on retombe sur "Guest"
-      role: (data.private_metadata?.role as Roles) ?? "Guest",
+      // Si public_metadata.role n'est pas dans UserRole, on retombe sur "Guest"
+      role: (data.public_metadata?.role as Roles) ?? "Guest",
     };
 
     const user = await userByExternalId(ctx, data.id);

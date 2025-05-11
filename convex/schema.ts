@@ -86,7 +86,7 @@ export default defineEntSchema({
     nickname: v.optional(v.string()),
     email: v.string(),
     phoneNumber: v.optional(v.string()),
-    imageUrl: v.string(),
+    imageUrl: v.optional(v.string()),
     // this the Clerk ID, stored in the subject JWT field
     externalId: v.string(),
   })

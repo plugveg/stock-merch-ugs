@@ -75,6 +75,7 @@ function Content({
 }) {
   const [count, setCount] = useState(0);
   const { tasks, isLoading, showSkeleton, error } = useTasks();
+  console.log("userInConvex", userInConvex);
   return (
     <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100">
       <nav className="tw:bg-white tw:shadow-md tw:py-4">
@@ -90,7 +91,8 @@ function Content({
               <Github size={24} />
             </a>
             <UserButton />
-            Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email ?? "Utilisateur"}
+            Connecté en tant que{" "}
+            {userInConvex?.nickname ?? userInConvex?.email ?? "Utilisateur"}
           </div>
         </div>
       </nav>
