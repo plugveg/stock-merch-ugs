@@ -21,9 +21,13 @@ const queryClient = new QueryClient({
 convexQueryClient.connect(queryClient);
 
 createRoot(document.getElementById("root")!).render(
+  // React StrictMode helps identify potential problems in the application
   <StrictMode>
+    {/* ClerkProvider sets up Clerk authentication and user context */}
     <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+      {/* ConvexProviderWithClerk ties Convex data client to Clerk auth state */}
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        {/* QueryClientProvider supplies the React Query client for data fetching */}
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>

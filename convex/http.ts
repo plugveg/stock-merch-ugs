@@ -48,7 +48,11 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
     "svix-timestamp": req.headers.get("svix-timestamp")!,
     "svix-signature": req.headers.get("svix-signature")!,
   };
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
+  const clerkWebhookSecret = process.env.CLERK_WEBHOOK_SECRET;
+  if (!clerkWebhookSecret) {
+    throw new Error("Environment variable CLERK_WEBHOOK_SECRET is not set.");
+  }
+  const wh = new Webhook(clerkWebhookSecret);
   try {
     return wh.verify(payloadString, svixHeaders) as unknown as WebhookEvent;
   } catch (error) {
