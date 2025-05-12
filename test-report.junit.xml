@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="0.1076744585">
-    <testsuite name="src/__tests__/App.test.tsx" timestamp="2025-05-11T23:01:38.323Z" hostname="MacBook-Pro-de-Thomas.local" tests="7" failures="0" errors="0" skipped="0" time="0.0832096252">
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays the loading screen when isLoading is true" time="0.0140506258">
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="0.1214347496">
+    <testsuite name="src/__tests__/App.test.tsx" timestamp="2025-05-12T10:12:03.518Z" hostname="MacBook-Pro-de-Thomas.local" tests="7" failures="0" errors="0" skipped="0" time="0.0840465403">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays the loading screen when isLoading is true" time="0.0133522081">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays login screen when unauthenticated" time="0.0422444172">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays login screen when unauthenticated" time="0.0426470823">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays protected content when authenticated" time="0.0048250837">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays protected content when authenticated" time="0.0047254992">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; increments the counter when the button is clicked" time="0.0108178749">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; increments the counter when the button is clicked" time="0.0105950003">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays skeleton when showSkeleton is true" time="0.0066074591">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays skeleton when showSkeleton is true" time="0.0069983749">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error message when error exists" time="0.0023050833">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays error message when error exists" time="0.0023820419">
         </testcase>
-        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays &apos;Completed&apos; when task.isCompleted is true" time="0.0017307081">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/__tests__/main.test.tsx" timestamp="2025-05-11T23:01:38.324Z" hostname="MacBook-Pro-de-Thomas.local" tests="1" failures="0" errors="0" skipped="0" time="0.0015687084">
-        <testcase classname="src/__tests__/main.test.tsx" name="main.tsx &gt; should render App using ReactDOM.createRoot" time="0.0011933746">
+        <testcase classname="src/__tests__/App.test.tsx" name="App component &gt; displays &apos;Completed&apos; when task.isCompleted is true" time="0.0026314583">
         </testcase>
     </testsuite>
-    <testsuite name="src/hooks/__tests__/useCurrentUser.test.ts" timestamp="2025-05-11T23:01:38.324Z" hostname="MacBook-Pro-de-Thomas.local" tests="4" failures="0" errors="0" skipped="0" time="0.0100618744">
-        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true while auth is loading" time="0.0069838743">
-        </testcase>
-        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns not loading and not authenticated when auth done but no user" time="0.0008516245">
-        </testcase>
-        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true when authenticated but user query still null" time="0.0008127499">
-        </testcase>
-        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loaded and authenticated when user is returned" time="0.0006601248">
+    <testsuite name="src/__tests__/main.test.tsx" timestamp="2025-05-12T10:12:03.519Z" hostname="MacBook-Pro-de-Thomas.local" tests="1" failures="0" errors="0" skipped="0" time="0.0016030006">
+        <testcase classname="src/__tests__/main.test.tsx" name="main.tsx &gt; should render App using ReactDOM.createRoot" time="0.0012219591">
         </testcase>
     </testsuite>
-    <testsuite name="src/hooks/__tests__/useTasks.test.ts" timestamp="2025-05-11T23:01:38.324Z" hostname="MacBook-Pro-de-Thomas.local" tests="3" failures="0" errors="0" skipped="0" time="0.0128342505">
-        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; returns tasks and default state" time="0.0075481672">
+    <testsuite name="src/hooks/__tests__/useCurrentUser.test.ts" timestamp="2025-05-12T10:12:03.519Z" hostname="MacBook-Pro-de-Thomas.local" tests="4" failures="0" errors="0" skipped="0" time="0.0142935419">
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true while auth is loading" time="0.0098849573">
         </testcase>
-        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; check if there is no showSkeleton after 100ms if loading" time="0.0024886656">
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns not loading and not authenticated when auth done but no user" time="0.0009312916">
         </testcase>
-        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; calls invalidateQueries when refetchTasks is triggered" time="0.0022149582">
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true when authenticated but user query still null" time="0.0015908747">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loaded and authenticated when user is returned" time="0.0008777075">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useTasks.test.ts" timestamp="2025-05-12T10:12:03.520Z" hostname="MacBook-Pro-de-Thomas.local" tests="3" failures="0" errors="0" skipped="0" time="0.0214916668">
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; returns tasks and default state" time="0.0093094597">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; check if there is no showSkeleton after 100ms if loading" time="0.0066555834">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useTasks.test.ts" name="useTasks hook &gt; calls invalidateQueries when refetchTasks is triggered" time="0.0044979591">
         </testcase>
     </testsuite>
 </testsuites>

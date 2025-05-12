@@ -8,8 +8,8 @@ import { Id } from "../../convex/_generated/dataModel";
 import "@testing-library/jest-dom";
 
 // On mocke les hooks personnalisés
-vi.mock("./hooks/useCurrentUser");
-vi.mock("./hooks/useTasks");
+vi.mock("../hooks/useCurrentUser");
+vi.mock("../hooks/useTasks");
 
 // On mocke les composants de convex/react pour ne rendre que leurs enfants
 vi.mock("convex/react", () => ({
