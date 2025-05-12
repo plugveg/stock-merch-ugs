@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.6.0...v1.7.0) (2025-05-12)
+
+
+### Features
+
+* add localization for clerk ([#84](https://github.com/plugveg/stock-merch-ugs/issues/84)) ([1c35b3e](https://github.com/plugveg/stock-merch-ugs/commit/1c35b3e180f17dfaef39b8e2f23b07e859b981d3))
+
 # [1.6.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.5.0...v1.6.0) (2025-05-12)
 
 
