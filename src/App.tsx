@@ -1,16 +1,44 @@
 import { useState } from "react";
 import { Github } from "lucide-react";
 import { useTasks } from "./hooks/useTasks";
+import { useCurrentUser } from "./hooks/useCurrentUser";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
+import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { tasks, isLoading, showSkeleton, error } = useTasks();
+  const { isLoading, isAuthenticated, userInConvex } = useCurrentUser();
   return (
-    <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100">
+    <main>
+      {isLoading ? (
+        <AuthLoading>
+          <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100 tw:flex tw:items-center tw:justify-center">
+            <div className="tw:bg-white tw:rounded-lg tw:shadow-lg tw:p-8">
+              <p className="tw:text-2xl tw:font-semibold tw:text-indigo-600">
+                Chargement...
+              </p>
+            </div>
+          </div>
+        </AuthLoading>
+      ) : isAuthenticated ? (
+        <Authenticated>
+          <Content userInConvex={userInConvex} />
+        </Authenticated>
+      ) : (
+        <Unauthenticated>
+          <SignIn />
+        </Unauthenticated>
+      )}
+    </main>
+  );
+}
+
+function SignIn() {
+  return (
+    <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100 tw:flex tw:flex-col">
       <nav className="tw:bg-white tw:shadow-md tw:py-4">
         <div className="tw:container tw:mx-auto tw:px-4 tw:flex tw:justify-between tw:items-center">
           <h1 className="tw:text-2xl tw:font-bold tw:text-indigo-600">
-            StockMerchUGS
+            StockMerch by UGS
           </h1>
           <div className="tw:flex tw:gap-4">
             <a
@@ -19,6 +47,56 @@ function App() {
             >
               <Github size={24} />
             </a>
+          </div>
+        </div>
+      </nav>
+      <div className="tw:flex-1 tw:flex tw:flex-col tw:items-center tw:justify-center tw:p-4">
+        <p className="tw:text-xl tw:text-gray-700 tw:mb-6 tw:text-center">
+          Veuillez vous connecter pour accéder aux fonctionnalités de
+          l'application ! Authentification faite avec Clerk et Convex.
+        </p>
+        <SignInButton
+          mode="modal"
+          className="tw:inline-block tw:bg-indigo-600 tw:text-white tw:px-6 tw:py-3 tw:rounded-full tw:font-semibold hover:tw:bg-indigo-700 tw:transition-colors"
+        >
+          Se connecter
+        </SignInButton>
+      </div>
+
+      <footer className="tw:bg-gray-800 tw:text-white tw:py-8 tw:mt-16">
+        <div className="tw:container tw:mx-auto tw:px-4 tw:text-center">
+          <p className="tw:text-gray-400">Built by UGS with ❤️</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function Content({
+  userInConvex,
+}: {
+  // We can also use the useUser hook from Clerk to get the user information,
+  // but here we are using the useCurrentUser hook from our Convex database.
+  userInConvex: ReturnType<typeof useCurrentUser>["userInConvex"];
+}) {
+  const [count, setCount] = useState(0);
+  const { tasks, isLoading, showSkeleton, error } = useTasks();
+  return (
+    <div className="tw:min-h-screen tw:bg-linear-to-br tw:from-indigo-100 tw:to-purple-100">
+      <nav className="tw:bg-white tw:shadow-md tw:py-4">
+        <div className="tw:container tw:mx-auto tw:px-4 tw:flex tw:justify-between tw:items-center">
+          <h1 className="tw:text-2xl tw:font-bold tw:text-indigo-600">
+            StockMerch by UGS
+          </h1>
+          <div className="tw:flex tw:gap-4">
+            <a
+              href="https://github.com/plugveg/stock-merch-ugs"
+              className="tw:text-gray-600 tw:hover:text-indigo-600 tw:transition-colors"
+            >
+              <Github size={24} />
+            </a>
+            <UserButton aria-label="User menu" />
+            Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email}
           </div>
         </div>
       </nav>
@@ -109,9 +187,7 @@ function App() {
 
       <footer className="tw:bg-gray-800 tw:text-white tw:py-8 tw:mt-16">
         <div className="tw:container tw:mx-auto tw:px-4 tw:text-center">
-          <p className="tw:text-gray-400">
-            Built with ❤️ using React and Tailwind CSS
-          </p>
+          <p className="tw:text-gray-400">Built by UGS with ❤️</p>
         </div>
       </footer>
     </div>
