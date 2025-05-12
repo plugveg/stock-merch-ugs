@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.5.0...v1.6.0) (2025-05-12)
+
+
+### Features
+
+* [SETSUMAFU-138] add authentication using clerk ([#83](https://github.com/plugveg/stock-merch-ugs/issues/83)) ([7e11936](https://github.com/plugveg/stock-merch-ugs/commit/7e119366d6b0cbc7f415c0b0bb7f663f9dd22e96))
+
 # [1.5.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.4.0...v1.5.0) (2025-05-01)
 
 
