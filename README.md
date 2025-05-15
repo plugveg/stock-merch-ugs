@@ -11,6 +11,7 @@ _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query + Clerk (fo
 - [StockMerchUGS](#stockmerchugs)
   - [Things to know](#things-to-know)
   - [Diagram for the database](#diagram-for-the-database)
+  - [How to run the project](#how-to-run-the-project)
   - [Track Progress](#track-progress)
   - [Roadmap](#roadmap)
   - [Roadmap Tech](#roadmap-tech)
@@ -47,6 +48,84 @@ The folder `docs` contains the documentation for the project. The documentation 
 
 ![](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
 
+## How to run the project
+
+### Prerequisites
+
+Before you can run the project locally, you need to have the following software installed on your machine:
+
+- Node.js (v18 or higher)
+- npm (v8 or higher)
+- Git (v2.0.0 or higher)
+
+To run the project locally, you need to have [Node.js](https://nodejs.org/en/) installed on your machine. You can check if you have Node.js installed by running the following command in your terminal:
+
+```bash
+  node -v
+```
+
+You need to have also [npm](https://www.npmjs.com/) installed on your machine. You can check if you have npm installed by running the following command in your terminal:
+
+```bash
+  npm -v
+```
+
+If not, to install Node.js and npm, you can follow this link: [node & npm installation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
+Once you have Node.js & npm installed, you can run the project locally by following these steps:
+
+1. Clone the repository using the command below:
+
+```bash
+  git clone https://github.com/plugveg/stock-merch-ugs.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+  cd stock-merch-ugs
+```
+
+3. Install the dependencies using the command below:
+
+```bash
+  npm install
+```
+
+4. Create a `.env.local` file in the root directory of the project and add the following variables:
+
+```bash
+  # Convex for Development
+  CONVEX_DEPLOYMENT=<your_convex_deployment>
+  VITE_CONVEX_URL=<your_convex_url>
+  CONVEX_SITE_URL=<your_convex_site_url>
+
+  # Clerk for Development
+  CLERK_WEBHOOK_SECRET=<your_clerk_webhook_secret> # Webhook secret for Clerk - DEV
+  VITE_CLERK_FRONTEND_API_URL=<your_clerk_frontend_api_url> #API URL for the Clerk frontend - DEV
+  VITE_CLERK_PUBLISHABLE_KEY=<your_clerk_publishable_key> # Publishable key for the Clerk frontend - DEV
+  VITE_CLERK_SECRET_KEY=<your_clerk_secret_key> # Secret key for the Clerk frontend - DEV
+```
+
+5. Run the project using the command below:
+
+```bash
+  npm run dev
+```
+
+6. Open your browser and navigate to `http://localhost:5173` to see the project in action.
+7. To run the tests, use the command below:
+
+```bash
+  npm run test
+```
+
+8. To run the linter, use the command below:
+
+```bash
+npm run lint
+```
+
 ## Track Progress
 
 This project is being developed in a [Jira](https://www.atlassian.com/software/jira) board. You can track the progress of the project by following the links below:
@@ -79,7 +158,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add Snyk for error detection and security vulnerabilities
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
-- [ ] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
+- [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 
 ## Tutorials
 
