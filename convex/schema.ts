@@ -3,7 +3,7 @@ import { Infer, v } from "convex/values";
 
 // These constants are used to define the schema for the roles, conditions, status, and productTypes entities.
 // They are used to validate the data that is being stored in the database. (ENUM)
-const roles = v.union(
+export const roles = v.union(
   v.literal("Administrator"),
   v.literal("Board of directors"),
   v.literal("Founding members"),
@@ -13,7 +13,7 @@ const roles = v.union(
   v.literal("Guest"),
 );
 
-const conditions = v.union(
+export const conditions = v.union(
   v.literal("New"),
   v.literal("Used"),
   v.literal("Damaged"),
@@ -27,7 +27,7 @@ const conditions = v.union(
   v.literal("Damaged Item"),
 );
 
-const status = v.union(
+export const status = v.union(
   v.literal("In Stock"),
   v.literal("Sold"),
   v.literal("Reserved"),
@@ -42,7 +42,7 @@ const status = v.union(
   v.literal("Discontinued"),
 );
 
-const productTypes = v.union(
+export const productTypes = v.union(
   v.literal("Prepainted"),
   v.literal("Action/Doll"),
   v.literal("Trading Card"),
@@ -96,26 +96,28 @@ export default defineEntSchema({
     .edges("events"),
 
   products: defineEnt({
-    productName: v.string(),
-    description: v.string(),
-    quantity: v.number(),
-    photo: v.optional(v.string()), // Intended to store file paths as strings. Ensure consistency across the codebase.
-    storageLocation: v.string(),
-    condition: conditions,
-    licenseName: v.array(v.string()),
-    characterName: v.array(v.string()),
+    productName: v.string(), // V
+    description: v.string(), // V
+    quantity: v.number(), // V
+    photo: v.optional(v.string()), // V // Intended to store file paths as strings. Ensure consistency across the codebase.
+    storageLocation: v.string(), // V
+    condition: conditions, // V
+    licenseName: v.array(v.string()), // V
+    characterName: v.array(v.string()), // V
     productType: v.array(productTypes),
-    status: status,
-    purchaseLocation: v.string(),
-    purchaseDate: v.number(), // Dates in Convex are typically stored as timestamps (numbers)
-    purchasePrice: v.number(),
-    sellLocation: v.optional(v.string()), // Optional since it might not be sold yet
-    sellDate: v.optional(v.number()), // Optional since it might not be sold yet
-    sellPrice: v.optional(v.number()), // Optional since it might not be sold yet
+    status: status, // V
+    purchaseLocation: v.string(), // V
+    purchaseDate: v.number(), // V // Dates in Convex are typically stored as timestamps (numbers)
+    purchasePrice: v.number(), // V
+    threshold: v.number(), // V
+    sellLocation: v.optional(v.string()), // V // Optional since it might not be sold yet
+    sellDate: v.optional(v.number()), // V // Optional since it might not be sold yet
+    sellPrice: v.optional(v.number()), // V // Optional since it might not be sold yet
+    collectionId: v.optional(v.id("collections")), // Optional foreign key to collections table
   })
     .index("by_status", ["status"])
     .index("by_productType", ["productType"])
-    .edge("collection") // Add this line to define the inverse relationship
+    .edge("collection", { field: "collectionId", optional: true }) // Foreign key to collections table
     .edges("events"),
 
   userProducts: defineEnt({
@@ -185,3 +187,23 @@ export type Roles = Infer<typeof roles>;
 export type Conditions = Infer<typeof conditions>;
 export type Status = Infer<typeof status>;
 export type ProductTypes = Infer<typeof productTypes>;
+
+/**
+ * Extracts the list of literal values from a Convex v.union validator.
+ *
+ * Usage:
+ *   import schema, { getOptions } from './schema';
+ *   const conditionOptions = getOptions(conditions);
+ */
+export function getOptions(validator: unknown): string[] {
+  // Un v.union stocke ses validateurs membres dans la propriété `validators`
+  // Chacun de ces membres (créé via v.literal) a une propriété `literal`
+  type LiteralMember = { value: string };
+  type UnionValidator = { validators?: unknown[]; members?: LiteralMember[] };
+
+  const anyVal = validator as UnionValidator;
+  if (Array.isArray(anyVal.members)) {
+    return anyVal.members.map((member) => member.value);
+  }
+  return [];
+}
