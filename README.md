@@ -28,11 +28,18 @@ The folder `docs` contains the documentation for the project. The documentation 
 
 - **[Folder Deliverables](docs/deliverables)**: A folder containing the deliverables for the project.
   - [Cahier des charges](docs/deliverables/Cahier-des-charges_StockMerchUGS.pdf): A file containing the cahier des charges for the project.
-  - [Livrable1](docs/deliverables/Livrable1.pdf): A file containing the first deliverable for the project.
-  - [Livrable2](docs/deliverables/Livrable2.pdf): A file containing the second deliverable for the project.
+  - [Livrable1](docs/deliverables/Livrable1.pdf): A file containing the first deliverable for the project (in french).
+  - [Livrable2](docs/deliverables/Livrable2.pdf): A file containing the second deliverable for the project (in french).
+  - [Livrable3](docs/deliverables/Livrable3.pdf): A file containing the third and final deliverable for the project (in french).
 - **[Folder Database](docs/database)**: A folder with informations about the database.
-  - [Database](docs/database/BDD_Stock-merch-UGS.pdf): A file containing the description of database schema for the project.
+  - [Database](docs/database/BDD_Stock-merch-UGS.pdf): A file containing the description of database schema for the project (in french).
   - [Database Diagram](docs/database/SchemaBDD-StockMerchUGS.png): A file containing the diagram of the database for the project. (see below for the updated diagram).
+- **[Folder Maquettes](docs/maquettes)**: A folder containing the maquettes for the project.
+  - [Maquette Analytics](docs/maquettes/Maquette-Analytics.png): A file containing the first maquette for the project related to the analytics about the products who have in your inventory.
+  - [Maquette Display Settings](docs/maquettes/Maquette-Display-Settings.png): A file containing the second maquette for the project related to the setting-up for display settings.
+  - [Maquette Inventory With Informations](docs/maquettes/Maquette-Inventory-with-info.png): A file containing the third maquette for the project related to the Inventory with all the informations about the products.
+  - [Maquette Inventory](docs/maquettes/Maquette-Inventory.png): A file containing the fourth maquette for the project related to the basic Inventory.
+  - [Maquette CRUD](docs/maquettes/Maquette-Modal-CRUD-Products.png): A file containing the fifth maquette for the project related to the CRUD.
 
 ## Things to know
 
