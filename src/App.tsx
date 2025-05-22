@@ -8,7 +8,7 @@ import { useAuth } from "@clerk/clerk-react";
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { isLoaded, isSignedIn } = useAuth();
   // While auth state is loading, render a loading indicator
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div aria-live="polite" role="status" style={{ textAlign: "center", padding: "1em" }}>Loading...</div>;
   return isSignedIn ? children : <Navigate to="/" replace />;
 }
 
