@@ -49,7 +49,7 @@ export const list = query({
 
 // READ: Get products by status using the index
 export const getByStatus = query({
-  args: { status: v.oneOf(status) },
+  args: { status },
   handler: async (ctx, args) => {
     const products = await ctx.db
       .query("products")
