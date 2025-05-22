@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.7.0...v1.8.0) (2025-05-22)
+
+
+### Features
+
+* **view:** [SETSUMAFU-144] add crud for products ([#112](https://github.com/plugveg/stock-merch-ugs/issues/112)) ([b1dbcf0](https://github.com/plugveg/stock-merch-ugs/commit/b1dbcf010916ff0442c5524af437954036915161))
+
 # [1.7.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.6.0...v1.7.0) (2025-05-12)
 
 
