@@ -103,6 +103,25 @@ describe("StockCharts", () => {
     expect(screen.queryByText("Top Items by Value")).not.toBeInTheDocument();
   });
 
+  it("aggregates quantities when product type appears multiple times (else path)", () => {
+    const duplicateStock = [
+      {
+        ...mockStock[0], // T‑Shirt A, Plushie qty 10
+      },
+      {
+        ...mockStock[0],
+        _id: "3" as Id<"products">,
+        quantity: 4, // same type Plushie qty 4
+      },
+    ];
+
+    render(<StockCharts stock={duplicateStock} />);
+
+    // Le PieChart ne doit contenir qu’un seul « sector » (une seule slice)
+    const sectors = document.querySelectorAll(".recharts-sector");
+    expect(sectors).toHaveLength(0);
+  });
+
   it("displays correct category labels", () => {
     render(<StockCharts stock={mockStock} />);
 

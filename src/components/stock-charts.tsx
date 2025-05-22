@@ -57,7 +57,9 @@ export function StockCharts({ stock }: StockChartsProps) {
   // Prepare data for top items by value
   const topItemsByValue = useMemo(() => {
     return [...stock]
-      .sort((a, b) => b.purchasePrice * b.quantity - a.purchasePrice * a.quantity)
+      .sort(
+        (a, b) => b.purchasePrice * b.quantity - a.purchasePrice * a.quantity,
+      )
       .slice(0, 5)
       .map((item) => ({
         name: item.productName,

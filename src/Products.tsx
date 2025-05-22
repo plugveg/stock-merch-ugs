@@ -110,7 +110,7 @@ export default function Products() {
               <CardHeader>
                 <CardTitle>Current Inventory</CardTitle>
                 <CardDescription>
-                  Manage your stock items.{" "}
+                  Manage your stock items.
                   {lowStockItems.length > 0 && (
                     <span className="text-destructive font-medium">
                       {lowStockItems.length} items below threshold!

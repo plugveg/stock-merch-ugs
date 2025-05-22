@@ -5,6 +5,15 @@ import { describe, expect, it, vi } from "vitest";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider } from "@clerk/clerk-react";
 
+// --- spies for product mutations ---
+const addMutateSpy = vi.fn((_data, opts?: { onSuccess?: () => void }) =>
+  opts?.onSuccess?.(),
+);
+const updateMutateSpy = vi.fn((_data, opts?: { onSuccess?: () => void }) =>
+  opts?.onSuccess?.(),
+);
+const deleteMutateSpy = vi.fn();
+
 // Mock Clerk user
 vi.mock("@clerk/clerk-react", async () => {
   const actual = await vi.importActual<object>("@clerk/clerk-react");
@@ -123,9 +132,9 @@ vi.mock("@/hooks/useProducts", () => ({
     isLoading: false,
     showSkeleton: false,
     error: null,
-    addProduct: { mutate: vi.fn(({ onSuccess }) => onSuccess?.()) },
-    updateProduct: { mutate: vi.fn(({ onSuccess }) => onSuccess?.()) },
-    deleteProduct: { mutate: vi.fn() },
+    addProduct: { mutate: addMutateSpy },
+    updateProduct: { mutate: updateMutateSpy },
+    deleteProduct: { mutate: deleteMutateSpy },
   }),
 }));
 
@@ -206,6 +215,85 @@ describe("Products Component", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Edit Item")).not.toBeInTheDocument();
+    });
+  });
+
+  it("cancels Add Item dialog without calling mutate", async () => {
+    renderWithProviders();
+    userEvent.click(screen.getByText("Add Item"));
+
+    // le bouton Cancel est le premier dans le formulaire simulé
+    const cancelButtons = screen.getAllByRole("button", { name: /cancel/i });
+    userEvent.click(cancelButtons[0]);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Add New Item")).not.toBeInTheDocument();
+    });
+
+    expect(addMutateSpy).not.toHaveBeenCalled();
+  });
+
+  it("calls addProduct.mutate with form data then closes dialog", async () => {
+    renderWithProviders();
+    userEvent.click(screen.getByText("Add Item"));
+    const submitButtons = screen.getAllByRole("button", { name: /submit/i });
+    userEvent.click(submitButtons[0]);
+
+    await waitFor(() => {
+      expect(addMutateSpy).toHaveBeenCalledWith(
+        { name: "Mock product", quantity: 1 },
+        expect.any(Object),
+      );
+      expect(screen.queryByText("Add New Item")).not.toBeInTheDocument();
+    });
+  });
+
+  it("cancels Edit Item dialog without calling updateProduct", async () => {
+    renderWithProviders();
+
+    // 1. Ouvre le dialogue d'édition
+    userEvent.click(screen.getByText("Edit"));
+
+    // 2. Attends que le second formulaire (celui du dialogue) soit monté
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole("button", { name: /cancel/i }).length,
+      ).toBeGreaterThan(1);
+    });
+
+    // 3. Clique sur le bouton Cancel du dialogue d'édition (le dernier "Cancel" rendu)
+    const cancelButtons = screen.getAllByRole("button", { name: /cancel/i });
+    userEvent.click(cancelButtons[cancelButtons.length - 1]);
+
+    // 4. Attends que le formulaire du dialogue soit démonté (retour à 1 bouton Cancel)
+    await waitFor(() => {
+      expect(screen.getAllByRole("button", { name: /cancel/i }).length).toBe(2);
+    });
+
+    // 5. Vérifie qu'aucune mutation de mise à jour n'a été appelée
+    expect(updateMutateSpy).not.toHaveBeenCalled();
+  });
+
+  it("calls updateProduct.mutate with correct data then closes dialog", async () => {
+    renderWithProviders();
+    userEvent.click(screen.getByText("Edit"));
+    const submitButtons = screen.getAllByRole("button", { name: /submit/i });
+    userEvent.click(submitButtons[submitButtons.length - 1]);
+
+    await waitFor(() => {
+      expect(updateMutateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ name: "Mock product", quantity: 1 }),
+        expect.any(Object),
+      );
+      expect(screen.queryByText("Edit Item")).not.toBeInTheDocument();
+    });
+  });
+
+  it("calls deleteProduct.mutate when Delete button is clicked", async () => {
+    renderWithProviders();
+    userEvent.click(screen.getByText("Delete"));
+    await waitFor(() => {
+      expect(deleteMutateSpy).toHaveBeenCalledWith({ id: "1" });
     });
   });
 

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest";
 import { StockForm } from "@/components/stock-form";
 import userEvent from "@testing-library/user-event";
@@ -9,6 +9,17 @@ beforeAll(() => {
     unobserve() {}
     disconnect() {}
   };
+
+  // Radix UI Select uses this in its pointer logic – stub for JSDOM
+  Object.defineProperty(HTMLElement.prototype, "hasPointerCapture", {
+    value: () => false,
+  });
+
+  // scrollIntoView is used by Radix when focusing options – stub for JSDOM
+  Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
+    value: () => {},
+    writable: true,
+  });
 });
 
 const mockOnSubmit = vi.fn();
@@ -127,6 +138,20 @@ describe("StockForm", () => {
       /Entrez un nom de license/i,
     );
     expect(remainingLicenseFields).toHaveLength(1);
+  });
+
+  it("does not update photo when no file is selected (else path in handleChange)", async () => {
+    render(<StockForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+
+    const input = screen.getByLabelText(
+      /Photo du produit/i,
+    ) as HTMLInputElement;
+
+    // Simule un change sans fichier sélectionné
+    fireEvent.change(input, { target: { files: [] } });
+
+    // Aucune mise à jour : le champ reste vide
+    expect(input.files).toHaveLength(0);
   });
 
   it("adds and removes character fields", async () => {
@@ -264,7 +289,9 @@ describe("StockForm", () => {
 
     await waitFor(() => {
       const submittedData = mockOnSubmit.mock.calls[0][0];
-      expect(submittedData.sellDate).toBe(new Date("2024-02-01").getTime());
+
+      expect(submittedData.sellDate).toBe("2024-02-01");
+
       expect(submittedData.sellPrice).toBe(30);
       expect(submittedData.sellLocation).toBe("Online Market");
     });
@@ -331,6 +358,30 @@ describe("StockForm", () => {
     const descriptionInput = screen.getByLabelText(/Description/i);
     await userEvent.type(descriptionInput, "New description");
     expect(descriptionInput).toHaveValue("New description");
+  });
+
+  it("handles condition field correctly", async () => {
+    render(<StockForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+
+    const trigger = screen.getByLabelText(/Condition/i);
+    await userEvent.click(trigger);
+
+    const options = await screen.findAllByRole("option", { name: /^Used$/i });
+    await userEvent.click(options[0]);
+
+    expect(trigger).toHaveTextContent("Used");
+  });
+
+  it("handles status field correctly", async () => {
+    render(<StockForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
+    const trigger = screen.getByLabelText(/Statut/i);
+    await userEvent.click(trigger);
+    const options = await screen.findAllByRole("option", {
+      name: /^Out of Stock$/i,
+    });
+    // Radix rend parfois deux nœuds (span + option). On clique sur l’élément ayant role option
+    await userEvent.click(options[0]);
+    expect(trigger).toHaveTextContent("Out of Stock");
   });
 
   it("updates array fields correctly", async () => {

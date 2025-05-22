@@ -179,9 +179,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
         ...(initialData && {
           id: initialData._id,
           sellLocation: formData.sellLocation,
-          sellDate: formData.sellDate
-            ? new Date(formData.sellDate).getTime()
-            : undefined,
+          sellDate: formData.sellDate,
           sellPrice: formData.sellPrice,
         }),
       };
