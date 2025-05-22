@@ -6,7 +6,7 @@ import { ResponsiveDialog } from "@/components/responsive-dialog";
 import { StockTable } from "@/components/stock-table";
 import { StockForm } from "@/components/stock-form";
 import { StockCharts } from "@/components/stock-charts";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useProducts from "./hooks/useProducts";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,9 +30,10 @@ export default function Products() {
     "inventory",
   );
 
-  // Calculate low stock items
-  const lowStockItems = products.filter(
-    (item) => item.quantity <= item.threshold,
+  // Memoize low stock items calculation
+  const lowStockItems = useMemo(
+    () => products.filter((item) => item.quantity <= item.threshold),
+    [products],
   );
 
   return (
