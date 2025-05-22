@@ -25,41 +25,45 @@ import {
 import { useScreenSize } from "@/hooks/useMobile";
 import { Doc } from "convex/_generated/dataModel";
 import { formatPieLabel, formatDollar } from "@/lib/chart-utils";
-
+import { useMemo } from "react";
 interface StockChartsProps {
   stock: Doc<"products">[];
 }
 
 export function StockCharts({ stock }: StockChartsProps) {
   // Prepare data for category distribution
-  const categoryQuantityMap = stock.reduce(
-    (acc: Record<string, number>, item) => {
-      item.productType.forEach((type) => {
-        if (!acc[type]) {
-          acc[type] = 0;
-        }
-        acc[type] += item.quantity;
-      });
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
+  const categoryQuantityMap = useMemo(() => {
+    return stock.reduce(
+      (acc: Record<string, number>, item) => {
+        item.productType.forEach((type) => {
+          if (!acc[type]) {
+            acc[type] = 0;
+          }
+          acc[type] += item.quantity;
+        });
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+  }, [stock]);
 
-  const pieChartData = Object.entries(categoryQuantityMap).map(
-    ([name, value]) => ({
+  const pieChartData = useMemo(() => {
+    return Object.entries(categoryQuantityMap).map(([name, value]) => ({
       name,
       value,
-    }),
-  );
+    }));
+  }, [categoryQuantityMap]);
 
   // Prepare data for top items by value
-  const topItemsByValue = [...stock]
-    .sort((a, b) => b.purchasePrice * b.quantity - a.purchasePrice * a.quantity)
-    .slice(0, 5)
-    .map((item) => ({
-      name: item.productName,
-      value: item.purchasePrice * item.quantity,
-    }));
+  const topItemsByValue = useMemo(() => {
+    return [...stock]
+      .sort((a, b) => b.purchasePrice * b.quantity - a.purchasePrice * a.quantity)
+      .slice(0, 5)
+      .map((item) => ({
+        name: item.productName,
+        value: item.purchasePrice * item.quantity,
+      }));
+  }, [stock]);
 
   // Colors for the charts
   const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088fe"];
