@@ -99,7 +99,7 @@ export const update = mutation({
 
     // Remove undefined fields
     const patch = Object.fromEntries(
-      Object.entries(fields).filter(([value]) => value !== undefined),
+      Object.entries(fields).filter(([, value]) => value !== undefined),
     );
 
     await ctx.db.patch(id, patch);
