@@ -134,20 +134,20 @@ describe("StockForm", () => {
 
     // Ajouter un personnage
     const addCharacterButton = screen.getByRole("button", {
-      name: /Ajouter un character/i,
+      name: /Ajouter un personnage/i,
     });
     await userEvent.click(addCharacterButton);
 
     // Vérifier qu'un champ a été ajouté
     const characterFields = screen.getAllByPlaceholderText(
-      /Entrez un nom de character/i,
+      /Entrez un nom de personnage/i,
     );
     expect(characterFields).toHaveLength(1);
 
     // Ajouter un deuxième personnage
     await userEvent.click(addCharacterButton);
     const updatedCharacterFields = screen.getAllByPlaceholderText(
-      /Entrez un nom de character/i,
+      /Entrez un nom de personnage/i,
     );
     expect(updatedCharacterFields).toHaveLength(2);
 
@@ -157,7 +157,7 @@ describe("StockForm", () => {
 
     // Vérifier qu'un champ a été supprimé
     const remainingCharacterFields = screen.getAllByPlaceholderText(
-      /Entrez un nom de character/i,
+      /Entrez un nom de personnage/i,
     );
     expect(remainingCharacterFields).toHaveLength(1);
   });
@@ -345,10 +345,10 @@ describe("StockForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Ajouter un character/i }),
+      screen.getByRole("button", { name: /Ajouter un personnage/i }),
     );
     await userEvent.type(
-      screen.getByPlaceholderText(/Entrez un nom de character/i),
+      screen.getByPlaceholderText(/Entrez un nom de personnage/i),
       "New Character",
     );
 
@@ -356,7 +356,7 @@ describe("StockForm", () => {
       screen.getByPlaceholderText(/Entrez un nom de license/i),
     ).toHaveValue("New License");
     expect(
-      screen.getByPlaceholderText(/Entrez un nom de character/i),
+      screen.getByPlaceholderText(/Entrez un nom de personnage/i),
     ).toHaveValue("New Character");
   });
 });

@@ -331,7 +331,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
 
         {/* Multiple character names */}
         <div className="space-y-2 col-span-1 sm:col-span-2 mb-4">
-          <Label htmlFor="characterName">Character(s)*</Label>
+          <Label htmlFor="characterName">Personnage(s)*</Label>
           {formData.characterName.map(
             (
               value: string | number | readonly string[] | undefined,
@@ -345,7 +345,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
                     handleArrayChange("characterName", idx, e.target.value)
                   }
                   className="flex-1"
-                  placeholder="Entrez un nom de character"
+                  placeholder="Entrez un nom de personnage"
                 />
                 <Button
                   type="button"
@@ -363,7 +363,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
             size="sm"
           >
             <Plus className="mr-2 h-4 w-4" />
-            Ajouter un character
+            Ajouter un personnage
           </Button>
           {errors.characterName && (
             <p className="text-xs text-destructive">{errors.characterName}</p>
