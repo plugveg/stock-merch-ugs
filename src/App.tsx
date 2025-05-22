@@ -7,8 +7,8 @@ import { useAuth } from "@clerk/clerk-react";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { isLoaded, isSignedIn } = useAuth();
-  // While auth state is loading, render nothing (or a loader)
-  if (!isLoaded) return null;
+  // While auth state is loading, render a loading indicator
+  if (!isLoaded) return <div>Loading...</div>;
   return isSignedIn ? children : <Navigate to="/" replace />;
 }
 
