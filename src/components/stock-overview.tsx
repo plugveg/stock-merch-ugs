@@ -1,18 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Doc } from "convex/_generated/dataModel";
 import { AlertCircle, ArrowUp, DollarSign, Package } from "lucide-react";
 
-export type StockItem = {
-  id: string;
-  name: string;
-  category: string;
-  quantity: number;
-  price: number;
-  threshold: number;
-  lastUpdated: string;
-};
-
 interface StockOverviewProps {
-  stock: StockItem[];
+  stock: Doc<"products">[];
 }
 
 export function StockOverview({ stock }: StockOverviewProps) {
@@ -21,7 +12,7 @@ export function StockOverview({ stock }: StockOverviewProps) {
 
   // Calculate total value
   const totalValue = stock.reduce(
-    (sum, item) => sum + item.quantity * item.price,
+    (sum, item) => sum + item.quantity * item.purchasePrice,
     0,
   );
 
@@ -31,7 +22,7 @@ export function StockOverview({ stock }: StockOverviewProps) {
   ).length;
 
   // Calculate categories
-  const categories = new Set(stock.map((item) => item.category)).size;
+  const categories = new Set(stock.map((item) => item.productType)).size;
 
   return (
     <>

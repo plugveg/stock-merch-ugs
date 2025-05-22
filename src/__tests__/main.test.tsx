@@ -1,27 +1,30 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeAll } from "vitest";
 import * as ReactDOM from "react-dom/client";
+
+const mockRender = vi.fn();
 
 vi.mock("react-dom/client", async () => {
   const actual = await vi.importActual("react-dom/client");
   return {
     ...actual,
     createRoot: vi.fn(() => ({
-      render: vi.fn(),
+      render: mockRender,
     })),
   };
 });
 
-import "../main";
-
 describe("main.tsx", () => {
-  it("should render App using ReactDOM.createRoot", () => {
+  beforeAll(() => {
     const rootDiv = document.createElement("div");
     rootDiv.id = "root";
     document.body.appendChild(rootDiv);
+  });
 
-    expect(ReactDOM.createRoot).toHaveBeenCalled();
-
-    const rootElement = document.getElementById("root");
-    expect(rootElement).not.toBeNull();
+  it("should call ReactDOM.createRoot with #root", async () => {
+    await import("../main");
+    expect(ReactDOM.createRoot).toHaveBeenCalledWith(
+      document.getElementById("root"),
+    );
+    expect(mockRender).toHaveBeenCalled();
   });
 });
