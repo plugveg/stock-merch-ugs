@@ -32,7 +32,7 @@ interface StockChartsProps {
 
 export function StockCharts({ stock }: StockChartsProps) {
   // Prepare data for category distribution
-  const categoryData = stock.reduce(
+  const categoryQuantityMap = stock.reduce(
     (acc: Record<string, number>, item) => {
       item.productType.forEach((type) => {
         if (!acc[type]) {
@@ -45,10 +45,12 @@ export function StockCharts({ stock }: StockChartsProps) {
     {} as Record<string, number>,
   );
 
-  const pieChartData = Object.entries(categoryData).map(([name, value]) => ({
-    name,
-    value,
-  }));
+  const pieChartData = Object.entries(categoryQuantityMap).map(
+    ([name, value]) => ({
+      name,
+      value,
+    }),
+  );
 
   // Prepare data for top items by value
   const topItemsByValue = [...stock]
