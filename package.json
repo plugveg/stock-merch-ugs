@@ -32,7 +32,7 @@
     "@tailwindcss/vite": "^4.1.7",
     "convex": "^1.24.1",
     "convex-ents": "^0.13.0",
-    "convex-helpers": "^0.1.86",
+    "convex-helpers": "^0.1.88",
     "lucide-react": "^0.510.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
