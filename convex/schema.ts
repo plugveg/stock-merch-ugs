@@ -65,11 +65,6 @@ export const productTypes = v.union(
 
 // This is the schema for the entities in the database.
 export default defineEntSchema({
-  tasks: defineEnt({
-    text: v.string(),
-    isCompleted: v.boolean(),
-  }),
-
   roles: defineEnt({}).field("name", roles, { default: "Guest" }),
 
   conditions: defineEnt({}).field("name", conditions, { default: "Used" }),
@@ -114,19 +109,21 @@ export default defineEntSchema({
     sellDate: v.optional(v.number()), // V // Optional since it might not be sold yet
     sellPrice: v.optional(v.number()), // V // Optional since it might not be sold yet
     collectionId: v.optional(v.id("collections")), // Optional foreign key to collections table
+    ownerUserId: v.id("users"), // Foreign key to users table
   })
+    .index("by_owner", ["ownerUserId"]) // Index to find all products for a user
     .index("by_status", ["status"])
     .index("by_productType", ["productType"])
     .edge("collection", { field: "collectionId", optional: true }) // Foreign key to collections table
     .edges("events"),
 
-  userProducts: defineEnt({
-    ownerUserId: v.id("users"), // Foreign key to users table
-    productId: v.id("products"), // Foreign key to products table
-  })
-    .index("by_owner", ["ownerUserId"]) // Index to find all products for a user
-    .index("by_product", ["productId"]) // Index to find all users for a product
-    .index("by_owner_and_product", ["ownerUserId", "productId"]), // Index for checking if a specific relationship exists
+  // userProducts: defineEnt({
+  //   ownerUserId: v.id("users"), // Foreign key to users table
+  //   productId: v.id("products"), // Foreign key to products table
+  // })
+  //   .index("by_owner", ["ownerUserId"]) // Index to find all products for a user
+  //   .index("by_product", ["productId"]) // Index to find all users for a product
+  //   .index("by_owner_and_product", ["ownerUserId", "productId"]), // Index for checking if a specific relationship exists
 
   transactions: defineEnt({
     transactionName: v.string(),

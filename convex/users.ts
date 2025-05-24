@@ -2,6 +2,7 @@ import { internalMutation, query, QueryCtx } from "./_generated/server";
 import { UserJSON } from "@clerk/backend";
 import { v, Validator } from "convex/values";
 import { Roles } from "./schema";
+import { paginationOptsValidator } from "convex/server";
 
 export const current = query({
   args: {},
@@ -70,3 +71,22 @@ async function userByExternalId(ctx: QueryCtx, externalId: string) {
     .withIndex("byExternalId", (q) => q.eq("externalId", externalId))
     .unique();
 }
+
+export const listUsersLite = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const results = await ctx.db
+      .query("users")
+      .order("asc")
+      .paginate(args.paginationOpts);
+
+    // Transform only the page property, keep pagination metadata
+    return {
+      ...results,
+      page: results.page.map(({ _id, nickname, email }) => ({
+        _id,
+        label: nickname ?? email,
+      })),
+    };
+  },
+});

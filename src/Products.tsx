@@ -17,12 +17,38 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus } from "lucide-react";
+import { Info, Plus } from "lucide-react";
 import { Doc } from "convex/_generated/dataModel";
+import { RoleBadge } from "@/components/role-badge";
+import { useUsersLite } from "./hooks/useUsersLite";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./components/ui/tooltip";
+import Footer from "./components/footer";
 
 export default function Products() {
   const { userInConvex } = useCurrentUser();
-  const { products, addProduct, updateProduct, deleteProduct } = useProducts();
+  const isAdmin = userInConvex?.role === "Administrator";
+  /* Sélecteur d’utilisateur pour l’admin */
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(
+    isAdmin ? userInConvex?._id : undefined,
+  );
+
+  const usersLite = useUsersLite(10);
+
+  const { products, addProduct, updateProduct, deleteProduct } = useProducts({
+    userId: selectedUserId,
+  });
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<Doc<"products"> | null>(null);
@@ -32,7 +58,11 @@ export default function Products() {
 
   // Memoize low stock items calculation
   const lowStockItems = useMemo(
-    () => products.filter((item) => item.quantity <= item.threshold),
+    () =>
+      products.filter(
+        (item: { quantity: number; threshold: number }) =>
+          item.quantity <= item.threshold,
+      ),
     [products],
   );
 
@@ -41,10 +71,68 @@ export default function Products() {
       <header>
         <NavBar>
           <UserButton aria-label="User menu" />
-          Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email}
+          {/* Badge rôle */}
+          {userInConvex?.role && <RoleBadge role={userInConvex.role} />}
+          {/* Texte identifiant */}
+          <span className="content-center">
+            Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email}
+          </span>
         </NavBar>
       </header>
       <main className="flex-1 p-4 md:p-6">
+        {/* Sélecteur d’utilisateur visible SEULEMENT pour l’admin */}
+        {isAdmin && (
+          <div className="mb-4 max-w-xs flex items-center gap-2">
+            <Label className="text-sm font-medium mb-0 whitespace-nowrap">
+              Sélectionner un utilisateur ou tous pour voir ses produits
+            </Label>
+            <Select
+              value={selectedUserId ?? "all"}
+              onValueChange={(val) =>
+                setSelectedUserId(val === "all" ? undefined : val)
+              }
+            >
+              <SelectTrigger className="border border-black">
+                {selectedUserId === userInConvex?._id
+                  ? userInConvex?.nickname
+                  : usersLite?.results.find((u) => u._id === selectedUserId)
+                      ?.label}
+                {selectedUserId === undefined ? "Tous les utilisateurs" : ""}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les utilisateurs</SelectItem>
+                <SelectItem value={userInConvex?._id}>
+                  {userInConvex?.nickname}
+                </SelectItem>
+                {usersLite?.results && <div className="border-t my-1" />}
+                {usersLite?.results
+                  .filter((u) => u._id !== userInConvex?._id) // ← retire l’utilisateur courant
+                  .map((u) => (
+                    <SelectItem key={u._id} value={u._id}>
+                      {u.label}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info
+                    size={16}
+                    className="hover:text-indigo-600 transition-colors"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    L'utilisateur sélectionné sera celui pour lequel vous allez
+                    ajouter ou modifier les produits
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
+
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
           <StockOverview stock={products} />
         </div>
@@ -58,13 +146,13 @@ export default function Products() {
         >
           <div className="flex items-center justify-between">
             <TabsList>
-              <TabsTrigger value="inventory">Inventory</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="inventory">Inventaire</TabsTrigger>
+              <TabsTrigger value="analytics">Analyse</TabsTrigger>
             </TabsList>
             {tabValue === "inventory" && (
               <Button onClick={() => setAddDialogOpen(true)} size="sm">
                 <Plus className="mr-2 h-4 w-4" />
-                Add Item
+                Ajouter un produit
               </Button>
             )}
           </div>
@@ -72,16 +160,22 @@ export default function Products() {
             <ResponsiveDialog
               open={addDialogOpen}
               onOpenChange={setAddDialogOpen}
-              title="Add New Item"
-              description="Enter the details for the new stock item"
+              title="Ajouter un produit"
+              description="Entrez les détails du nouveau produit"
               size="lg"
             >
               <StockForm
-                onSubmit={(data) => {
-                  addProduct.mutate(data, {
-                    onSuccess: () => setAddDialogOpen(false),
-                  });
-                }}
+                onSubmit={(formData) =>
+                  addProduct.mutate(
+                    {
+                      ...formData,
+                      targetUserId: selectedUserId as
+                        | Doc<"users">["_id"]
+                        | undefined,
+                    },
+                    { onSuccess: () => setAddDialogOpen(false) },
+                  )
+                }
                 onCancel={() => setAddDialogOpen(false)}
               />
             </ResponsiveDialog>
@@ -89,8 +183,8 @@ export default function Products() {
             <ResponsiveDialog
               open={editDialogOpen}
               onOpenChange={setEditDialogOpen}
-              title="Edit Item"
-              description="Update the details for this stock item"
+              title="Modifier un produit"
+              description="Entrez les détails du produit"
               size="lg"
             >
               <StockForm
@@ -108,12 +202,12 @@ export default function Products() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Current Inventory</CardTitle>
+                <CardTitle>Inventaire actuel</CardTitle>
                 <CardDescription>
-                  Manage your stock items.
+                  Managez vos produits.
                   {lowStockItems.length > 0 && (
                     <span className="text-destructive font-medium">
-                      {lowStockItems.length} items below threshold!
+                      {lowStockItems.length} produits en-dessous du seuil
                     </span>
                   )}
                 </CardDescription>
@@ -133,9 +227,9 @@ export default function Products() {
           <TabsContent value="analytics">
             <Card>
               <CardHeader>
-                <CardTitle>Stock Analytics</CardTitle>
+                <CardTitle>Analyse du stock</CardTitle>
                 <CardDescription>
-                  Visual representation of your inventory
+                  Représentation visuelle de votre inventaire
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -145,6 +239,7 @@ export default function Products() {
           </TabsContent>
         </Tabs>
       </main>
+      <Footer />
     </div>
   );
 }

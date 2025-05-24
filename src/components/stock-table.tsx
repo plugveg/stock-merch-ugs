@@ -61,18 +61,23 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
         ),
     )
     .sort((a, b) => {
-      const aValue = a[sortField];
-      const bValue = b[sortField];
+      // normalise potential array values (e.g. productType) so the sort
+      // behaves predictably for both string & numeric columns.
+      const normalise = (val: unknown) =>
+        Array.isArray(val) ? val.join(", ") : val;
+
+      const aValue = normalise(a[sortField]);
+      const bValue = normalise(b[sortField]);
 
       if (typeof aValue === "string" && typeof bValue === "string") {
         return sortDirection === "asc"
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
-      } else {
-        return sortDirection === "asc"
-          ? (aValue as number) - (bValue as number)
-          : (bValue as number) - (aValue as number);
       }
+
+      return sortDirection === "asc"
+        ? (aValue as number) - (bValue as number)
+        : (bValue as number) - (aValue as number);
     });
 
   return (
@@ -81,7 +86,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search items... (by name or type)"
+            placeholder="Rechercher des articles… (par nom ou type)"
             className="pl-8"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -98,7 +103,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                 onClick={() => handleSort("productName")}
               >
                 <div className="flex items-center">
-                  Product name
+                  Nom du produit
                   {sortField === "productName" &&
                     (sortDirection === "asc" ? (
                       <ChevronUp className="ml-1 h-4 w-4" />
@@ -112,7 +117,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                 onClick={() => handleSort("productType")}
               >
                 <div className="flex items-center">
-                  Product type
+                  Type de produit
                   {sortField === "productType" &&
                     (sortDirection === "asc" ? (
                       <ChevronUp className="ml-1 h-4 w-4" />
@@ -126,7 +131,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                 onClick={() => handleSort("quantity")}
               >
                 <div className="flex items-center justify-end">
-                  Quantity
+                  Quantité
                   {sortField === "quantity" &&
                     (sortDirection === "asc" ? (
                       <ChevronUp className="ml-1 h-4 w-4" />
@@ -140,7 +145,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                 onClick={() => handleSort("purchasePrice")}
               >
                 <div className="flex items-center justify-end">
-                  Purchase price
+                  Prix d'achat
                   {sortField === "purchasePrice" &&
                     (sortDirection === "asc" ? (
                       <ChevronUp className="ml-1 h-4 w-4" />
@@ -149,7 +154,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                     ))}
                 </div>
               </TableHead>
-              <TableHead className="text-right">Creation time</TableHead>
+              <TableHead className="text-right">Date de création</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -160,7 +165,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                   colSpan={6}
                   className="text-center py-6 text-muted-foreground"
                 >
-                  No items found. Try a different search term.
+                  Aucun article trouvé. Essayez un autre terme de recherche.
                 </TableCell>
               </TableRow>
             ) : (
@@ -171,14 +176,14 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                     {item.quantity <= item.threshold && (
                       <div className="flex items-center text-xs text-destructive mt-1">
                         <AlertCircle className="h-3 w-3 mr-1" />
-                        Low stock
+                        Stock faible
                       </div>
                     )}
                   </TableCell>
-                  <TableCell>{item.productType}</TableCell>
+                  <TableCell>{item.productType.join(", ")}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
                   <TableCell className="text-right">
-                    ${item.purchasePrice.toFixed(2)}
+                    {item.purchasePrice.toFixed(2)} €
                   </TableCell>
                   <TableCell className="text-right">
                     {new Date(item._creationTime).toLocaleString()}
@@ -187,7 +192,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
+                          <span className="sr-only">Ouvrir le menu</span>
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -198,7 +203,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                           onClick={() => onEdit(item)}
                         >
                           <Edit className="mr-2 h-4 w-4" />
-                          Edit
+                          Modifier
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => onDelete(item._id)}
@@ -206,7 +211,7 @@ export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
                           className="text-destructive focus:text-destructive"
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
+                          Supprimer
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -1,16 +1,11 @@
-import React from "react";
 import { Github } from "lucide-react";
 import { useNavigate } from "react-router";
 
-interface NavBarProps {
-  children?: React.ReactNode;
-}
-
-export default function NavBar({ children }: NavBarProps) {
+export default function NavBar({ children }: { children?: React.ReactNode }) {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-white shadow-md py-4">
+    <nav className="bg-white shadow-md py-4 sticky top-0 z-10">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <h1
           className="text-2xl font-bold text-indigo-600 cursor-pointer"
@@ -21,7 +16,7 @@ export default function NavBar({ children }: NavBarProps) {
         <div className="flex flex-wrap gap-4 break-all">
           <a
             href="https://github.com/plugveg/stock-merch-ugs"
-            className="text-gray-600 hover:text-indigo-600 transition-colors"
+            className="text-gray-600 hover:text-indigo-600 transition-colors self-center"
             aria-label="GitHub Repository"
           >
             <Github size={24} />

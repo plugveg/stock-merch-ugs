@@ -1,66 +1,76 @@
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { convexQuery } from "@convex-dev/react-query";
-import { useConvexMutation } from "@convex-dev/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 import { api } from "../../convex/_generated/api";
-import { useEffect, useState } from "react";
+import type { Id } from "../../convex/_generated/dataModel";
+export interface UseProductsOptions {
+  /**
+   *  ID de l’utilisateur dont on veut afficher les produits.
+   *  - undefined ➜ produits du user courant (logique serveur)
+   *  - Id<"users">    ➜ produits de cet utilisateur (admin)
+   */
+  userId?: Id<"users">;
+}
 
-export const useProducts = () => {
-  const queryClient = useQueryClient();
-  const convexQueryConfig = convexQuery(api.functions.products.list, {});
+// Ajoute la pagination minimale attendue par listProducts (pageSize obligatoire).
+const PAGE_SIZE = 10;
 
-  // Data query
+export const useProducts = ({ userId }: UseProductsOptions = {}) => {
+  /* ---------- Query ---------- */
+  const productsQueryConfig = convexQuery(api.functions.products.listProducts, {
+    pageSize: PAGE_SIZE,
+    ...(userId ? { targetUserId: userId } : {}),
+    // on laisse cursor undefined pour la première page
+  });
+
   const {
-    data: products,
+    data: rawData,
     isLoading,
     error,
   } = useQuery({
-    ...convexQueryConfig,
-    gcTime: 10000,
+    ...productsQueryConfig,
+    gcTime: 15_000,
   });
 
-  // Skeleton loading state
-  const [showSkeleton, setShowSkeleton] = useState(false);
+  // The API products.listProducts renvoie soit un tableau (quand codegen aura été ajusté)
+  // soit { page, nextCursor }.  On normalise ici en un simple tableau.
+  const hasPage = (data: unknown): data is { page: unknown } =>
+    typeof data === "object" && data !== null && "page" in data;
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => setShowSkeleton(true), 100);
-      return () => clearTimeout(timer);
-    } else {
-      setShowSkeleton(false);
-    }
-  }, [isLoading]);
+  const products = Array.isArray(rawData)
+    ? rawData
+    : hasPage(rawData)
+      ? rawData.page
+      : [];
 
-  // Refetch/invalidate
-  const refetchProducts = () => {
+  /* ---------- Cache invalidation helper ---------- */
+  const queryClient = useQueryClient();
+  const invalidate = () =>
     queryClient.invalidateQueries({
-      queryKey: convexQueryConfig.queryKey,
+      queryKey: productsQueryConfig.queryKey,
     });
-  };
 
-  // Mutations via Convex
+  /* ---------- Mutations ---------- */
   const createFn = useConvexMutation(api.functions.products.create);
   const updateFn = useConvexMutation(api.functions.products.update);
   const deleteFn = useConvexMutation(api.functions.products.remove);
 
   const addProduct = useMutation({
     mutationFn: createFn,
-    onSuccess: refetchProducts,
+    onSuccess: invalidate,
   });
   const updateProduct = useMutation({
     mutationFn: updateFn,
-    onSuccess: refetchProducts,
+    onSuccess: invalidate,
   });
   const deleteProduct = useMutation({
     mutationFn: deleteFn,
-    onSuccess: refetchProducts,
+    onSuccess: invalidate,
   });
 
   return {
-    products: products ?? [],
+    products,
     isLoading,
-    showSkeleton,
     error,
-    refetchProducts,
     addProduct,
     updateProduct,
     deleteProduct,

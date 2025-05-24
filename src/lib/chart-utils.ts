@@ -6,4 +6,4 @@ export const formatPieLabel = ({
   percent: number;
 }) => `${name} ${(percent * 100).toFixed(0)}%`;
 
-export const formatDollar = (value: number) => `$${value}`;
+export const formatEuro = (value: number) => `${value} €`;

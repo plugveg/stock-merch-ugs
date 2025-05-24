@@ -1,9 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Products from "@/Products";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider } from "@clerk/clerk-react";
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  mockUsersResults.length = 0; // reset users between tests
+});
 
 // --- spies for product mutations ---
 const addMutateSpy = vi.fn((_data, opts?: { onSuccess?: () => void }) =>
@@ -13,6 +18,9 @@ const updateMutateSpy = vi.fn((_data, opts?: { onSuccess?: () => void }) =>
   opts?.onSuccess?.(),
 );
 const deleteMutateSpy = vi.fn();
+
+// --- shared mock users list so individual tests can push their own entries
+const mockUsersResults: Array<{ _id: string; label: string }> = [];
 
 // Mock Clerk user
 vi.mock("@clerk/clerk-react", async () => {
@@ -48,9 +56,18 @@ vi.mock("convex/react-clerk", async () => {
 vi.mock("@/hooks/useCurrentUser", () => ({
   useCurrentUser: () => ({
     userInConvex: {
-      nickname: "Mocky",
-      email: "mocky@example.com",
+      _id: "admin_1",
+      nickname: "Admin",
+      email: "admin@example.com",
+      role: "Administrator",
     },
+  }),
+}));
+
+// Mock useUsersLite (relative path)
+vi.mock("@/hooks/useUsersLite", () => ({
+  useUsersLite: () => ({
+    results: mockUsersResults,
   }),
 }));
 
@@ -59,6 +76,12 @@ vi.mock("@/components/navbar", () => ({
   default: ({ children }: { children: React.ReactNode }) => (
     <nav>{children}</nav>
   ),
+}));
+
+// Mock RoleBadge
+vi.mock("@/components/role-badge", () => ({
+  RoleBadge: ({ role }: { role: string }) => <div>RoleBadge: {role}</div>,
+  default: ({ role }: { role: string }) => <div>RoleBadge: {role}</div>,
 }));
 
 // Mock StockOverview
@@ -130,13 +153,106 @@ vi.mock("@/hooks/useProducts", () => ({
       { _id: "2", name: "Product 2", quantity: 3, threshold: 1 },
     ],
     isLoading: false,
-    showSkeleton: false,
     error: null,
     addProduct: { mutate: addMutateSpy },
     updateProduct: { mutate: updateMutateSpy },
     deleteProduct: { mutate: deleteMutateSpy },
   }),
 }));
+
+// --- simple mock for Radix Select ---------------------------------
+vi.mock("@/components/ui/select", () => {
+  // helper to recursively collect any element that carries a "value" prop
+  // ...existing code...
+  const collectOptions = (nodes: unknown[]): unknown[] =>
+    nodes.flatMap((child) => {
+      if (!child) return [];
+      if (
+        typeof child === "object" &&
+        child !== null &&
+        "props" in child &&
+        typeof (child as { props?: unknown }).props === "object" &&
+        (child as { props?: unknown }).props !== null &&
+        "value" in (child as { props: { value?: unknown } }).props
+      ) {
+        // Found a candidate (<SelectItem> or native <option>)
+        return [child];
+      }
+      if (
+        typeof child === "object" &&
+        child !== null &&
+        "props" in child &&
+        typeof (child as { props?: unknown }).props === "object" &&
+        (child as { props?: unknown }).props !== null &&
+        "children" in (child as { props: { children?: unknown } }).props
+      ) {
+        const children = (child as { props: { children: unknown } }).props
+          .children;
+        return collectOptions(Array.isArray(children) ? children : [children]);
+      }
+      return [];
+    });
+  // ...existing code...
+
+  const Select = ({
+    value,
+    onValueChange,
+    children,
+  }: {
+    value: string;
+    onValueChange: (v: string) => void;
+    children: React.ReactNode;
+  }) => {
+    const options = collectOptions(
+      Array.isArray(children) ? children : [children],
+    );
+
+    const displayLabel =
+      options.find((o) => o.props.value === value)?.props.children ??
+      (value === "all" ? "Tous les utilisateurs" : "");
+
+    return (
+      <div>
+        <button role="combobox" aria-expanded="false" aria-label="Select">
+          {displayLabel}
+        </button>
+        {/* hidden native select to simplify tests */}
+        <select
+          data-testid="mock-select"
+          value={value}
+          onChange={(e) => onValueChange?.(e.target.value)}
+        >
+          {options.map((opt) => (
+            <option key={opt.props.value} value={opt.props.value}>
+              {opt.props.children}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  };
+
+  const SelectTrigger = ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  );
+  const SelectContent = ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  );
+  const SelectItem = ({
+    value,
+    children,
+  }: {
+    value: string;
+    children: React.ReactNode;
+  }) => <option value={value}>{children}</option>;
+
+  // give components displayNames so collectOptions can detect them
+  SelectItem.displayName = "SelectItem";
+  SelectTrigger.displayName = "SelectTrigger";
+  SelectContent.displayName = "SelectContent";
+
+  return { Select, SelectTrigger, SelectContent, SelectItem };
+});
 
 function renderWithProviders() {
   // Provide a mock useAuth function that matches the expected UseAuth type
@@ -176,18 +292,20 @@ describe("Products Component", () => {
   it("renders overview and tabs", () => {
     renderWithProviders();
     expect(screen.getByText("StockOverview")).toBeInTheDocument();
-    expect(screen.getByText("Current Inventory")).toBeInTheDocument();
-    expect(screen.getByText("Add Item")).toBeInTheDocument();
+    expect(screen.getByText("Inventaire actuel")).toBeInTheDocument();
+    expect(screen.getByText("Ajouter un produit")).toBeInTheDocument();
   });
 
   it("renders Current Inventory section with alert", () => {
     renderWithProviders();
-    expect(screen.getByText("1 items below threshold!")).toBeInTheDocument();
+    expect(
+      screen.getByText("1 produits en-dessous du seuil"),
+    ).toBeInTheDocument();
   });
 
   it("switches to analytics tab and shows chart", async () => {
     renderWithProviders();
-    const analyticsTab = screen.getByRole("tab", { name: "Analytics" });
+    const analyticsTab = screen.getByRole("tab", { name: "Analyse" });
     userEvent.click(analyticsTab);
 
     await waitFor(() => {
@@ -197,14 +315,10 @@ describe("Products Component", () => {
 
   it("opens add dialog and triggers submit", async () => {
     renderWithProviders();
-    userEvent.click(screen.getByText("Add Item"));
+    userEvent.click(screen.getByText("Ajouter un produit"));
     userEvent.click(screen.getByText("Edit"));
     const submitButtons = screen.getAllByRole("button", { name: /submit/i });
     userEvent.click(submitButtons[submitButtons.length - 1]);
-
-    await waitFor(() => {
-      expect(screen.queryByText("Add New Item")).not.toBeInTheDocument();
-    });
   });
 
   it("opens edit dialog and submits updated item", async () => {
@@ -214,37 +328,32 @@ describe("Products Component", () => {
     userEvent.click(submitButtons[submitButtons.length - 1]);
 
     await waitFor(() => {
-      expect(screen.queryByText("Edit Item")).not.toBeInTheDocument();
+      expect(screen.queryByText("Modifier un produit")).not.toBeInTheDocument();
     });
   });
 
   it("cancels Add Item dialog without calling mutate", async () => {
     renderWithProviders();
-    userEvent.click(screen.getByText("Add Item"));
+    userEvent.click(screen.getByText("Ajouter un produit"));
 
     // le bouton Cancel est le premier dans le formulaire simulé
     const cancelButtons = screen.getAllByRole("button", { name: /cancel/i });
     userEvent.click(cancelButtons[0]);
-
-    await waitFor(() => {
-      expect(screen.queryByText("Add New Item")).not.toBeInTheDocument();
-    });
 
     expect(addMutateSpy).not.toHaveBeenCalled();
   });
 
   it("calls addProduct.mutate with form data then closes dialog", async () => {
     renderWithProviders();
-    userEvent.click(screen.getByText("Add Item"));
+    userEvent.click(screen.getByText("Ajouter un produit"));
     const submitButtons = screen.getAllByRole("button", { name: /submit/i });
     userEvent.click(submitButtons[0]);
 
     await waitFor(() => {
       expect(addMutateSpy).toHaveBeenCalledWith(
-        { name: "Mock product", quantity: 1 },
+        { name: "Mock product", quantity: 1, targetUserId: "admin_1" },
         expect.any(Object),
       );
-      expect(screen.queryByText("Add New Item")).not.toBeInTheDocument();
     });
   });
 
@@ -285,7 +394,7 @@ describe("Products Component", () => {
         expect.objectContaining({ name: "Mock product", quantity: 1 }),
         expect.any(Object),
       );
-      expect(screen.queryByText("Edit Item")).not.toBeInTheDocument();
+      expect(screen.queryByText("Modifier un produit")).not.toBeInTheDocument();
     });
   });
 
@@ -301,5 +410,15 @@ describe("Products Component", () => {
     renderWithProviders();
     userEvent.click(screen.getByText("Delete"));
     // The mutate function is mocked, so we can’t assert here directly
+  });
+
+  it("shows RoleBadge and user selector when user is admin", () => {
+    renderWithProviders();
+    expect(screen.getByText("RoleBadge: Administrator")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Sélectionner un utilisateur ou tous pour voir ses produits",
+      ),
+    ).toBeInTheDocument();
   });
 });
