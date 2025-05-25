@@ -38,7 +38,9 @@ import Footer from "./components/footer";
 
 export default function Products() {
   const { userInConvex } = useCurrentUser();
-  const isAdmin = userInConvex?.role === "Administrator";
+  const isAdmin =
+    userInConvex?.role === "Administrator" ||
+    userInConvex?.role === "Board of directors";
   /* Sélecteur d’utilisateur pour l’admin */
   const [selectedUserId, setSelectedUserId] = useState<
     Doc<"users">["_id"] | undefined
