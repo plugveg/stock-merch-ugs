@@ -33,7 +33,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.24.1",
     "convex-ents": "^0.13.0",
-    "convex-helpers": "^0.1.86",
+    "convex-helpers": "^0.1.89",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
