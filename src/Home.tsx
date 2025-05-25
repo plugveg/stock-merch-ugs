@@ -70,7 +70,7 @@ function Content({
         Connecté en tant que {userInConvex?.nickname ?? userInConvex?.email}
       </NavBar>
 
-      <main className="container mx-auto px-4 py-8 flex-grow">
+      <main className="container mx-auto px-4 py-8 flex-grow my-[56px]">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-8">
             Bienvenue sur notre plateforme de gestion de produits pour UGS, les

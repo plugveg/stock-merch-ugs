@@ -5,8 +5,8 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-white shadow-md py-4 sticky top-0 z-10">
-      <div className="container mx-auto px-4 flex justify-between items-center">
+    <nav className="bg-white shadow-md py-3 fixed top-0 z-10 w-full">
+      <div className="container mx-auto px-3 flex justify-between items-center">
         <h1
           className="text-2xl font-bold text-indigo-600 cursor-pointer"
           onClick={() => navigate("/")}
