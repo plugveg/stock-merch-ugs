@@ -40,9 +40,9 @@ export default function Products() {
   const { userInConvex } = useCurrentUser();
   const isAdmin = userInConvex?.role === "Administrator";
   /* Sélecteur d’utilisateur pour l’admin */
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(
-    isAdmin ? userInConvex?._id : undefined,
-  );
+  const [selectedUserId, setSelectedUserId] = useState<
+    Doc<"users">["_id"] | undefined
+  >(isAdmin ? userInConvex?._id : undefined);
 
   const usersLite = useUsersLite(10);
 
@@ -89,7 +89,9 @@ export default function Products() {
             <Select
               value={selectedUserId ?? "all"}
               onValueChange={(val) =>
-                setSelectedUserId(val === "all" ? undefined : val)
+                setSelectedUserId(
+                  val === "all" ? undefined : (val as Doc<"users">["_id"]),
+                )
               }
             >
               <SelectTrigger className="border border-black">
