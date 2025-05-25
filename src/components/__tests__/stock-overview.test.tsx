@@ -21,6 +21,7 @@ const mockStock: Doc<"products">[] = [
     characterName: [],
     purchaseLocation: "",
     purchaseDate: 0,
+    ownerUserId: "IdOfUSer" as Id<"users">,
   },
   {
     _id: { __tableName: "products", id: "2" } as unknown as Id<"products">,
@@ -38,6 +39,7 @@ const mockStock: Doc<"products">[] = [
     characterName: [],
     purchaseLocation: "",
     purchaseDate: 0,
+    ownerUserId: "IdOfUSer" as Id<"users">,
   },
 ];
 
@@ -58,48 +60,49 @@ const lowStockMock = [
     characterName: [],
     purchaseLocation: "",
     purchaseDate: 0,
+    ownerUserId: "IdOfUSer" as Id<"users">,
   },
 ];
 
 describe("StockOverview", () => {
   it("renders total items and products count", () => {
     render(<StockOverview stock={mockStock} />);
-    expect(screen.getByText("Total Items")).toBeInTheDocument();
+    expect(screen.getByText("Quantité totale de produits")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument(); // 2 + 3
-    expect(screen.getByText("Across 2 products")).toBeInTheDocument();
+    expect(screen.getByText("À travers 2 produits")).toBeInTheDocument();
   });
 
   it("renders total value correctly", () => {
     render(<StockOverview stock={mockStock} />);
-    expect(screen.getByText("Total Value")).toBeInTheDocument();
-    expect(screen.getByText("$35.00")).toBeInTheDocument(); // 2*10 + 3*5
+    expect(screen.getByText("Valeur totale")).toBeInTheDocument();
+    expect(screen.getByText("35.00 €")).toBeInTheDocument(); // 2*10 + 3*5
   });
 
   it("renders low stock correctly when none are low", () => {
     render(<StockOverview stock={mockStock} />);
-    expect(screen.getByText("Low Stock")).toBeInTheDocument();
+    expect(screen.getByText("Stock faible")).toBeInTheDocument();
     expect(screen.getByText("0")).toBeInTheDocument();
-    expect(screen.getByText("Items below threshold")).toBeInTheDocument();
+    expect(screen.getByText("Articles sous le seuil")).toBeInTheDocument();
   });
 
   it("renders low stock correctly when some are low", () => {
     render(<StockOverview stock={lowStockMock} />);
 
     const lowStockCard = screen
-      .getByText("Low Stock")
+      .getByText("Stock faible")
       .closest("div[data-slot='card']")!;
     const value = within(lowStockCard as HTMLElement).getByText("1");
 
     expect(value).toBeInTheDocument();
     expect(
-      within(lowStockCard as HTMLElement).getByText("Items below threshold"),
+      within(lowStockCard as HTMLElement).getByText("Articles sous le seuil"),
     ).toBeInTheDocument();
   });
 
   it("renders categories count correctly", () => {
     render(<StockOverview stock={mockStock} />);
-    expect(screen.getByText("Categories")).toBeInTheDocument();
+    expect(screen.getByText("Catégories")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
-    expect(screen.getByText("Product categories")).toBeInTheDocument();
+    expect(screen.getByText("Catégories de produits")).toBeInTheDocument();
   });
 });

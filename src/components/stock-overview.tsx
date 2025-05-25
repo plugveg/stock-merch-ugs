@@ -28,31 +28,33 @@ export function StockOverview({ stock }: StockOverviewProps) {
     <>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Total Items</CardTitle>
+          <CardTitle className="text-sm font-medium">
+            Quantité totale de produits
+          </CardTitle>
           <Package className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalItems}</div>
           <p className="text-xs text-muted-foreground">
-            Across {stock.length} products
+            À travers {stock.length} produits
           </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+          <CardTitle className="text-sm font-medium">Valeur totale</CardTitle>
           <DollarSign className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">${totalValue.toFixed(2)}</div>
-          <p className="text-xs text-muted-foreground">Inventory worth</p>
+          <div className="text-2xl font-bold">{totalValue.toFixed(2)} €</div>
+          <p className="text-xs text-muted-foreground">Valeur du stock</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Low Stock</CardTitle>
+          <CardTitle className="text-sm font-medium">Stock faible</CardTitle>
           <AlertCircle
             className={`h-4 w-4 ${lowStockItems > 0 ? "text-destructive" : "text-muted-foreground"}`}
           />
@@ -63,18 +65,22 @@ export function StockOverview({ stock }: StockOverviewProps) {
           >
             {lowStockItems}
           </div>
-          <p className="text-xs text-muted-foreground">Items below threshold</p>
+          <p className="text-xs text-muted-foreground">
+            Articles sous le seuil
+          </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Categories</CardTitle>
+          <CardTitle className="text-sm font-medium">Catégories</CardTitle>
           <ArrowUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{categories}</div>
-          <p className="text-xs text-muted-foreground">Product categories</p>
+          <p className="text-xs text-muted-foreground">
+            Catégories de produits
+          </p>
         </CardContent>
       </Card>
     </>

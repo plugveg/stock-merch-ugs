@@ -2,13 +2,21 @@ import { Routes, Route, Navigate } from "react-router";
 import Home from "./Home";
 import Products from "./Products";
 import { JSX } from "react";
-// import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useAuth } from "@clerk/clerk-react";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { isLoaded, isSignedIn } = useAuth();
   // While auth state is loading, render a loading indicator
-  if (!isLoaded) return <div aria-live="polite" role="status" style={{ textAlign: "center", padding: "1em" }}>Loading...</div>;
+  if (!isLoaded)
+    return (
+      <div
+        aria-live="polite"
+        role="status"
+        style={{ textAlign: "center", padding: "1em" }}
+      >
+        Chargement...
+      </div>
+    );
   return isSignedIn ? children : <Navigate to="/" replace />;
 }
 

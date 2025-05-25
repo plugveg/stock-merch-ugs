@@ -23,9 +23,31 @@ export const create = mutation({
     sellDate: v.optional(v.number()),
     sellPrice: v.optional(v.number()),
     collectionId: v.optional(v.id("collections")),
+    targetUserId: v.optional(v.id("users")), // admin → voir un autre user
   },
   handler: async (ctx, args) => {
-    const productId = await ctx.db.insert("products", args);
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+
+    if (!meDoc) throw new Error("User not found");
+
+    const isAdmin = meDoc.role === "Administrator";
+    const ownerId = args.targetUserId ?? meDoc._id;
+    if (ownerId !== meDoc._id && !isAdmin)
+      throw new Error("You cannot create products for someone else");
+    // Remove targetUserId from the fields persisted in the product document
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { targetUserId: _ignored, ...rest } = args;
+
+    const productId = await ctx.db.insert("products", {
+      ...rest,
+      ownerUserId: ownerId,
+    });
+
     return productId;
   },
 });
@@ -71,6 +93,46 @@ export const getByProductType = query({
   },
 });
 
+export const listProducts = query({
+  args: {
+    targetUserId: v.optional(v.id("users")), // admin → voir un autre user
+    pageSize: v.number(), // 10 ou 20
+    cursor: v.optional(v.any()), // renvoyé par la page préc.
+  },
+  handler: async (ctx, { targetUserId, pageSize, cursor }) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+
+    // Règles d’accès
+    const canSeeAll = meDoc.role === "Administrator";
+    const ownerId = targetUserId ?? (canSeeAll ? undefined : meDoc._id);
+
+    let q;
+    if (ownerId) {
+      q = ctx.db
+        .query("products")
+        .withIndex("by_owner", (idx) => idx.eq("ownerUserId", ownerId));
+    } else {
+      q = ctx.db.query("products");
+    }
+
+    const { page, continueCursor } = await q
+      .order("desc") // le plus récent d’abord
+      .paginate({
+        cursor,
+        numItems: pageSize,
+      });
+
+    return { page, nextCursor: continueCursor };
+  },
+});
+
 // UPDATE: Update a product
 export const update = mutation({
   args: {
@@ -94,14 +156,40 @@ export const update = mutation({
     sellDate: v.optional(v.number()),
     sellPrice: v.optional(v.number()),
     collectionId: v.optional(v.id("collections")),
+    ownerUserId: v.optional(v.id("users")),
   },
   handler: async (ctx, args) => {
-    const { id, ...fields } = args;
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
 
-    // Remove undefined fields
-    const patch = Object.fromEntries(
+    const isAdmin = meDoc.role === "Administrator";
+
+    const product = await ctx.db.get(args.id);
+    if (!product) throw new Error("Product not found");
+
+    if (!isAdmin && product.ownerUserId !== meDoc._id) {
+      throw new Error("You cannot update this product");
+    }
+
+    const { id, ownerUserId: desiredOwner, ...fields } = args;
+
+    // Build the patch with only defined fields
+    const patch: Record<string, unknown> = Object.fromEntries(
       Object.entries(fields).filter(([, value]) => value !== undefined),
     );
+
+    if (desiredOwner !== undefined) {
+      if (!isAdmin)
+        throw new Error("Only administrators can change the ownerUserId");
+      patch.ownerUserId = desiredOwner;
+    }
+
+    if (Object.keys(patch).length === 0) return id; // nothing to update
 
     await ctx.db.patch(id, patch);
     return id;
@@ -112,6 +200,24 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id("products") },
   handler: async (ctx, args) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+
+    const isAdmin = meDoc.role === "Administrator";
+
+    const product = await ctx.db.get(args.id);
+    if (!product) throw new Error("Product not found");
+
+    if (!isAdmin && product.ownerUserId !== meDoc._id) {
+      throw new Error("You cannot delete this product");
+    }
+
     await ctx.db.delete(args.id);
+    return args.id;
   },
 });

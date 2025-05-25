@@ -112,7 +112,7 @@ describe("App routing", () => {
       </ClerkProvider>,
     );
 
-    expect(screen.getByText("Current Inventory")).toBeInTheDocument();
+    expect(screen.getByText("Inventaire actuel")).toBeInTheDocument();
   });
 
   it("redirects unknown routes to Home", () => {
@@ -139,7 +139,7 @@ describe("App routing", () => {
     );
 
     // On s'attend à ce qu'aucun contenu ne s'affiche pendant le chargement
-    expect(screen.queryByText("Current Inventory")).not.toBeInTheDocument();
+    expect(screen.queryByText("Inventaire actuel")).not.toBeInTheDocument();
     expect(
       screen.queryByText(/Veuillez vous connecter/),
     ).not.toBeInTheDocument();

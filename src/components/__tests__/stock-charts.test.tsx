@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { StockCharts } from "@/components/stock-charts";
 import * as useMobile from "@/hooks/useMobile";
-import { formatDollar, formatPieLabel } from "@/lib/chart-utils";
+import { formatEuro, formatPieLabel } from "@/lib/chart-utils";
 import { Id } from "convex/_generated/dataModel";
 import { Conditions, ProductTypes, Status } from "convex/schema";
 
@@ -37,6 +37,7 @@ const mockStock = [
     characterName: [],
     purchaseLocation: "",
     purchaseDate: undefined as unknown as number,
+    ownerUserId: "IdOfUSer" as Id<"users">,
   },
   {
     _id: "2" as Id<"products">,
@@ -59,6 +60,7 @@ const mockStock = [
     characterName: [],
     purchaseLocation: "",
     purchaseDate: undefined as unknown as number,
+    ownerUserId: "IdOfUSer" as Id<"users">,
   },
 ];
 
@@ -77,15 +79,15 @@ describe("StockCharts", () => {
     render(<StockCharts stock={mockStock} />);
 
     // Pie chart content
-    expect(screen.getByText("Inventory by Category")).toBeInTheDocument();
+    expect(screen.getByText("Inventaire par catégorie")).toBeInTheDocument();
     expect(
-      screen.getByText("Distribution of items across categories"),
+      screen.getByText("Distribution des articles par catégorie"),
     ).toBeInTheDocument();
 
     // Bar chart content
-    expect(screen.getByText("Top Items by Value")).toBeInTheDocument();
+    expect(screen.getByText("Articles par valeur")).toBeInTheDocument();
     expect(
-      screen.getByText("Items with highest inventory value"),
+      screen.getByText("Articles avec la valeur d'inventaire la plus élevée"),
     ).toBeInTheDocument();
   });
 
@@ -99,8 +101,8 @@ describe("StockCharts", () => {
     });
     render(<StockCharts stock={mockStock} />);
 
-    expect(screen.getByText("Inventory by Category")).toBeInTheDocument();
-    expect(screen.queryByText("Top Items by Value")).not.toBeInTheDocument();
+    expect(screen.getByText("Inventaire par catégorie")).toBeInTheDocument();
+    expect(screen.queryByText("Articles par valeur")).not.toBeInTheDocument();
   });
 
   it("aggregates quantities when product type appears multiple times (else path)", () => {
@@ -127,13 +129,13 @@ describe("StockCharts", () => {
 
     // Clothing: 13 (10 + 3), Merch: 5, Accessories: 20, Paper: 7
     // Labels rendered inside SVG, so we test their existence indirectly via chart title
-    expect(screen.getByText("Inventory by Category")).toBeInTheDocument();
+    expect(screen.getByText("Inventaire par catégorie")).toBeInTheDocument();
   });
 
   it("handles empty stock gracefully", () => {
     render(<StockCharts stock={[]} />);
 
-    expect(screen.getByText("Inventory by Category")).toBeInTheDocument();
+    expect(screen.getByText("Inventaire par catégorie")).toBeInTheDocument();
     // No bars or pie slices but still renders chart containers
   });
 
@@ -144,6 +146,6 @@ describe("StockCharts", () => {
   });
 
   it("formats Y axis tick correctly", () => {
-    expect(formatDollar(25)).toBe("$25");
+    expect(formatEuro(25)).toBe("25 €");
   });
 });

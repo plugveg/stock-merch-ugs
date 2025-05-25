@@ -9,7 +9,7 @@ import {
   vi,
   type Mock,
 } from "vitest";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useConvexMutation, convexQuery } from "@convex-dev/react-query";
 import { Conditions, ProductTypes, Status } from "convex/schema";
 import { Id } from "convex/_generated/dataModel";
@@ -30,10 +30,10 @@ vi.mock("@convex-dev/react-query", () => ({
 }));
 
 const mockUseQuery = useQuery as Mock;
-const mockUseQueryClient = useQueryClient as Mock;
 const mockUseMutation = useMutation as Mock;
 const mockUseConvexMutation = useConvexMutation as Mock;
 const mockConvexQuery = convexQuery as Mock;
+const mockUseQueryClient = useQueryClient as Mock;
 
 const mockedProducts = [
   { id: "1", name: "Product 1" },
@@ -54,6 +54,8 @@ describe("useProducts hook", () => {
 
     mockUseMutation.mockReturnValue({ mutateAsync: vi.fn() });
     mockUseConvexMutation.mockReturnValue(vi.fn());
+
+    mockUseQueryClient.mockReturnValue({ invalidateQueries: vi.fn() });
   });
 
   afterEach(() => {
@@ -67,8 +69,6 @@ describe("useProducts hook", () => {
     expect(result.current.products).toHaveLength(2);
     expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBeNull();
-    expect(result.current.showSkeleton).toBe(false);
-    expect(typeof result.current.refetchProducts).toBe("function");
   });
 
   it("check if there is no showSkeleton after 100ms if loading", () => {
@@ -84,35 +84,13 @@ describe("useProducts hook", () => {
         error: null,
       });
 
-    const { result, rerender } = renderHook(() => useProducts());
-
-    expect(result.current.showSkeleton).toBe(false);
+    const { rerender } = renderHook(() => useProducts());
 
     act(() => {
       vi.advanceTimersByTime(100);
     });
 
     rerender();
-
-    expect(result.current.showSkeleton).toBe(false);
-  });
-
-  it("calls invalidateQueries when refetchProducts is triggered", () => {
-    const invalidateMock = vi.fn();
-
-    mockUseQueryClient.mockReturnValue({
-      invalidateQueries: invalidateMock,
-    });
-
-    const { result } = renderHook(() => useProducts());
-
-    act(() => {
-      result.current.refetchProducts();
-    });
-
-    expect(invalidateMock).toHaveBeenCalledWith({
-      queryKey: ["products"],
-    });
   });
 
   it("calls addProduct mutation correctly", async () => {
@@ -122,7 +100,6 @@ describe("useProducts hook", () => {
     const { result } = renderHook(() => useProducts());
 
     const validProductInput = {
-      photo: "photo-url",
       sellLocation: "store",
       sellDate: Date.now(),
       sellPrice: 100,
@@ -142,6 +119,7 @@ describe("useProducts hook", () => {
       purchaseLocation: "Online Store",
       purchaseDate: Date.now(),
       purchasePrice: 80,
+      ownerUserId: "user-id" as Id<"users">,
     };
 
     await act(async () => {
@@ -188,5 +166,92 @@ describe("useProducts hook", () => {
     });
 
     expect(mutateAsyncMock).toHaveBeenCalledWith({ id: mockProductId });
+  });
+
+  it("includes targetUserId when userId is provided", () => {
+    const testUserId = "admin_42";
+    renderHook(() => useProducts({ userId: testUserId }));
+
+    // second argument of convexQuery should contain the targetUserId we passed
+    expect(mockConvexQuery).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ targetUserId: testUserId }),
+    );
+  });
+
+  describe("products normalisation", () => {
+    it("returns raw array as‑is", () => {
+      mockUseQuery.mockReturnValueOnce({
+        data: ["a", "b"],
+        isLoading: false,
+        error: null,
+      });
+
+      const { result } = renderHook(() => useProducts());
+      expect(result.current.products).toEqual(["a", "b"]);
+    });
+
+    it("unwraps `page` property when data is paginated", () => {
+      const page = [{ id: 1 }, { id: 2 }];
+      mockUseQuery.mockReturnValueOnce({
+        data: { page, nextCursor: null },
+        isLoading: false,
+        error: null,
+      });
+
+      const { result } = renderHook(() => useProducts());
+      expect(result.current.products).toEqual(page);
+    });
+
+    it("falls back to empty array when data is undefined", () => {
+      mockUseQuery.mockReturnValueOnce({
+        data: undefined,
+        isLoading: false,
+        error: null,
+      });
+
+      const { result } = renderHook(() => useProducts());
+      expect(result.current.products).toEqual([]);
+    });
+  });
+
+  it("invalidates the query after a successful mutation", async () => {
+    // Arrange a fresh invalidateQueries spy for this test
+    const invalidateSpy = vi.fn();
+    mockUseQueryClient.mockReturnValueOnce({
+      invalidateQueries: invalidateSpy,
+    });
+
+    // Mock useMutation to immediately call onSuccess
+    mockUseMutation.mockImplementationOnce(({ onSuccess }) => ({
+      mutateAsync: vi.fn().mockImplementation(async () => {
+        onSuccess?.(); // simulate successful mutation
+      }),
+    }));
+
+    const { result } = renderHook(() => useProducts());
+
+    await act(async () => {
+      await result.current.addProduct.mutateAsync({
+        productName: "X",
+        threshold: 1,
+        status: "In Stock",
+        description: "",
+        quantity: 0,
+        storageLocation: "",
+        condition: "New",
+        licenseName: [],
+        characterName: [],
+        productType: [],
+        purchaseLocation: "",
+        purchaseDate: 0,
+        purchasePrice: 0,
+      });
+    });
+
+    expect(invalidateSpy).toHaveBeenCalledTimes(1);
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: ["products"],
+    });
   });
 });

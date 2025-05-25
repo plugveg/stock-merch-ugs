@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/chart";
 import { useScreenSize } from "@/hooks/useMobile";
 import { Doc } from "convex/_generated/dataModel";
-import { formatPieLabel, formatDollar } from "@/lib/chart-utils";
+import { formatPieLabel, formatEuro } from "@/lib/chart-utils";
 import { useMemo } from "react";
 interface StockChartsProps {
   stock: Doc<"products">[];
@@ -74,9 +74,9 @@ export function StockCharts({ stock }: StockChartsProps) {
     <div className="grid gap-4 xl:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Inventory by Category</CardTitle>
+          <CardTitle>Inventaire par catégorie</CardTitle>
           <CardDescription>
-            Distribution of items across categories
+            Distribution des articles par catégorie
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -111,9 +111,9 @@ export function StockCharts({ stock }: StockChartsProps) {
       {useScreenSize().windowWidth > 768 && (
         <Card>
           <CardHeader>
-            <CardTitle>Top Items by Value</CardTitle>
+            <CardTitle>Articles par valeur</CardTitle>
             <CardDescription>
-              Items with highest inventory value
+              Articles avec la valeur d'inventaire la plus élevée
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -121,7 +121,7 @@ export function StockCharts({ stock }: StockChartsProps) {
               <ChartContainer
                 config={{
                   value: {
-                    label: "Value ($)",
+                    label: "Valeur (€)",
                     color: "hsl(var(--chart-1))",
                   },
                 }}
@@ -144,7 +144,7 @@ export function StockCharts({ stock }: StockChartsProps) {
                     height={70}
                   />
                   <YAxis
-                    tickFormatter={formatDollar}
+                    tickFormatter={formatEuro}
                     tickLine={false}
                     axisLine={false}
                   />

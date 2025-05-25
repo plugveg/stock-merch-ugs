@@ -30,8 +30,8 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.productName || "",
     description: initialData?.description || "",
-    quantity: initialData?.quantity || 0,
-    photo: initialData?.photo || "",
+    quantity: initialData?.quantity,
+    // photo: initialData?.photo || "",
     storageLocation: initialData?.storageLocation || "",
     condition: initialData?.condition || "",
     licenseName: initialData?.licenseName || ([] as string[]),
@@ -39,12 +39,16 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
     productType: initialData?.productType || ([] as string[]),
     status: initialData?.status || "",
     purchaseLocation: initialData?.purchaseLocation || "",
-    purchaseDate: initialData?.purchaseDate || "",
-    purchasePrice: initialData?.purchasePrice || 0,
-    threshold: initialData?.threshold || 0,
+    purchaseDate: initialData?.purchaseDate
+      ? new Date(initialData.purchaseDate).toISOString().slice(0, 10)
+      : "",
+    purchasePrice: initialData?.purchasePrice,
+    threshold: initialData?.threshold,
     sellLocation: initialData?.sellLocation || "",
-    sellDate: initialData?.sellDate || "",
-    sellPrice: initialData?.sellPrice || 0,
+    sellDate: initialData?.sellDate
+      ? new Date(initialData.sellDate).toISOString().slice(0, 10)
+      : "",
+    sellPrice: initialData?.sellPrice,
     // Missing the possibily to link to a user's collection
   });
 
@@ -102,26 +106,26 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = "Le nom est requis";
     }
 
     if (!formData.storageLocation.trim()) {
-      newErrors.storageLocation = "Storage location is required";
+      newErrors.storageLocation = "L'endroit de stockage est requis";
     }
 
     if (!formData.condition) {
-      newErrors.condition = "Condition is required";
+      newErrors.condition = "La condition est requise";
     }
 
     if (!formData.status) {
-      newErrors.status = "Status is required";
+      newErrors.status = "Le statut est requis";
     }
 
     if (
       formData.licenseName.length === 0 ||
       formData.licenseName.some((item: string) => !item.trim())
     ) {
-      newErrors.licenseName = "Au moins une license est requise";
+      newErrors.licenseName = "Au moins une licence est requise";
     }
 
     if (
@@ -132,23 +136,23 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
     }
 
     if (!formData.purchaseLocation.trim()) {
-      newErrors.purchaseLocation = "Purchase location is required";
+      newErrors.purchaseLocation = "L'endroit d'achat est requis";
     }
 
     if (!formData.purchaseDate) {
-      newErrors.purchaseDate = "Purchase date is required";
+      newErrors.purchaseDate = "La date d'achat est requise";
     }
 
     if (formData.productType.length === 0) {
       newErrors.productType = "Sélectionnez au moins un type de produit";
     }
 
-    if (formData.quantity < 0) {
-      newErrors.quantity = "Quantity cannot be negative";
+    if (formData.quantity !== undefined && formData.quantity < 0) {
+      newErrors.quantity = "La quantité ne peut pas être négative";
     }
 
-    if (formData.threshold < 0) {
-      newErrors.threshold = "Threshold cannot be negative";
+    if (formData.threshold !== undefined && formData.threshold < 0) {
+      newErrors.threshold = "Le seuil de stock bas ne peut pas être négatif";
     }
 
     setErrors(newErrors);
@@ -164,7 +168,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
         productName: formData.name,
         description: formData.description,
         quantity: formData.quantity,
-        photo: formData.photo || undefined,
+        // photo: formData.photo || undefined,
         storageLocation: formData.storageLocation,
         condition: formData.condition,
         licenseName: formData.licenseName,
@@ -172,14 +176,14 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
         productType: formData.productType,
         status: formData.status,
         purchaseLocation: formData.purchaseLocation,
-        // Convert date string to timestamp
-        purchaseDate: formData.purchaseDate,
+        // Convert "YYYY‑MM‑DD" to a Unix timestamp (ms). Cause Convex work with Unix timestamp (ms).
+        purchaseDate: Date.parse(formData.purchaseDate),
         purchasePrice: formData.purchasePrice,
         threshold: formData.threshold,
         ...(initialData && {
           id: initialData._id,
           sellLocation: formData.sellLocation,
-          sellDate: formData.sellDate,
+          sellDate: Date.parse(formData.sellDate),
           sellPrice: formData.sellPrice,
         }),
       };
@@ -288,7 +292,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
 
         {/* Multiple license names */}
         <div className="space-y-2 col-span-1 sm:col-span-2 mb-4">
-          <Label htmlFor="licenseName">License(s)*</Label>
+          <Label htmlFor="licenseName">Licence(s)*</Label>
           {formData.licenseName.map(
             (
               value: string | number | readonly string[] | undefined,
@@ -302,7 +306,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
                     handleArrayChange("licenseName", idx, e.target.value)
                   }
                   className="flex-1"
-                  placeholder="Entrez un nom de license"
+                  placeholder="Entrez un nom de licence"
                 />
                 <Button
                   type="button"
@@ -320,7 +324,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
             size="sm"
           >
             <Plus className="mr-2 h-4 w-4" />
-            Ajouter une license
+            Ajouter une licence
           </Button>
           {errors.licenseName && (
             <p className="text-xs text-destructive">{errors.licenseName}</p>
@@ -393,7 +397,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
           )}
         </div>
 
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <Label htmlFor="photo">Photo du produit</Label>
           <Input
             id="photo"
@@ -405,7 +409,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
               }
             }}
           />
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <Label htmlFor="purchaseLocation">Endroit d'achat*</Label>
@@ -436,8 +440,10 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="purchasePrice">Prix d'achat*</Label>
+        <div className="space-y-2 content-end flex flex-col">
+          <Label className="flex-auto" htmlFor="purchasePrice">
+            Prix d'achat*
+          </Label>
           <Input
             id="purchasePrice"
             type="number"
@@ -509,10 +515,10 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
 
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
+          Annuler
         </Button>
         <Button type="submit">
-          {initialData ? "Update Item" : "Add Item"}
+          {initialData ? "Mettre à jour le produit" : "Ajouter le produit"}
         </Button>
       </div>
     </form>
