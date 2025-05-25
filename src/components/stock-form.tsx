@@ -30,7 +30,7 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.productName || "",
     description: initialData?.description || "",
-    quantity: initialData?.quantity || 0,
+    quantity: initialData?.quantity,
     // photo: initialData?.photo || "",
     storageLocation: initialData?.storageLocation || "",
     condition: initialData?.condition || "",
@@ -42,13 +42,13 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
     purchaseDate: initialData?.purchaseDate
       ? new Date(initialData.purchaseDate).toISOString().slice(0, 10)
       : "",
-    purchasePrice: initialData?.purchasePrice || 0,
-    threshold: initialData?.threshold || 0,
+    purchasePrice: initialData?.purchasePrice,
+    threshold: initialData?.threshold,
     sellLocation: initialData?.sellLocation || "",
     sellDate: initialData?.sellDate
       ? new Date(initialData.sellDate).toISOString().slice(0, 10)
       : "",
-    sellPrice: initialData?.sellPrice || 0,
+    sellPrice: initialData?.sellPrice,
     // Missing the possibily to link to a user's collection
   });
 
@@ -147,11 +147,11 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
       newErrors.productType = "Sélectionnez au moins un type de produit";
     }
 
-    if (formData.quantity < 0) {
+    if (formData.quantity !== undefined && formData.quantity < 0) {
       newErrors.quantity = "La quantité ne peut pas être négative";
     }
 
-    if (formData.threshold < 0) {
+    if (formData.threshold !== undefined && formData.threshold < 0) {
       newErrors.threshold = "Le seuil de stock bas ne peut pas être négatif";
     }
 

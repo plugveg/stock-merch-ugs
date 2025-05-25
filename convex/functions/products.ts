@@ -39,7 +39,9 @@ export const create = mutation({
     const ownerId = args.targetUserId ?? meDoc._id;
     if (ownerId !== meDoc._id && !isAdmin)
       throw new Error("You cannot create products for someone else");
-    const { ...rest } = args;
+    // Remove targetUserId from the fields persisted in the product document
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { targetUserId: _ignored, ...rest } = args;
 
     const productId = await ctx.db.insert("products", {
       ...rest,
