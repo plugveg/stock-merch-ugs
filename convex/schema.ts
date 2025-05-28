@@ -40,6 +40,7 @@ export const status = v.union(
   v.literal("Pending"),
   v.literal("Shipped"),
   v.literal("Discontinued"),
+  v.literal("For Event Sale"),
 );
 
 export const productTypes = v.union(
@@ -85,10 +86,10 @@ export default defineEntSchema({
     // this the Clerk ID, stored in the subject JWT field
     externalId: v.string(),
   })
+    .index("email", ["email"])
     .field("role", roles, { default: "Guest" })
     .index("byExternalId", ["externalId"])
-    .edges("collections", { ref: true }) // Add this line to define the inverse relationship
-    .edges("events"),
+    .edges("collections", { ref: true }), // Add this line to define the inverse relationship
 
   products: defineEnt({
     productName: v.string(), // V
@@ -111,11 +112,10 @@ export default defineEntSchema({
     collectionId: v.optional(v.id("collections")), // Optional foreign key to collections table
     ownerUserId: v.id("users"), // Foreign key to users table
   })
-    .index("by_owner", ["ownerUserId"]) // Index to find all products for a user
+    .index("by_ownerId", ["ownerUserId"]) // Index to find all products for a user
     .index("by_status", ["status"])
     .index("by_productType", ["productType"])
-    .edge("collection", { field: "collectionId", optional: true }) // Foreign key to collections table
-    .edges("events"),
+    .edge("collection", { field: "collectionId", optional: true }), // Foreign key to collections table
 
   // userProducts: defineEnt({
   //   ownerUserId: v.id("users"), // Foreign key to users table
@@ -131,9 +131,7 @@ export default defineEntSchema({
     soldPrice: v.number(),
     soldDate: v.number(), // Dates in Convex are stored as timestamps (numbers)
     soldLocation: v.string(),
-  })
-    .index("by_soldDate", ["soldDate"]) // Index to query transactions by date
-    .edge("event"), // Inverse edge to match events.edges("transactions", { ref: true })
+  }).index("by_soldDate", ["soldDate"]), // Index to query transactions by date
 
   transactionProducts: defineEnt({
     transactionId: v.id("transactions"), // Foreign key to transactions table
@@ -168,15 +166,36 @@ export default defineEntSchema({
     // You might want to add a relationship to the products in this collection
     .edges("products", { ref: true }),
 
-  events: defineEnt({})
-    .field("eventName", v.string())
-    .field("startDate", v.number()) // Dates in Convex are stored as timestamps (numbers)
-    .field("endDate", v.number())
-    .field("location", v.string())
+  events: defineEnt({
+    name: v.string(),
+    description: v.string(),
+    startTime: v.number(), // Dates in Convex are stored as timestamps (numbers)
+    endTime: v.number(),
+    location: v.string(),
+    adminId: v.id("users"), // Foreign key to users table, who created the event
+  })
     // You might want to add relationships to transactions that occurred at this event
-    .edges("transactions", { ref: true })
-    .edges("users")
-    .edges("products"),
+    .index("by_adminId", ["adminId"]), // Index to find all events created by a user
+
+  eventProducts: defineEnt({
+    eventId: v.id("events"),
+    productId: v.id("products"),
+    status: status, // Status of the product in the context of the event
+    salePrice: v.optional(v.number()), // Price at which it was sold or is on sale for
+  })
+    .index("by_eventId", ["eventId"])
+    .index("by_productId", ["productId"])
+    .index("by_eventId_and_productId", ["eventId", "productId"])
+    .index("by_eventId_and_status", ["eventId", "status"]),
+
+  eventParticipants: defineEnt({
+    eventId: v.id("events"),
+    userId: v.id("users"),
+    role: roles,
+  })
+    .index("by_eventId", ["eventId"])
+    .index("by_userId", ["userId"])
+    .index("by_eventId_and_userId", ["eventId", "userId"]),
 });
 
 // This is a type-safe way to access the schema in your code.
