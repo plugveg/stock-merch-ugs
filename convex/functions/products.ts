@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "../_generated/server";
-import { productTypes, Status, status, conditions } from "../schema";
+import { productTypes, Status, status, conditions, Roles } from "../schema";
 
 // CREATE: Add a new product
 export const create = mutation({
@@ -69,6 +69,17 @@ export const list = query({
   },
 });
 
+export const listAllProductsByStatus = query({
+  args: { status: status },
+  handler: async (ctx, args) => {
+    const products = await ctx.db
+      .query("products")
+      .withIndex("by_status", (q) => q.eq("status", args.status as Status))
+      .collect();
+    return products;
+  },
+});
+
 // READ: Get products by status using the index
 export const getByStatus = query({
   args: { status },
@@ -117,7 +128,7 @@ export const listProducts = query({
     if (ownerId) {
       q = ctx.db
         .query("products")
-        .withIndex("by_owner", (idx) => idx.eq("ownerUserId", ownerId));
+        .withIndex("by_ownerId", (idx) => idx.eq("ownerUserId", ownerId));
     } else {
       q = ctx.db.query("products");
     }
@@ -219,5 +230,170 @@ export const remove = mutation({
 
     await ctx.db.delete(args.id);
     return args.id;
+  },
+});
+
+// User: Make their product available/unavailable for a specific event
+// This is effectively managed by admins adding products to event sales.
+// This function allows a user to express intent or perhaps remove their product if it's not yet sold.
+export const setProductAvailabilityForEvent = mutation({
+  args: {
+    productId: v.id("products"),
+    eventId: v.id("events"),
+    available: v.boolean(), // true to make available, false to make unavailable
+    // salePrice: v.optional(v.number()), // User might suggest a price
+  },
+  handler: async (ctx, args) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+
+    const product = await ctx.db.get(args.productId);
+    if (!product || product.ownerUserId !== meDoc._id) {
+      throw new Error("Product not found or user does not own this product.");
+    }
+
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Event not found.");
+    }
+
+    const existingEventProduct = await ctx.db
+      .query("eventProducts")
+      .withIndex("by_eventId_and_productId", (q) =>
+        q.eq("eventId", args.eventId).eq("productId", args.productId),
+      )
+      .unique();
+
+    if (args.available) {
+      if (existingEventProduct) {
+        if (existingEventProduct.status === ("Sold" as Status)) {
+          throw new Error(
+            "Cannot make a sold product available again through this action.",
+          );
+        }
+        // User indicates willingness. If admin already added it and it's 'unavailable',
+        // user's action won't change it back to 'on_sale'. Admin controls that.
+        // If it's 'on_sale', no change needed.
+        console.log(
+          `User ${meDoc.nickname} expressed interest for product ${args.productId} in event ${args.eventId} to be available. Current status: ${existingEventProduct.status}`,
+        );
+      } else {
+        // User expresses interest. For now, we don't add to eventProducts.
+        // Admin will explicitly add products to sale.
+        console.log(
+          `User ${meDoc.nickname} expressed interest for product ${args.productId} in event ${args.eventId} to be available. Product not currently in event sale list.`,
+        );
+      }
+    } else {
+      // make unavailable
+      if (existingEventProduct) {
+        if (existingEventProduct.status === ("Sold" as Status)) {
+          throw new Error("Cannot make a sold product unavailable.");
+        }
+        // Only patch if it's currently 'on_sale'. If 'unavailable', no change needed.
+        if (existingEventProduct.status === ("On Sale" as Status)) {
+          return await ctx.db.patch(existingEventProduct._id, {
+            status: "Reserved" as Status,
+          });
+        }
+        console.log(
+          `User ${meDoc.nickname} requested to make product ${args.productId} unavailable for event ${args.eventId}. Current status: ${existingEventProduct.status}`,
+        );
+      }
+      // If not in eventProducts, it's already effectively unavailable for that event.
+    }
+    return null;
+  },
+});
+
+// User: Choose to participate in an event
+export const participateInEvent = mutation({
+  args: {
+    eventId: v.id("events"),
+  },
+  handler: async (ctx, args) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Event not found.");
+    }
+
+    const existingParticipant = await ctx.db
+      .query("eventParticipants")
+      .withIndex("by_eventId_and_userId", (q) =>
+        q.eq("eventId", args.eventId).eq("userId", meDoc._id),
+      )
+      .unique();
+
+    if (existingParticipant) {
+      // If already a participant or organizer, do nothing or update role if allowed
+      throw new Error(
+        "User is already an organizer for this event. Cannot change role to participant.",
+      );
+    }
+
+    return await ctx.db.insert("eventParticipants", {
+      eventId: args.eventId,
+      userId: meDoc._id,
+      role: "Guest" as Roles,
+    });
+  },
+});
+
+// Query: Get products available for a specific event (that are 'on_sale')
+export const getProductsForEventSale = query({
+  args: { eventId: v.id("events") },
+  handler: async (ctx, args) => {
+    const eventProductsRaw = await ctx.db
+      .query("eventProducts")
+      .withIndex("by_eventId_and_status", (q) =>
+        q.eq("eventId", args.eventId).eq("status", "On Sale"),
+      )
+      .collect();
+
+    return Promise.all(
+      eventProductsRaw.map(async (ep) => {
+        const product = await ctx.db.get(ep.productId);
+        return {
+          ...ep,
+          productName: product?.productName ?? "Unknown Product",
+          productDescription: product?.description ?? "",
+          ownerId: product?.ownerUserId,
+          originalPrice: product?.purchasePrice ?? 0,
+        };
+      }),
+    );
+  },
+});
+
+export const listMyProducts = query({
+  args: {},
+  handler: async (ctx) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) throw new Error("Not authenticated");
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+    return await ctx.db
+      .query("products")
+      .withIndex("by_ownerId", (q) => q.eq("ownerUserId", meDoc._id))
+      .order("desc")
+      .collect();
   },
 });

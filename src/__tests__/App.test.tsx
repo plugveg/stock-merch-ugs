@@ -62,6 +62,25 @@ describe("App routing", () => {
     });
   });
 
+  it("redirects to home if not signed in on RoleProtectedRoute", () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
+    (useCurrentUser as Mock).mockReturnValue({
+      isLoading: false,
+      isAuthenticated: false,
+      userInConvex: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/dashboards/admin"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByText(/Veuillez vous connecter pour accéder/),
+    ).toBeInTheDocument();
+  });
+
   it("renders Home (sign-in) on root route when unauthenticated", () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
 
@@ -142,6 +161,98 @@ describe("App routing", () => {
     expect(screen.queryByText("Inventaire actuel")).not.toBeInTheDocument();
     expect(
       screen.queryByText(/Veuillez vous connecter/),
+    ).not.toBeInTheDocument();
+  });
+
+  it("allows access to admin dashboard for allowed role", () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
+    (useCurrentUser as Mock).mockReturnValue({
+      isLoading: false,
+      isAuthenticated: true,
+      userInConvex: { role: "Administrator", nickname: "Admin" },
+    });
+
+    const convex = new ConvexReactClient("http://127.0.0.1:3000");
+
+    render(
+      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
+        <ConvexProvider client={convex}>
+          <QueryClientProvider client={queryClient}>
+            <MemoryRouter initialEntries={["/dashboards/admin"]}>
+              <App />
+            </MemoryRouter>
+          </QueryClientProvider>
+        </ConvexProvider>
+      </ClerkProvider>,
+    );
+
+    expect(screen.getByText(/Créer un nouvel événement/i)).toBeInTheDocument();
+  });
+
+  it("redirects to dashboards when user role is not allowed", () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
+    (useCurrentUser as Mock).mockReturnValue({
+      isLoading: false,
+      isAuthenticated: true,
+      userInConvex: { role: "Guest", nickname: "GuestUser" },
+    });
+
+    const convex = new ConvexReactClient("http://127.0.0.1:3000");
+
+    render(
+      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
+        <ConvexProvider client={convex}>
+          <QueryClientProvider client={queryClient}>
+            <MemoryRouter initialEntries={["/dashboards/admin"]}>
+              <App />
+            </MemoryRouter>
+          </QueryClientProvider>
+        </ConvexProvider>
+      </ClerkProvider>,
+    );
+
+    // Should be redirected to dashboards route
+    expect(
+      screen.queryByText(/Créer un nouvel événement/i),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows loading when auth is not yet loaded", () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: false, isSignedIn: false });
+
+    render(
+      <MemoryRouter initialEntries={["/dashboards/admin"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent("Chargement...");
+  });
+
+  it("redirects to dashboards if user role is undefined", () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
+    (useCurrentUser as Mock).mockReturnValue({
+      isLoading: false,
+      isAuthenticated: true,
+      userInConvex: null, // pas de rôle
+    });
+
+    const convex = new ConvexReactClient("http://127.0.0.1:3000");
+
+    render(
+      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
+        <ConvexProvider client={convex}>
+          <QueryClientProvider client={queryClient}>
+            <MemoryRouter initialEntries={["/dashboards/admin"]}>
+              <App />
+            </MemoryRouter>
+          </QueryClientProvider>
+        </ConvexProvider>
+      </ClerkProvider>,
+    );
+
+    expect(
+      screen.queryByText(/Créer un nouvel événement/i),
     ).not.toBeInTheDocument();
   });
 });
