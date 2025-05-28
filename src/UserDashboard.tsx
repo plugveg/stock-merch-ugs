@@ -24,7 +24,8 @@ interface ProductFormData {
   productType: ProductTypes[];
   status: Status;
   purchaseLocation: string;
-  purchaseDate: number; // ISO date string
+  /** UNIX timestamp en millisecondes */
+  purchaseDate: number;
   purchasePrice: number;
   threshold: number;
   ownerUserId: Id<"users">;
