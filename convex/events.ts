@@ -71,7 +71,12 @@ export const addUserToEvent = mutation({
         .withIndex("by_eventId_and_userId", (q) =>
           q.eq("eventId", args.eventId).eq("userId", meDoc._id),
         )
-        .filter((q) => q.eq(q.field("role"), "organizer"))
+        .filter((q) =>
+          q.or(
+            q.eq(q.field("role"), "Administrator"),
+            q.eq(q.field("role"), "Board of directors"),
+          ),
+        )
         .collect();
       if (organizers.length === 0) {
         throw new Error("Only event organizers can add users to the event.");
@@ -105,6 +110,90 @@ export const addUserToEvent = mutation({
       userId: userToAdd._id,
       role: args.role as Roles,
     });
+  },
+});
+
+// Admin or User: Remove a user from an event
+export const removeUserFromEvent = mutation({
+  args: {
+    eventId: v.id("events"),
+    userIdToRemove: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) {
+      throw new Error("User not authenticated");
+    }
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+
+    // Check permissions:
+    // 1. Is the calling user the one being removed? (User removing themselves)
+    // 2. Is the calling user an organizer of the event?
+    // 3. Is the calling user the admin of the event?
+    let canRemove = false;
+    if (meDoc._id === args.userIdToRemove) {
+      canRemove = true;
+    } else {
+      const organizers = await ctx.db
+        .query("eventParticipants")
+        .withIndex("by_eventId_and_userId", (q) =>
+          q.eq("eventId", args.eventId).eq("userId", meDoc._id),
+        )
+        .filter((q) =>
+          q.or(
+            q.eq(q.field("role"), "Administrator"),
+            q.eq(q.field("role"), "Board of directors"),
+          ),
+        )
+        .collect();
+      if (organizers.length > 0 || event.adminId === meDoc._id) {
+        canRemove = true;
+      }
+    }
+
+    if (!canRemove) {
+      throw new Error(
+        "You do not have permission to remove this user from the event.",
+      );
+    }
+
+    // Prevent admin/original creator from being removed by others if they are the last organizer or admin
+    if (args.userIdToRemove === event.adminId) {
+      const otherOrganizers = await ctx.db
+        .query("eventParticipants")
+        .withIndex("by_eventId_and_role", (q) =>
+          q.eq("eventId", args.eventId).eq("role", "Administrator"),
+        )
+        .filter((q) => q.neq(q.field("userId"), args.userIdToRemove))
+        .collect();
+      if (otherOrganizers.length === 0) {
+        throw new Error("Cannot remove the last organizer/admin of the event.");
+      }
+    }
+
+    const participantEntry = await ctx.db
+      .query("eventParticipants")
+      .withIndex("by_eventId_and_userId", (q) =>
+        q.eq("eventId", args.eventId).eq("userId", args.userIdToRemove),
+      )
+      .unique();
+
+    if (!participantEntry) {
+      throw new Error("User is not part of this event or already removed.");
+    }
+
+    await ctx.db.delete(participantEntry._id);
+    return { success: true };
   },
 });
 

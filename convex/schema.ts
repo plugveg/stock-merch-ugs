@@ -195,7 +195,8 @@ export default defineEntSchema({
   })
     .index("by_eventId", ["eventId"])
     .index("by_userId", ["userId"])
-    .index("by_eventId_and_userId", ["eventId", "userId"]),
+    .index("by_eventId_and_userId", ["eventId", "userId"])
+    .index("by_eventId_and_role", ["eventId", "role"]), // Added for querying organizers
 });
 
 // This is a type-safe way to access the schema in your code.

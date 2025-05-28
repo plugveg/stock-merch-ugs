@@ -65,6 +65,7 @@ export default function AdminDashboard() {
   const removeProductFromEventSale = useMutation(
     api.events.removeProductFromEventSale,
   );
+  const removeUserFromEvent = useMutation(api.events.removeUserFromEvent);
 
   const allEvents = useQuery(api.events.listEvents) || [];
 
@@ -154,7 +155,7 @@ export default function AdminDashboard() {
         role: userRoleToAdd,
       });
       setUserEmailToAdd("");
-      alert("	Utilisateur ajouté à l’événement !");
+      alert("Utilisateur ajouté à l'événement !");
     } catch (error) {
       console.error(error);
       alert(
@@ -210,6 +211,25 @@ export default function AdminDashboard() {
       console.error(error);
       alert(
         `Erreur lors de la suppression du produit : ${(error as Error).message}`,
+      );
+    }
+  };
+
+  const handleRemoveUser = async (userIdToRemove: Id<"users">) => {
+    if (!selectedEventId) return;
+    if (
+      !confirm(
+        "Etes-vous sûr de vouloir retirer cet utilisateur de l'événement ?",
+      )
+    )
+      return;
+    try {
+      await removeUserFromEvent({ eventId: selectedEventId, userIdToRemove });
+      alert("Utilisateur retiré de l'événement !");
+    } catch (error) {
+      console.error(error);
+      alert(
+        `Erreur lors de la suppresion de l'utilisateur de l'événement : ${(error as Error).message}`,
       );
     }
   };
@@ -490,13 +510,24 @@ export default function AdminDashboard() {
                   Participants (
                   {eventAnalytics ? eventAnalytics.participantCount : 0}):
                 </h4>
-                <ul className="list-disc pl-5">
-                  {eventAnalytics &&
-                    eventAnalytics.participants.map((p) => (
-                      <li key={p.userId}>
-                        {p.nickname} ({p.role})
-                      </li>
-                    ))}
+                <ul className="space-y-1">
+                  {eventDetails.participants.map((p) => (
+                    <li
+                      key={p.userId}
+                      className="text-sm flex justify-between items-center"
+                    >
+                      <span>
+                        {p.userName} ({p.role})
+                      </span>
+                      <Button
+                        onClick={() => handleRemoveUser(p.userId)}
+                        size={"sm"}
+                        className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                      >
+                        Remove
+                      </Button>
+                    </li>
+                  ))}
                 </ul>
               </div>
 

@@ -32,6 +32,7 @@ interface ProductFormData {
 }
 
 export default function UserDashboard() {
+  const { userInConvex } = useCurrentUser();
   const addProduct = useMutation(api.functions.products.create);
   const setProductAvailability = useMutation(
     api.functions.products.setProductAvailabilityForEvent,
@@ -39,6 +40,7 @@ export default function UserDashboard() {
   const participateInEvent = useMutation(
     api.functions.products.participateInEvent,
   );
+  const removeUserFromEvent = useMutation(api.events.removeUserFromEvent);
   const updateProduct = useMutation(api.functions.products.update);
 
   const myProducts = useQuery(api.functions.products.listMyProducts) || [];
@@ -125,7 +127,20 @@ export default function UserDashboard() {
     }
   };
 
-  const { userInConvex } = useCurrentUser();
+  const handleLeaveEvent = async (eventId: Id<"events">) => {
+    if (!userInConvex?._id) {
+      alert("Could not identify logged in user.");
+      return;
+    }
+    if (!confirm("Are you sure you want to leave this event?")) return;
+    try {
+      await removeUserFromEvent({ eventId, userIdToRemove: userInConvex._id });
+      alert("You have left the event.");
+    } catch (error) {
+      console.error(error);
+      alert(`Error leaving event: ${(error as Error).message}`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-100 to-purple-100 flex flex-col">
@@ -271,17 +286,28 @@ export default function UserDashboard() {
           </form>
           <div className="mt-4">
             <h3 className="text-lg font-semibold">
-              Mes participations à des événements :
+              Mes participations aux événements :
             </h3>
             {myEventsParticipation.length === 0 && (
               <p className="text-sm text-gray-500">
-                Vous ne participez à aucun événement pour l'instant.
+                Vous n'êtes pas encore inscrit pour un événement.
               </p>
             )}
-            <ul className="list-disc pl-5">
+            <ul className="list-disc pl-5 space-y-1">
               {myEventsParticipation.map((event) => (
-                <li key={event._id} className="text-sm">
-                  {event.name} (avec le rôle {event.role})
+                <li
+                  key={event._id}
+                  className="text-sm flex justify-between items-center"
+                >
+                  <span>
+                    {event.name} (as {event.role})
+                  </span>
+                  <button
+                    onClick={() => handleLeaveEvent(event._id)}
+                    className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    Quitter l'événement
+                  </button>
                 </li>
               ))}
             </ul>
