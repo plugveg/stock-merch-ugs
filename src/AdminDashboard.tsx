@@ -410,7 +410,7 @@ export default function AdminDashboard() {
                   type="number"
                   value={salePrice}
                   onChange={(e) => setSalePrice(e.target.value)}
-                  placeholder="	Prix de vente"
+                  placeholder="Prix de vente"
                   className="p-2 border rounded"
                   required
                 />

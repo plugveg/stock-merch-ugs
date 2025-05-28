@@ -169,7 +169,8 @@ describe("useProducts hook", () => {
   });
 
   it("includes targetUserId when userId is provided", () => {
-    const testUserId = "admin_42";
+    // Create a mock Id<"users"> object
+    const testUserId = { __tableName: "users" } as unknown as Id<"users">;
     renderHook(() => useProducts({ userId: testUserId }));
 
     // second argument of convexQuery should contain the targetUserId we passed

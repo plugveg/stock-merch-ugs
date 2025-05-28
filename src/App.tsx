@@ -51,16 +51,15 @@ function RoleProtectedRoute({
   if (!isSignedIn) return <Navigate to="/" replace />;
 
   // Check if user has one of the required roles
-  // Add proper null checking to prevent the TypeError
-  const userRoles = userInConvex?.role as Roles | undefined;
+  const userRole = userInConvex?.role as Roles;
 
   // If userRoles is undefined, we can't check roles, so deny access
-  if (!userRoles) {
+  if (!userRole) {
     console.warn("User roles could not be determined");
     return <Navigate to="/dashboards" replace />;
   }
 
-  const hasRequiredRole = allowedRoles.some((role) => userRoles.includes(role));
+  const hasRequiredRole = allowedRoles.includes(userRole);
 
   return hasRequiredRole ? children : <Navigate to="/dashboards" replace />;
 }
