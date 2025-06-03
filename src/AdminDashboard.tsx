@@ -66,6 +66,7 @@ export default function AdminDashboard() {
     api.events.removeProductFromEventSale,
   );
   const removeUserFromEvent = useMutation(api.events.removeUserFromEvent);
+  const updateUserRoleInEvent = useMutation(api.events.updateUserRoleInEvent);
 
   const allEvents = useQuery(api.events.listEvents) || [];
 
@@ -104,6 +105,10 @@ export default function AdminDashboard() {
   );
   const [userEmailToAdd, setUserEmailToAdd] = useState("");
   const [userRoleToAdd, setUserRoleToAdd] = useState<Roles>("Guest");
+  const [editingUserRole, setEditingUserRole] = useState<{
+    userId: Id<"users">;
+    currentRole: Roles;
+  } | null>(null);
 
   const [productIdToAdd, setProductIdToAdd] = useState<Id<"products"> | "">("");
   const [salePrice, setSalePrice] = useState("");
@@ -230,6 +235,24 @@ export default function AdminDashboard() {
       console.error(error);
       alert(
         `Erreur lors de la suppresion de l'utilisateur de l'événement : ${(error as Error).message}`,
+      );
+    }
+  };
+
+  const handleUpdateUserRole = async (userId: Id<"users">, newRole: Roles) => {
+    if (!selectedEventId) return;
+    try {
+      await updateUserRoleInEvent({
+        eventId: selectedEventId,
+        userId,
+        newRole,
+      });
+      setEditingUserRole(null);
+      alert("Rôle de l'utilisateur mis à jour !");
+    } catch (error) {
+      console.error(error);
+      alert(
+        `Erreur lors de la mise à jour du rôle : ${(error as Error).message}`,
       );
     }
   };
@@ -510,22 +533,81 @@ export default function AdminDashboard() {
                   Participants (
                   {eventAnalytics ? eventAnalytics.participantCount : 0}):
                 </h4>
-                <ul className="space-y-1">
+                <ul className="space-y-2">
                   {eventDetails.participants.map((p) => (
                     <li
                       key={p.userId}
-                      className="text-sm flex justify-between items-center"
+                      className="p-3 border rounded-md shadow-sm flex justify-between items-center"
                     >
-                      <span>
-                        {p.userName} ({p.role})
-                      </span>
-                      <Button
-                        onClick={() => handleRemoveUser(p.userId)}
-                        size={"sm"}
-                        className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                      >
-                        Remove
-                      </Button>
+                      <div className="flex items-center space-x-4">
+                        <span className="font-medium">{p.userName}</span>
+                        {editingUserRole?.userId === p.userId ? (
+                          <div className="flex items-center space-x-2">
+                            <select
+                              value={editingUserRole.currentRole}
+                              onChange={(e) =>
+                                setEditingUserRole({
+                                  ...editingUserRole,
+                                  currentRole: e.target.value as Roles,
+                                })
+                              }
+                              className="p-1 border rounded text-sm"
+                            >
+                              {getOptions(roles).map((opt) => (
+                                <option key={opt} value={opt}>
+                                  {opt}
+                                </option>
+                              ))}
+                            </select>
+                            <Button
+                              onClick={() =>
+                                handleUpdateUserRole(
+                                  p.userId,
+                                  editingUserRole.currentRole,
+                                )
+                              }
+                              size="sm"
+                              className="text-xs bg-green-500 text-white px-2 py-1"
+                            >
+                              Confirmer
+                            </Button>
+                            <Button
+                              onClick={() => setEditingUserRole(null)}
+                              size="sm"
+                              className="text-xs bg-gray-500 text-white px-2 py-1"
+                            >
+                              Annuler
+                            </Button>
+                          </div>
+                        ) : (
+                          <span className="text-sm text-gray-600">
+                            ({p.role})
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex space-x-2">
+                        {!editingUserRole && (
+                          <Button
+                            onClick={() =>
+                              setEditingUserRole({
+                                userId: p.userId,
+                                currentRole: p.role,
+                              })
+                            }
+                            size="sm"
+                            className="text-xs bg-blue-500 text-white px-2 py-1"
+                          >
+                            Modifier le rôle
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() => handleRemoveUser(p.userId)}
+                          size="sm"
+                          className="text-xs bg-red-500 text-white px-2 py-1 hover:bg-red-600"
+                        >
+                          Supprimer
+                        </Button>
+                      </div>
                     </li>
                   ))}
                 </ul>

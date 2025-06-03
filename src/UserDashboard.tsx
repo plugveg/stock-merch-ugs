@@ -239,7 +239,7 @@ export default function UserDashboard() {
                 </option>
               ))}
             </select>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 self-center">
               <label htmlFor="isAvailable" className="text-sm self-center">
                 Rendre disponible :
               </label>

@@ -447,3 +447,62 @@ export const removeProductFromEventSale = mutation({
     return { success: true };
   },
 });
+
+// Admin: Update user role in an event
+export const updateUserRoleInEvent = mutation({
+  args: {
+    eventId: v.id("events"),
+    userId: v.id("users"),
+    newRole: v.union(roles),
+  },
+  handler: async (ctx, args) => {
+    const me = await ctx.auth.getUserIdentity();
+    if (!me) {
+      throw new Error("User not authenticated");
+    }
+
+    const meDoc = await ctx.db
+      .query("users")
+      .withIndex("byExternalId", (q) => q.eq("externalId", me.subject))
+      .unique();
+    if (!meDoc) throw new Error("User not found");
+
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+
+    // Check if the calling user is an organizer or the event admin
+    const organizers = await ctx.db
+      .query("eventParticipants")
+      .withIndex("by_eventId_and_userId", (q) =>
+        q.eq("eventId", args.eventId).eq("userId", meDoc._id),
+      )
+      .filter((q) =>
+        q.or(
+          q.eq(q.field("role"), "Administrator"),
+          q.eq(q.field("role"), "Board of directors"),
+        ),
+      )
+      .collect();
+
+    if (organizers.length === 0 && event.adminId !== meDoc._id) {
+      throw new Error("Only event organizers can update user roles.");
+    }
+
+    const participantEntry = await ctx.db
+      .query("eventParticipants")
+      .withIndex("by_eventId_and_userId", (q) =>
+        q.eq("eventId", args.eventId).eq("userId", args.userId),
+      )
+      .unique();
+
+    if (!participantEntry) {
+      throw new Error("User is not part of this event.");
+    }
+
+    return await ctx.db.patch(participantEntry._id, {
+      role: args.newRole as Roles,
+    });
+  },
+});
