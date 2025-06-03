@@ -90,3 +90,21 @@ export const listUsersLite = query({
     };
   },
 });
+
+export const listAllUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    // Optional: Add an admin check here if not all authenticated users should list all other users.
+    // const userId = await getAuthUserId(ctx);
+    // if (!userId) throw new Error("Not authenticated");
+    // const adminUser = await ctx.db.get(userId);
+    // if(!adminUser || !adminUser.isAdminProperty) throw new Error("Not an admin");
+
+    const users = await ctx.db.query("users").collect();
+    return users.map((user) => ({
+      _id: user._id,
+      nickname: user.nickname,
+      email: user.email,
+    }));
+  },
+});

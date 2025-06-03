@@ -81,11 +81,11 @@ export default function Products() {
           </span>
         </NavBar>
       </header>
-      <main className="flex-1 p-4 md:p-6 my-[56px]">
+      <main className="container mx-auto flex-1 p-4 md:p-6 mb-[80px] md:mb-[56px] mt-[140px] md:mt-[56px]">
         {/* Sélecteur d’utilisateur visible SEULEMENT pour l’admin */}
         {isAdmin && (
           <div className="mb-4 max-w-xs flex items-center gap-2">
-            <Label className="text-sm font-medium mb-0 whitespace-nowrap">
+            <Label className="text-sm font-medium mb-0 md:whitespace-nowrap">
               Sélectionner un utilisateur ou tous pour voir ses produits
             </Label>
             <Select
@@ -148,7 +148,7 @@ export default function Products() {
           }
           className="space-y-4"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-col gap-y-2 md:flex-row">
             <TabsList>
               <TabsTrigger value="inventory">Inventaire</TabsTrigger>
               <TabsTrigger value="analytics">Analyse</TabsTrigger>
