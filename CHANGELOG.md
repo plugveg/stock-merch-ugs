@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.9.0...v1.10.0) (2025-06-14)
+
+
+### Features
+
+* **view:** [SETSUMAFU-147] add events gestion ([#122](https://github.com/plugveg/stock-merch-ugs/issues/122)) ([31c9486](https://github.com/plugveg/stock-merch-ugs/commit/31c9486514a7be6ac0bf2dfa7b20035479a422b3))
+
 # [1.9.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.8.0...v1.9.0) (2025-05-25)
 
 
