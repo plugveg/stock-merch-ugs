@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.0...v1.10.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* package.json & package-lock.json to reduce vulnerabilities ([#286](https://github.com/plugveg/stock-merch-ugs/issues/286)) ([a012c4d](https://github.com/plugveg/stock-merch-ugs/commit/a012c4dc167ebeaef1883b557663b4f8cb2bead8))
+
 # [1.10.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.9.0...v1.10.0) (2025-06-14)
 
 
