@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.1...v1.10.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* upgrade @tailwindcss/vite from 4.1.7 to 4.1.8 ([#148](https://github.com/plugveg/stock-merch-ugs/issues/148)) ([62ea129](https://github.com/plugveg/stock-merch-ugs/commit/62ea1292b1df88938a12a8ebd429afad1f2ef483))
+
 ## [1.10.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.0...v1.10.1) (2026-02-01)
 
 
