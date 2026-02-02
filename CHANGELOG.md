@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.2...v1.10.3) (2026-02-02)
+
+
+### Bug Fixes
+
+* update vite version and remove convex-ents ([#288](https://github.com/plugveg/stock-merch-ugs/issues/288)) ([4d84702](https://github.com/plugveg/stock-merch-ugs/commit/4d847023995af92da632eb0ee6d8dbe0a1537005))
+
 ## [1.10.2](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.1...v1.10.2) (2026-02-01)
 
 
