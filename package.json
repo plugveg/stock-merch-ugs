@@ -32,7 +32,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.24.1",
-    "convex-ents": "^0.13.0",
     "convex-helpers": "^0.1.89",
     "lucide-react": "^0.563.0",
     "react": "^19.1.1",
