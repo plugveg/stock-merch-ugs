@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -30,17 +29,6 @@ export function ResponsiveDialog({
   size = "md",
 }: ResponsiveDialogProps) {
   const { screenSize } = useScreenSize();
-
-  // This state is needed to prevent hydration mismatch
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   const sizeClass = getSizeClass(screenSize, size);
 

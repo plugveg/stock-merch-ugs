@@ -4,11 +4,7 @@ permissions:
   contents: read
   pull-requests: write
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: ['push']
 
 jobs:
   test:
@@ -16,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VITE_CONVEX_URL: "http://localhost:1337/mock"
+      VITE_CONVEX_URL: 'http://localhost:1337/mock'
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -30,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
 
       - name: Install dependencies
         run: npm ci
@@ -48,18 +44,9 @@ jobs:
           name: junit-report
           path: test-report.junit.xml
 
-      - name: Upload coverage reports to Codecov
+      - name: Upload LCOV Coverage Report
         if: ${{ always() }}
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: plugveg/stock-merch-ugs
-          files: ./test-report.junit.xml
-          verbose: true
-          fail_ci_if_error: true
-
-      - name: Upload test results to Codecov
-        if: ${{ always() }}
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1.2.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: lcov-report
+          path: coverage/lcov.info

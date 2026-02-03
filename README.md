@@ -1,10 +1,13 @@
-[![codecov](https://codecov.io/gh/plugveg/stock-merch-ugs/branch/main/graph/badge.svg)](https://codecov.io/gh/plugveg/stock-merch-ugs)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
-
 # StockMerchUGS
 
 _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query + Clerk (for authentication)_
+
+## Badges
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 
 ## Table of contents of the README
 
@@ -166,6 +169,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
+- [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
 
 ## Tutorials
 
