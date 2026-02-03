@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 

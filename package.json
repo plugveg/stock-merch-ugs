@@ -12,7 +12,8 @@
     "test:ui": "vitest --ui",
     "prepare": "husky install",
     "test:coverage": "vitest run --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml",
-    "test:verbose": "vitest run --reporter=verbose"
+    "test:verbose": "vitest run --reporter=verbose",
+    "coverage:upload": "bash scripts/coverage-upload.sh"
   },
   "dependencies": {
     "@clerk/backend": "^2.29.7",

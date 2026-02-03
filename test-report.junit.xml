@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="177" failures="0" errors="0" time="7.846122124">
+    <testsuite name="src/__tests__/AdminDashboard.test.tsx" timestamp="2026-02-03T22:35:24.345Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="4" failures="0" errors="0" skipped="0" time="0.309426459">
+        <testcase classname="src/__tests__/AdminDashboard.test.tsx" name="AdminDashboard &gt; renders AdminDashboard component" time="0.091149">
+        </testcase>
+        <testcase classname="src/__tests__/AdminDashboard.test.tsx" name="AdminDashboard &gt; shows products to add to sale" time="0.111880834">
+        </testcase>
+        <testcase classname="src/__tests__/AdminDashboard.test.tsx" name="AdminDashboard &gt; can fill and submit the create event form" time="0.054013375">
+        </testcase>
+        <testcase classname="src/__tests__/AdminDashboard.test.tsx" name="AdminDashboard &gt; merges availableProducts without duplicates" time="0.050611541">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/App.test.tsx" timestamp="2026-02-03T22:35:24.345Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="10" failures="0" errors="0" skipped="0" time="0.396982958">
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; redirects to home if not signed in on RoleProtectedRoute" time="0.051039625">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; renders Home (sign-in) on root route when unauthenticated" time="0.013724708">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; redirects unauthenticated user from /products to Home" time="0.011792917">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; allows access to Products for authenticated user" time="0.188024584">
+            <system-err>
+[[&quot;convexQuery&quot;,&quot;functions/products:listProducts&quot;,{&quot;pageSize&quot;:10}]]: No queryFn was passed as an option, and no default queryFn was found. The queryFn parameter is only optional when using a default queryFn. More info here: https://tanstack.com/query/latest/docs/framework/react/guides/default-query-function
+[[&quot;convexQuery&quot;,&quot;functions/products:listProducts&quot;,{&quot;pageSize&quot;:10}]]: No queryFn was passed as an option, and no default queryFn was found. The queryFn parameter is only optional when using a default queryFn. More info here: https://tanstack.com/query/latest/docs/framework/react/guides/default-query-function
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; redirects unknown routes to Home" time="0.023401958">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; renders nothing while auth is loading" time="0.006795166">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; allows access to admin dashboard for allowed role" time="0.0323315">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; redirects to dashboards when user role is not allowed" time="0.0154045">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; shows loading when auth is not yet loaded" time="0.029453459">
+        </testcase>
+        <testcase classname="src/__tests__/App.test.tsx" name="App routing &gt; redirects to dashboards if user role is undefined" time="0.024093708">
+            <system-err>
+User roles could not be determined
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/Home.test.tsx" timestamp="2026-02-03T22:35:24.346Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="3" failures="0" errors="0" skipped="0" time="0.040574833">
+        <testcase classname="src/__tests__/Home.test.tsx" name="Home Component &gt; renders loading state when isLoading is true" time="0.016298375">
+        </testcase>
+        <testcase classname="src/__tests__/Home.test.tsx" name="Home Component &gt; renders SignIn page when unauthenticated" time="0.013674625">
+            <system-err>
+In HTML, &lt;button&gt; cannot be a descendant of &lt;button&gt;.
+This will cause a hydration error.
+
+  &lt;MemoryRouter&gt;
+    &lt;Router basename={undefined} location={{pathname:&quot;/&quot;, ...}} navigationType=&quot;POP&quot; navigator={{index:0, ...}} ...&gt;
+      &lt;App&gt;
+        &lt;main&gt;
+          &lt;Unauthenticated&gt;
+            &lt;SignIn&gt;
+              &lt;div className=&quot;min-h-scre...&quot;&gt;
+                &lt;NavBar&gt;
+                &lt;div className=&quot;flex-grow ...&quot;&gt;
+                  &lt;p&gt;
+                  &lt;SignInButton mode=&quot;modal&quot;&gt;
+&gt;                   &lt;button&gt;
+                      &lt;Button size=&quot;lg&quot; className=&quot;inline-blo...&quot;&gt;
+&gt;                       &lt;button
+&gt;                         data-slot=&quot;button&quot;
+&gt;                         className={&quot;items-center justify-center gap-2 whitespace-nowrap text-sm disabled:pointer-ev...&quot;}
+&gt;                       &gt;
+                ...
+
+&lt;button&gt; cannot contain a nested &lt;button&gt;.
+See this log for the ancestor stack trace.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/__tests__/Home.test.tsx" name="Home Component &gt; renders main content when authenticated" time="0.009001167">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/Products.test.tsx" timestamp="2026-02-03T22:35:24.346Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="12" failures="0" errors="0" skipped="0" time="0.913378541">
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; renders overview and tabs" time="0.200887">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; renders Current Inventory section with alert" time="0.041877917">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; switches to analytics tab and shows chart" time="0.101023083">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; opens add dialog and triggers submit" time="0.054223042">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; opens edit dialog and submits updated item" time="0.089798541">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; cancels Add Item dialog without calling mutate" time="0.078820166">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; calls addProduct.mutate with form data then closes dialog" time="0.116022083">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; cancels Edit Item dialog without calling updateProduct" time="0.048565542">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; calls updateProduct.mutate with correct data then closes dialog" time="0.091561291">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; calls deleteProduct.mutate when Delete button is clicked" time="0.066749917">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; calls deleteProduct when clicking delete" time="0.012551542">
+        </testcase>
+        <testcase classname="src/__tests__/Products.test.tsx" name="Products Component &gt; shows RoleBadge and user selector when user is admin" time="0.009767458">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/UserDashboard.test.tsx" timestamp="2026-02-03T22:35:24.347Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="16" failures="0" errors="0" skipped="0" time="0.652574083">
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; renders the dashboard with user information" time="0.086629125">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; displays navbar and footer" time="0.011903291">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; displays products list correctly" time="0.024043791">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; shows message when no products exist" time="0.007662542">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; opens add product dialog when button is clicked" time="0.170172">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles add product error" time="0.092968">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; cancels add product dialog" time="0.057324375">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; displays my events participation" time="0.013889291">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; shows message when no event participation" time="0.004322167">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles leaving an event with confirmation" time="0.030047916">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; cancels leaving event when user declines confirmation" time="0.035418583">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles leave event error" time="0.019212584">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles leave event when user is not identified" time="0.019415083">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; prevents form submission when required fields are empty" time="0.070911583">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles empty products and events arrays" time="0.003550792">
+        </testcase>
+        <testcase classname="src/__tests__/UserDashboard.test.tsx" name="UserDashboard &gt; handles null/undefined query results" time="0.002769833">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/__tests__/main.test.tsx" timestamp="2026-02-03T22:35:24.348Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="1" failures="0" errors="0" skipped="0" time="1.123057791">
+        <testcase classname="src/__tests__/main.test.tsx" name="main.tsx &gt; should call ReactDOM.createRoot with #root" time="1.121281125">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/navbar.test.tsx" timestamp="2026-02-03T22:35:24.348Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="4" failures="0" errors="0" skipped="0" time="0.146258292">
+        <testcase classname="src/components/__tests__/navbar.test.tsx" name="NavBar &gt; should render the title" time="0.029218">
+        </testcase>
+        <testcase classname="src/components/__tests__/navbar.test.tsx" name="NavBar &gt; should navigate to &apos;/&apos; on title click" time="0.005709042">
+        </testcase>
+        <testcase classname="src/components/__tests__/navbar.test.tsx" name="NavBar &gt; should contain a link to the GitHub repository" time="0.09960925">
+        </testcase>
+        <testcase classname="src/components/__tests__/navbar.test.tsx" name="NavBar &gt; should render children elements" time="0.010727292">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/responsive-dialog.test.tsx" timestamp="2026-02-03T22:35:24.348Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="29" failures="0" errors="0" skipped="0" time="0.417928083">
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog &gt; should not render when not mounted (SSR mismatch guard)" time="0.285574625">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog &gt; should render title, description and children correctly" time="0.024973417">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog &gt; should apply correct class based on screenSize and size" time="0.008062958">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog &gt; should call onOpenChange when closing dialog" time="0.007145709">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xs&quot; and size=&quot;sm&quot;" time="0.006387375">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xs&quot; and size=&quot;md&quot;" time="0.006053791">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xs&quot; and size=&quot;lg&quot;" time="0.007640125">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xs&quot; and size=&quot;xl&quot;" time="0.003804583">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xs&quot; and size=&quot;full&quot;" time="0.008637666">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;sm&quot; and size=&quot;sm&quot;" time="0.0101925">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;sm&quot; and size=&quot;md&quot;" time="0.006905459">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;sm&quot; and size=&quot;lg&quot;" time="0.005651625">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;sm&quot; and size=&quot;xl&quot;" time="0.004957875">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;sm&quot; and size=&quot;full&quot;" time="0.00557">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;md&quot; and size=&quot;sm&quot;" time="0.002853333">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;md&quot; and size=&quot;md&quot;" time="0.00146575">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;md&quot; and size=&quot;lg&quot;" time="0.001819667">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;md&quot; and size=&quot;xl&quot;" time="0.00188625">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;md&quot; and size=&quot;full&quot;" time="0.001523291">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;lg&quot; and size=&quot;sm&quot;" time="0.00126">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;lg&quot; and size=&quot;md&quot;" time="0.002605583">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;lg&quot; and size=&quot;lg&quot;" time="0.001740916">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;lg&quot; and size=&quot;xl&quot;" time="0.001452834">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;lg&quot; and size=&quot;full&quot;" time="0.001732917">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xl&quot; and size=&quot;sm&quot;" time="0.001392916">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xl&quot; and size=&quot;md&quot;" time="0.001343708">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xl&quot; and size=&quot;lg&quot;" time="0.001096042">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xl&quot; and size=&quot;xl&quot;" time="0.000932041">
+        </testcase>
+        <testcase classname="src/components/__tests__/responsive-dialog.test.tsx" name="ResponsiveDialog - size class mapping &gt; should apply correct class for screenSize=&quot;xl&quot; and size=&quot;full&quot;" time="0.001886709">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/role-badge.test.tsx" timestamp="2026-02-03T22:35:24.350Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="2" failures="0" errors="0" skipped="0" time="0.130901792">
+        <testcase classname="src/components/__tests__/role-badge.test.tsx" name="RoleBadge component &gt; renders the provided role text" time="0.018815625">
+        </testcase>
+        <testcase classname="src/components/__tests__/role-badge.test.tsx" name="RoleBadge component &gt; renders as a small outline button with pointer‑events disabled" time="0.110858667">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/stock-charts.test.tsx" timestamp="2026-02-03T22:35:24.350Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="7" failures="0" errors="0" skipped="0" time="0.119854959">
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; renders pie chart and bar chart on desktop" time="0.083040417">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; only renders pie chart on small screens" time="0.005062166">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; aggregates quantities when product type appears multiple times (else path)" time="0.02015175">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; displays correct category labels" time="0.005008083">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; handles empty stock gracefully" time="0.005409458">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; formats pie chart label correctly" time="0.000249708">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-charts.test.tsx" name="StockCharts &gt; formats Y axis tick correctly" time="0.000070833">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/stock-form.test.tsx" timestamp="2026-02-03T22:35:24.350Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="19" failures="0" errors="0" skipped="0" time="2.486863917">
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; renders form with initial data" time="0.385508125">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; prefills sellDate when initialData contains sellDate" time="0.202427">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; adds and removes licence fields" time="0.229883167">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; adds and removes character fields" time="0.107146083">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; toggles product type checkboxes" time="0.076544084">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; clears validation errors when fields are updated" time="0.216302042">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; calls onCancel when cancel button is clicked" time="0.035064084">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; applies error styles to invalid fields" time="0.069438958">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; submits sell data when editing" time="0.22848575">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles purchaseLocation field correctly" time="0.079500459">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles purchaseDate field correctly" time="0.054392333">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles purchasePrice field correctly" time="0.048702792">
+            <system-err>
+A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles threshold field correctly" time="0.041968083">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles quantity field correctly" time="0.046408">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles storageLocation field correctly" time="0.111303375">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles description field correctly" time="0.137569042">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles condition field correctly" time="0.131066042">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; handles status field correctly" time="0.103669625">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-form.test.tsx" name="StockForm &gt; updates array fields correctly" time="0.179013292">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/stock-overview.test.tsx" timestamp="2026-02-03T22:35:24.351Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="5" failures="0" errors="0" skipped="0" time="0.073176375">
+        <testcase classname="src/components/__tests__/stock-overview.test.tsx" name="StockOverview &gt; renders total items and products count" time="0.034105958">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-overview.test.tsx" name="StockOverview &gt; renders total value correctly" time="0.011697375">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-overview.test.tsx" name="StockOverview &gt; renders low stock correctly when none are low" time="0.004450708">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-overview.test.tsx" name="StockOverview &gt; renders low stock correctly when some are low" time="0.008822667">
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-overview.test.tsx" name="StockOverview &gt; renders categories count correctly" time="0.01245925">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/__tests__/stock-table.test.tsx" timestamp="2026-02-03T22:35:24.352Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="11" failures="0" errors="0" skipped="0" time="0.932595583">
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; renders stock rows" time="0.102922083">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; displays low stock indicator" time="0.024946959">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; filters items by search" time="0.031999">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; shows empty message if no match" time="0.011144375">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; sorts by quantity when column header is clicked" time="0.059143209">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; toggles sort direction when the same header is clicked twice" time="0.057210625">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; sorts by productType string values in both directions" time="0.026373">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; sorts by purchasePrice correctly" time="0.017389958">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; joins productType array into a comma-separated string" time="0.024023208">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; displays productType when it is a simple string and resets sort direction when switching column" time="0.034855375">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/__tests__/stock-table.test.tsx" name="StockTable &gt; triggers onEdit and onDelete callbacks" time="0.540974667">
+            <system-err>
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+Encountered two children with the same key, `[object Object]`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useCurrentUser.test.ts" timestamp="2026-02-03T22:35:24.353Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="4" failures="0" errors="0" skipped="0" time="0.012103334">
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true while auth is loading" time="0.007996">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns not loading and not authenticated when auth done but no user" time="0.000872292">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loading true when authenticated but user query still null" time="0.000886666">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useCurrentUser.test.ts" name="useCurrentUser hook &gt; returns loaded and authenticated when user is returned" time="0.000752875">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useMobile.test.ts" timestamp="2026-02-03T22:35:24.353Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="9" failures="0" errors="0" skipped="0" time="0.041886667">
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;xs&apos; for width 320" time="0.010263625">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;sm&apos; for width 500" time="0.012553958">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;md&apos; for width 700" time="0.006078959">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;lg&apos; for width 900" time="0.001708791">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;xl&apos; for width 1100" time="0.001049417">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useScreenSize &gt; returns correct screen size &apos;2xl&apos; for width 1400" time="0.002113709">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useMobile &gt; returns true when screen is mobile (xs)" time="0.004950667">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useMobile &gt; returns true when screen is mobile (sm)" time="0.000998333">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useMobile.test.ts" name="useMobile &gt; returns false when screen is tablet or desktop" time="0.001305041">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useProducts.test.ts" timestamp="2026-02-03T22:35:24.353Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="10" failures="0" errors="0" skipped="0" time="0.037831166">
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; returns products and default state" time="0.012313792">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; check if there is no showSkeleton after 100ms if loading" time="0.001729375">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; calls addProduct mutation correctly" time="0.003025833">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; calls updateProduct mutation correctly" time="0.0014155">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; calls deleteProduct mutation correctly" time="0.00180275">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; includes targetUserId when userId is provided" time="0.005125166">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; products normalisation &gt; returns raw array as‑is" time="0.002932625">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; products normalisation &gt; unwraps `page` property when data is paginated" time="0.000933792">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; products normalisation &gt; falls back to empty array when data is undefined" time="0.002217458">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useProducts.test.ts" name="useProducts hook &gt; invalidates the query after a successful mutation" time="0.004684041">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/__tests__/useUsersLite.test.ts" timestamp="2026-02-03T22:35:24.354Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="2" failures="0" errors="0" skipped="0" time="0.008075875">
+        <testcase classname="src/hooks/__tests__/useUsersLite.test.ts" name="useUsersLite &gt; passes the initialNumItems argument through to usePaginatedQuery" time="0.006714375">
+        </testcase>
+        <testcase classname="src/hooks/__tests__/useUsersLite.test.ts" name="useUsersLite &gt; defaults initialNumItems to 10 when no argument is provided" time="0.000725792">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/lib/__tests__/getSizeClass.test.ts" timestamp="2026-02-03T22:35:24.354Z" hostname="MacBook-Pro-de-Thomas-2.local" tests="29" failures="0" errors="0" skipped="0" time="0.002651416">
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xs&quot; and size=&quot;sm&quot;" time="0.000576709">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xs&quot; and size=&quot;md&quot;" time="0.000057583">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xs&quot; and size=&quot;lg&quot;" time="0.000045292">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xs&quot; and size=&quot;xl&quot;" time="0.000100875">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xs&quot; and size=&quot;full&quot;" time="0.000091333">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;sm&quot; and size=&quot;sm&quot;" time="0.00004075">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;sm&quot; and size=&quot;md&quot;" time="0.000029542">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;sm&quot; and size=&quot;lg&quot;" time="0.000029625">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;sm&quot; and size=&quot;xl&quot;" time="0.00014825">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;sm&quot; and size=&quot;full&quot;" time="0.000095834">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;md&quot; and size=&quot;sm&quot;" time="0.000042083">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;md&quot; and size=&quot;md&quot;" time="0.000028375">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;md&quot; and size=&quot;lg&quot;" time="0.000028833">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;md&quot; and size=&quot;xl&quot;" time="0.000082584">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;md&quot; and size=&quot;full&quot;" time="0.000051209">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;lg&quot; and size=&quot;sm&quot;" time="0.000029625">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;lg&quot; and size=&quot;md&quot;" time="0.000025167">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;lg&quot; and size=&quot;lg&quot;" time="0.000021042">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;lg&quot; and size=&quot;xl&quot;" time="0.00002075">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;lg&quot; and size=&quot;full&quot;" time="0.000058583">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xl&quot; and size=&quot;sm&quot;" time="0.000023291">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xl&quot; and size=&quot;md&quot;" time="0.000021958">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xl&quot; and size=&quot;lg&quot;" time="0.000022125">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xl&quot; and size=&quot;xl&quot;" time="0.000064459">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns correct class for screenSize=&quot;xl&quot; and size=&quot;full&quot;" time="0.000023042">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns default for unknown screenSize and known size" time="0.000028417">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns default for known screenSize and unknown size" time="0.000025791">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns default for known screenSize and unknown size" time="0.000024875">
+        </testcase>
+        <testcase classname="src/lib/__tests__/getSizeClass.test.ts" name="getSizeClass &gt; returns default for unknown screenSize and unknown size" time="0.000024375">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -20,7 +20,7 @@ export default defineConfig({
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     coverage: {
       provider: "istanbul",
-      reporter: ["text", "json", "html"],
+      reporter: ["lcov", "text"],
       include: ["src/**"],
       exclude: ["src/components/ui/**"],
       thresholds: {
