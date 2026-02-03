@@ -44,10 +44,14 @@ jobs:
           name: junit-report
           path: test-report.junit.xml
 
+      - name: Upload LCOV Coverage Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: lcov-report
+          path: coverage/lcov.info
+
       - name: Upload coverage to Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: npm run coverage:upload
-
-      - name: Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
