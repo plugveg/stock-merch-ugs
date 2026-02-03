@@ -1,4 +1,3 @@
-[![codecov](https://codecov.io/gh/plugveg/stock-merch-ugs/branch/main/graph/badge.svg)](https://codecov.io/gh/plugveg/stock-merch-ugs)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 
@@ -166,6 +165,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
+- [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
 
 ## Tutorials
 
