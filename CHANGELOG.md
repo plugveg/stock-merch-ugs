@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.3...v1.11.0) (2026-02-03)
+
+
+### Features
+
+* **tech:** SETSUMAFU-170 remove codecov and add codacy ([#319](https://github.com/plugveg/stock-merch-ugs/issues/319)) ([be0d420](https://github.com/plugveg/stock-merch-ugs/commit/be0d4200ef8c33af6eb369b77c8158ad7a0353fc))
+
 ## [1.10.3](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.2...v1.10.3) (2026-02-02)
 
 
