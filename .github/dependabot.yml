@@ -5,15 +5,19 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
+    open-pull-requests-limit: 50
+    versioning-strategy: increase
+    allow:
+      - dependency-type: 'all'
     pull-request-branch-name:
-      # Change the default separator (/) to a hyphen (-)
-      separator: "-"
+      separator: '-'
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
+    open-pull-requests-limit: 50

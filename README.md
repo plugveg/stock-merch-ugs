@@ -169,6 +169,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add OpenSSF Scorecard for error detection and security vulnerabilities
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
+- [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
 
 ## Tutorials
