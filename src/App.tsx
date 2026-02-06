@@ -1,13 +1,26 @@
-import { Routes, Route, Navigate } from "react-router";
-import Home from "./Home";
-import Products from "./Products";
-import { JSX } from "react";
-import { useAuth } from "@clerk/clerk-react";
-import Dashboards from "./Dashboards";
-import AdminDashboard from "./AdminDashboard";
-import UserDashboard from "./UserDashboard";
-import { useCurrentUser } from "./hooks/useCurrentUser";
-import { Roles } from "convex/schema";
+import { Routes, Route, Navigate } from 'react-router';
+import { JSX, Suspense, lazy } from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import { useCurrentUser } from './hooks/useCurrentUser';
+import { Roles } from 'convex/schema';
+
+const Home = lazy(() => import('./Home'));
+const Products = lazy(() => import('./Products'));
+const Dashboards = lazy(() => import('./Dashboards'));
+const AdminDashboard = lazy(() => import('./AdminDashboard'));
+const UserDashboard = lazy(() => import('./UserDashboard'));
+
+function RouteLoading() {
+  return (
+    <div
+      aria-live="polite"
+      role="status"
+      style={{ textAlign: 'center', padding: '1em' }}
+    >
+      Chargement...
+    </div>
+  );
+}
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { isLoaded, isSignedIn } = useAuth();
@@ -17,7 +30,7 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
       <div
         aria-live="polite"
         role="status"
-        style={{ textAlign: "center", padding: "1em" }}
+        style={{ textAlign: 'center', padding: '1em' }}
       >
         Chargement...
       </div>
@@ -41,7 +54,7 @@ function RoleProtectedRoute({
       <div
         aria-live="polite"
         role="status"
-        style={{ textAlign: "center", padding: "1em" }}
+        style={{ textAlign: 'center', padding: '1em' }}
       >
         Chargement...
       </div>
@@ -55,7 +68,7 @@ function RoleProtectedRoute({
 
   // If userRoles is undefined, we can't check roles, so deny access
   if (!userRole) {
-    console.warn("User roles could not be determined");
+    console.warn('User roles could not be determined');
     return <Navigate to="/dashboards" replace />;
   }
 
@@ -67,12 +80,21 @@ function RoleProtectedRoute({
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={<RouteLoading />}>
+            <Home />
+          </Suspense>
+        }
+      />
       <Route
         path="/products"
         element={
           <ProtectedRoute>
-            <Products />
+            <Suspense fallback={<RouteLoading />}>
+              <Products />
+            </Suspense>
           </ProtectedRoute>
         }
       />
@@ -80,7 +102,9 @@ function App() {
         path="/dashboards"
         element={
           <ProtectedRoute>
-            <Dashboards />
+            <Suspense fallback={<RouteLoading />}>
+              <Dashboards />
+            </Suspense>
           </ProtectedRoute>
         }
       />
@@ -88,9 +112,11 @@ function App() {
         path="/dashboards/admin"
         element={
           <RoleProtectedRoute
-            allowedRoles={["Administrator", "Board of directors"]}
+            allowedRoles={['Administrator', 'Board of directors']}
           >
-            <AdminDashboard />
+            <Suspense fallback={<RouteLoading />}>
+              <AdminDashboard />
+            </Suspense>
           </RoleProtectedRoute>
         }
       />
@@ -98,7 +124,9 @@ function App() {
         path="/dashboards/user"
         element={
           <ProtectedRoute>
-            <UserDashboard />
+            <Suspense fallback={<RouteLoading />}>
+              <UserDashboard />
+            </Suspense>
           </ProtectedRoute>
         }
       />

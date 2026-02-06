@@ -1,15 +1,14 @@
-import "@testing-library/jest-dom";
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
-import { useAuth, ClerkProvider } from "@clerk/clerk-react";
+import '@testing-library/jest-dom';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+import { useAuth } from '@clerk/clerk-react';
 
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 // Mock Clerk hook and components
-vi.mock("@clerk/clerk-react", async () => {
-  const actual = await vi.importActual("@clerk/clerk-react");
+vi.mock('@clerk/clerk-react', async () => {
+  const actual = await vi.importActual('@clerk/clerk-react');
   return {
     ...actual,
     useAuth: vi.fn(),
@@ -18,8 +17,8 @@ vi.mock("@clerk/clerk-react", async () => {
 });
 
 // Mock Convex auth components
-vi.mock("convex/react", async () => {
-  const actual = await vi.importActual("convex/react");
+vi.mock('convex/react', async () => {
+  const actual = await vi.importActual('convex/react');
   type ChildrenProps = React.PropsWithChildren<object>;
   return {
     ...actual,
@@ -37,7 +36,7 @@ vi.mock("convex/react", async () => {
 });
 
 // Mock custom hooks
-vi.mock("../hooks/useCurrentUser", () => ({
+vi.mock('../hooks/useCurrentUser', () => ({
   useCurrentUser: vi.fn(() => ({
     isLoading: false,
     isAuthenticated: false,
@@ -45,14 +44,26 @@ vi.mock("../hooks/useCurrentUser", () => ({
   })),
 }));
 
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
-});
+// Mock route components so routing tests don't depend on heavy page internals.
+vi.mock('../Home', () => ({
+  default: () => <div>Veuillez vous connecter pour accéder</div>,
+}));
+vi.mock('../Products', () => ({
+  default: () => <div>Inventaire actuel</div>,
+}));
+vi.mock('../Dashboards', () => ({
+  default: () => <div>Sélectionnez un tableau de bord</div>,
+}));
+vi.mock('../AdminDashboard', () => ({
+  default: () => <div>Créer un nouvel événement</div>,
+}));
+vi.mock('../UserDashboard', () => ({
+  default: () => <div>Dashboard Utilisateur</div>,
+}));
 
-import App from "../App";
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import App from '../App';
 
-describe("App routing", () => {
+describe('App routing', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     (useCurrentUser as Mock).mockReturnValue({
@@ -62,7 +73,7 @@ describe("App routing", () => {
     });
   });
 
-  it("redirects to home if not signed in on RoleProtectedRoute", () => {
+  it('redirects to home if not signed in on RoleProtectedRoute', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
     (useCurrentUser as Mock).mockReturnValue({
       isLoading: false,
@@ -71,165 +82,142 @@ describe("App routing", () => {
     });
 
     render(
-      <MemoryRouter initialEntries={["/dashboards/admin"]}>
+      <MemoryRouter initialEntries={['/dashboards/admin']}>
         <App />
       </MemoryRouter>,
     );
 
     expect(
-      screen.getByText(/Veuillez vous connecter pour accéder/),
+      await screen.findByText(/Veuillez vous connecter pour accéder/),
     ).toBeInTheDocument();
   });
 
-  it("renders Home (sign-in) on root route when unauthenticated", () => {
+  it('renders Home (sign-in) on root route when unauthenticated', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     );
 
     expect(
-      screen.getByText(/Veuillez vous connecter pour accéder/),
+      await screen.findByText(/Veuillez vous connecter pour accéder/),
     ).toBeInTheDocument();
   });
 
-  it("redirects unauthenticated user from /products to Home", () => {
+  it('redirects unauthenticated user from /products to Home', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
 
     render(
-      <MemoryRouter initialEntries={["/products"]}>
+      <MemoryRouter initialEntries={['/products']}>
         <App />
       </MemoryRouter>,
     );
 
     expect(
-      screen.getByText(/Veuillez vous connecter pour accéder/),
+      await screen.findByText(/Veuillez vous connecter pour accéder/),
     ).toBeInTheDocument();
   });
 
-  it("allows access to Products for authenticated user", () => {
+  it('allows access to Products for authenticated user', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
     (useCurrentUser as Mock).mockReturnValue({
       isLoading: false,
       isAuthenticated: true,
-      userInConvex: { id: "user-123" },
+      userInConvex: { id: 'user-123' },
     });
 
-    const convex = new ConvexReactClient("http://127.0.0.1:3000");
-
     render(
-      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
-        <ConvexProvider client={convex}>
-          <QueryClientProvider client={queryClient}>
-            <MemoryRouter initialEntries={["/products"]}>
-              <App />
-            </MemoryRouter>
-          </QueryClientProvider>
-        </ConvexProvider>
-      </ClerkProvider>,
+      <MemoryRouter initialEntries={['/products']}>
+        <App />
+      </MemoryRouter>,
     );
 
-    expect(screen.getByText("Inventaire actuel")).toBeInTheDocument();
+    expect(await screen.findByText('Inventaire actuel')).toBeInTheDocument();
   });
 
-  it("redirects unknown routes to Home", () => {
+  it('redirects unknown routes to Home', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false });
 
     render(
-      <MemoryRouter initialEntries={["/random"]}>
+      <MemoryRouter initialEntries={['/random']}>
         <App />
       </MemoryRouter>,
     );
 
     expect(
-      screen.getByText(/Veuillez vous connecter pour accéder/),
+      await screen.findByText(/Veuillez vous connecter pour accéder/),
     ).toBeInTheDocument();
   });
 
-  it("renders nothing while auth is loading", () => {
+  it('renders nothing while auth is loading', () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: false, isSignedIn: false });
 
     render(
-      <MemoryRouter initialEntries={["/products"]}>
+      <MemoryRouter initialEntries={['/products']}>
         <App />
       </MemoryRouter>,
     );
 
     // On s'attend à ce qu'aucun contenu ne s'affiche pendant le chargement
-    expect(screen.queryByText("Inventaire actuel")).not.toBeInTheDocument();
+    expect(screen.queryByText('Inventaire actuel')).not.toBeInTheDocument();
     expect(
       screen.queryByText(/Veuillez vous connecter/),
     ).not.toBeInTheDocument();
   });
 
-  it("allows access to admin dashboard for allowed role", () => {
+  it('allows access to admin dashboard for allowed role', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
     (useCurrentUser as Mock).mockReturnValue({
       isLoading: false,
       isAuthenticated: true,
-      userInConvex: { role: "Administrator", nickname: "Admin" },
+      userInConvex: { role: 'Administrator', nickname: 'Admin' },
     });
 
-    const convex = new ConvexReactClient("http://127.0.0.1:3000");
-
     render(
-      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
-        <ConvexProvider client={convex}>
-          <QueryClientProvider client={queryClient}>
-            <MemoryRouter initialEntries={["/dashboards/admin"]}>
-              <App />
-            </MemoryRouter>
-          </QueryClientProvider>
-        </ConvexProvider>
-      </ClerkProvider>,
-    );
-
-    expect(screen.getByText(/Créer un nouvel événement/i)).toBeInTheDocument();
-  });
-
-  it("redirects to dashboards when user role is not allowed", () => {
-    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
-    (useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
-      isAuthenticated: true,
-      userInConvex: { role: "Guest", nickname: "GuestUser" },
-    });
-
-    const convex = new ConvexReactClient("http://127.0.0.1:3000");
-
-    render(
-      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
-        <ConvexProvider client={convex}>
-          <QueryClientProvider client={queryClient}>
-            <MemoryRouter initialEntries={["/dashboards/admin"]}>
-              <App />
-            </MemoryRouter>
-          </QueryClientProvider>
-        </ConvexProvider>
-      </ClerkProvider>,
-    );
-
-    // Should be redirected to dashboards route
-    expect(
-      screen.queryByText(/Créer un nouvel événement/i),
-    ).not.toBeInTheDocument();
-  });
-
-  it("shows loading when auth is not yet loaded", () => {
-    (useAuth as Mock).mockReturnValue({ isLoaded: false, isSignedIn: false });
-
-    render(
-      <MemoryRouter initialEntries={["/dashboards/admin"]}>
+      <MemoryRouter initialEntries={['/dashboards/admin']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole("status")).toHaveTextContent("Chargement...");
+    expect(
+      await screen.findByText(/Créer un nouvel événement/i),
+    ).toBeInTheDocument();
   });
 
-  it("redirects to dashboards if user role is undefined", () => {
+  it('redirects to dashboards when user role is not allowed', async () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
+    (useCurrentUser as Mock).mockReturnValue({
+      isLoading: false,
+      isAuthenticated: true,
+      userInConvex: { role: 'Guest', nickname: 'GuestUser' },
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/dashboards/admin']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByText(/Sélectionnez un tableau de bord/i),
+    ).toBeInTheDocument();
+  });
+
+  it('shows loading when auth is not yet loaded', () => {
+    (useAuth as Mock).mockReturnValue({ isLoaded: false, isSignedIn: false });
+
+    render(
+      <MemoryRouter initialEntries={['/dashboards/admin']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('status')).toHaveTextContent('Chargement...');
+  });
+
+  it('redirects to dashboards if user role is undefined', async () => {
     (useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true });
     (useCurrentUser as Mock).mockReturnValue({
       isLoading: false,
@@ -237,22 +225,14 @@ describe("App routing", () => {
       userInConvex: null, // pas de rôle
     });
 
-    const convex = new ConvexReactClient("http://127.0.0.1:3000");
-
     render(
-      <ClerkProvider publishableKey="pk_test_Y2FyZWZ1bC1jaGlja2VuLTExLmNsZXJrLmFjY291bnRzLmRldiQ">
-        <ConvexProvider client={convex}>
-          <QueryClientProvider client={queryClient}>
-            <MemoryRouter initialEntries={["/dashboards/admin"]}>
-              <App />
-            </MemoryRouter>
-          </QueryClientProvider>
-        </ConvexProvider>
-      </ClerkProvider>,
+      <MemoryRouter initialEntries={['/dashboards/admin']}>
+        <App />
+      </MemoryRouter>,
     );
 
     expect(
-      screen.queryByText(/Créer un nouvel événement/i),
-    ).not.toBeInTheDocument();
+      await screen.findByText(/Sélectionnez un tableau de bord/i),
+    ).toBeInTheDocument();
   });
 });

@@ -1,3 +1,13 @@
+echo "🔍 Running pre-commit checks..."
+
 npx lint-staged
-npm run lint
-npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Commit aborted: lint-staged failed"
+  exit 1
+fi
+
+npm run check:quick
+if [ $? -ne 0 ]; then
+  echo "❌ Commit aborted: lint and/or tests failed"
+  exit 1
+fi

@@ -1,8 +1,8 @@
-echo "🔍 Running pre-push checks..."
+echo "🔍 Running pre-push build check..."
 
-npm run lint
+npm run build
 
 if [ $? -ne 0 ]; then
-  echo "❌ Push aborted due to lint or test failure"
+  echo "❌ Push aborted due to build failure"
   exit 1
 fi
