@@ -37,13 +37,6 @@ jobs:
       - name: Run Tests Coverage
         run: npm run test:coverage
 
-      - name: Upload JUnit Test Report
-        if: ${{ always() }}
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: junit-report
-          path: test-report.junit.xml
-
       - name: Upload LCOV Coverage Report
         if: ${{ always() }}
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
