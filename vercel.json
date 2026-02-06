@@ -1,3 +1,27 @@
 {
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "stock-merch-ugs-plugvegs-projects.vercel.app"
+        }
+      ],
+      "destination": "https://www.stockmerch.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "stock-merch-ugs-git-main-plugvegs-projects.vercel.app"
+        }
+      ],
+      "destination": "https://www.stockmerch.net/:path",
+      "permanent": true
+    }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
