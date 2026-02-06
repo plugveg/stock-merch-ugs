@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/plugveg/stock-merch-ugs/compare/v1.11.0...v1.11.1) (2026-02-06)
+
+
+### Bug Fixes
+
+* redirect Vercel deployment URLs to www.stockmerch.net and update Node.js engine requirement ([#329](https://github.com/plugveg/stock-merch-ugs/issues/329)) ([39f3df3](https://github.com/plugveg/stock-merch-ugs/commit/39f3df3827fb11b0caacece4a62205ec766d76ba))
+
 # [1.11.0](https://github.com/plugveg/stock-merch-ugs/compare/v1.10.3...v1.11.0) (2026-02-03)
 
 
