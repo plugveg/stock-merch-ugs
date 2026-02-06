@@ -17,8 +17,7 @@
     "test:ui": "vitest --ui",
     "prepare": "husky",
     "test:coverage": "vitest run --coverage --reporter=default",
-    "test:verbose": "vitest run --reporter=verbose",
-    "coverage:upload": "bash scripts/coverage-upload.sh"
+    "test:verbose": "vitest run --reporter=verbose"
   },
   "dependencies": {
     "@clerk/backend": "^2.30.1",
