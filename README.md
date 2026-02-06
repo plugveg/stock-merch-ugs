@@ -170,6 +170,9 @@ There aren't always a ticket for each tech steps.
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 - [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
+  - Major updates: `recharts` 2 → 3, `@types/node` 22 → 25
+  - Node.js: align project with the Node.js version required by the updated dependencies (see `engines` field and CI config)
+  - Notes: review and adapt any code using Recharts components or Node.js type definitions where breaking changes apply
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
 
 ## Tutorials
