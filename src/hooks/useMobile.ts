@@ -1,59 +1,59 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 // Define screen size breakpoints
-export type ScreenSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type ScreenSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 export function useScreenSize(): {
-  screenSize: ScreenSize;
-  isMobile: boolean;
-  isTablet: boolean;
-  isDesktop: boolean;
-  windowWidth: number;
+  screenSize: ScreenSize
+  isMobile: boolean
+  isTablet: boolean
+  isDesktop: boolean
+  windowWidth: number
 } {
-  const [screenSize, setScreenSize] = useState<ScreenSize>("lg");
+  const [screenSize, setScreenSize] = useState<ScreenSize>('lg')
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
+      const width = window.innerWidth
 
       if (width < 480) {
-        setScreenSize("xs");
+        setScreenSize('xs')
       } else if (width < 640) {
-        setScreenSize("sm");
+        setScreenSize('sm')
       } else if (width < 768) {
-        setScreenSize("md");
+        setScreenSize('md')
       } else if (width < 1024) {
-        setScreenSize("lg");
+        setScreenSize('lg')
       } else if (width < 1280) {
-        setScreenSize("xl");
+        setScreenSize('xl')
       } else {
-        setScreenSize("2xl");
+        setScreenSize('2xl')
       }
-    };
+    }
 
     // Set initial value
-    handleResize();
+    handleResize()
 
     // Add event listener
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize)
 
     // Clean up event listener
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return {
     screenSize,
     windowWidth: window.innerWidth,
-    isMobile: screenSize === "xs" || screenSize === "sm",
-    isTablet: screenSize === "md" || screenSize === "lg",
-    isDesktop: screenSize === "xl" || screenSize === "2xl",
-  };
+    isMobile: screenSize === 'xs' || screenSize === 'sm',
+    isTablet: screenSize === 'md' || screenSize === 'lg',
+    isDesktop: screenSize === 'xl' || screenSize === '2xl',
+  }
 }
 
 // For backward compatibility
 export const useMobile = (): boolean => {
-  const { isMobile } = useScreenSize();
-  return isMobile;
-};
+  const { isMobile } = useScreenSize()
+  return isMobile
+}

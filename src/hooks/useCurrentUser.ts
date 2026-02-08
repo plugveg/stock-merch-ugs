@@ -1,12 +1,12 @@
-import { useConvexAuth, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useConvexAuth, useQuery } from 'convex/react'
+import { api } from '../../convex/_generated/api'
 
 export function useCurrentUser() {
-  const { isLoading, isAuthenticated } = useConvexAuth();
-  const userInConvex = useQuery(api.users.current);
+  const { isLoading, isAuthenticated } = useConvexAuth()
+  const userInConvex = useQuery(api.users.current)
 
   // Determine if the user query is still loading when authenticated
-  const isUserQueryLoading = isAuthenticated && userInConvex === null;
+  const isUserQueryLoading = isAuthenticated && userInConvex === null
 
   // Combine the authentication state with the user existence check
   return {
@@ -14,5 +14,5 @@ export function useCurrentUser() {
     isLoading: isLoading || isUserQueryLoading,
     isAuthenticated: isAuthenticated && userInConvex !== null,
     userInConvex,
-  };
+  }
 }

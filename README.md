@@ -4,10 +4,7 @@ _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query + Clerk (fo
 
 ## Badges
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 
 ## Table of contents of the README
 
@@ -56,7 +53,7 @@ The folder `docs` contains the documentation for the project. The documentation 
 
 ## Diagram for the database
 
-![](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
+![Diagram](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
 
 ## How to run the project
 
@@ -170,10 +167,8 @@ There aren't always a ticket for each tech steps.
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 - [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
-  - Major updates: `recharts` 2 → 3, `@types/node` 22 → 25
-  - Node.js: align project with the Node.js version required by the updated dependencies (see `engines` field and CI config)
-  - Notes: review and adapt any code using Recharts components or Node.js type definitions where breaking changes apply
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
+- [x] Add ESLINT & Prettier for code quality and formatting [SETSUMAFU-172](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-172)
 
 ## Tutorials
 

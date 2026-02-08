@@ -1,36 +1,23 @@
-"use client";
+'use client'
 
-import type React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useScreenSize } from "@/hooks/useMobile";
-import { getSizeClass } from "@/lib/getSizeClass";
+import type React from 'react'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { useScreenSize } from '@/hooks/useMobile'
+import { getSizeClass } from '@/lib/getSizeClass'
 
 interface ResponsiveDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  title: string;
-  description?: string;
-  children: React.ReactNode;
-  size?: "sm" | "md" | "lg" | "xl" | "full";
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  title: string
+  description?: string
+  children: React.ReactNode
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
-export function ResponsiveDialog({
-  open,
-  onOpenChange,
-  title,
-  description,
-  children,
-  size = "md",
-}: ResponsiveDialogProps) {
-  const { screenSize } = useScreenSize();
+export function ResponsiveDialog({ open, onOpenChange, title, description, children, size = 'md' }: ResponsiveDialogProps) {
+  const { screenSize } = useScreenSize()
 
-  const sizeClass = getSizeClass(screenSize, size);
+  const sizeClass = getSizeClass(screenSize, size)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,10 +26,8 @@ export function ResponsiveDialog({
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-        <div className="mt-4 overflow-y-auto max-h-[calc(80vh-8rem)]">
-          {children}
-        </div>
+        <div className="mt-4 overflow-y-auto max-h-[calc(80vh-8rem)]">{children}</div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
