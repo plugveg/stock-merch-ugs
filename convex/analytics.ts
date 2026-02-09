@@ -25,6 +25,16 @@ export const getEventAnalytics = query({
       throw new Error('Event not found')
     }
 
+    // Verify user is an administrator or board member for this event
+    const privilegedParticipants = await ctx.db
+      .query('eventParticipants')
+      .withIndex('by_eventId_and_userId', (q) => q.eq('eventId', args.eventId).eq('userId', meDoc?._id))
+      .filter((q) => q.or(q.eq(q.field('role'), 'Administrator'), q.eq(q.field('role'), 'Board of directors')))
+      .collect()
+    if (privilegedParticipants.length === 0 && event.adminId !== meDoc._id) {
+      throw new Error('Only event administrators, board members, or the event admin can view analytics.')
+    }
+
     // Verify user is an organizer or admin for this event
     const organizers = await ctx.db
       .query('eventParticipants')

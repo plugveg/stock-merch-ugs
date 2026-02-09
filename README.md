@@ -183,7 +183,7 @@ There aren't always a ticket for each tech steps.
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 - [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
-- [x] Add ESLINT & Prettier for code quality and formatting [SETSUMAFU-172](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-172)
+- [x] Add ESLINT & Prettier for code quality/formatting + Remove useless depencies like recharts [SETSUMAFU-172](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-172)
   - Added a new ESLint flat config and Prettier configuration; updated package.json scripts and devDependencies accordingly.
   - Reformatted TS/TSX/JSON/MD/CSS/YAML files to match the new formatter rules (single quotes, no semicolons, etc.).
   - Removed charting/tabs-related components/tests/dependencies and simplified the Products page UI (analytics tab/charts removed).
