@@ -26,7 +26,7 @@ export default defineConfig([
     plugins: { '@stylistic': stylistic, js, perfectionist, prettier: prettierPlugin, react: pluginReact },
     rules: {
       ...prettierConfig.rules,
-      '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
+      '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'jsx-quotes': ['error', 'prefer-double'],
