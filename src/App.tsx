@@ -1,80 +1,64 @@
-import { Routes, Route, Navigate } from 'react-router';
-import { JSX, Suspense, lazy } from 'react';
-import { useAuth } from '@clerk/clerk-react';
-import { useCurrentUser } from './hooks/useCurrentUser';
-import { Roles } from 'convex/schema';
+/* eslint-disable no-console */
+import { Roles } from 'convex/schema'
+import { JSX, Suspense, lazy } from 'react'
+import { useAuth } from '@clerk/clerk-react'
+import { Routes, Route, Navigate } from 'react-router'
 
-const Home = lazy(() => import('./Home'));
-const Products = lazy(() => import('./Products'));
-const Dashboards = lazy(() => import('./Dashboards'));
-const AdminDashboard = lazy(() => import('./AdminDashboard'));
-const UserDashboard = lazy(() => import('./UserDashboard'));
+import { useCurrentUser } from './hooks/useCurrentUser'
+
+const Home = lazy(() => import('./Home'))
+const Products = lazy(() => import('./Products'))
+const Dashboards = lazy(() => import('./Dashboards'))
+const AdminDashboard = lazy(() => import('./AdminDashboard'))
+const UserDashboard = lazy(() => import('./UserDashboard'))
 
 function RouteLoading() {
   return (
-    <div
-      aria-live="polite"
-      role="status"
-      style={{ textAlign: 'center', padding: '1em' }}
-    >
+    <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
       Chargement...
     </div>
-  );
+  )
 }
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn } = useAuth()
   // While auth state is loading, render a loading indicator
   if (!isLoaded)
     return (
-      <div
-        aria-live="polite"
-        role="status"
-        style={{ textAlign: 'center', padding: '1em' }}
-      >
+      <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
         Chargement...
       </div>
-    );
-  return isSignedIn ? children : <Navigate to="/" replace />;
+    )
+  return isSignedIn ? children : <Navigate to="/" replace />
 }
 
-function RoleProtectedRoute({
-  children,
-  allowedRoles,
-}: {
-  children: JSX.Element;
-  allowedRoles: string[];
-}) {
-  const { isLoaded, isSignedIn } = useAuth();
-  const { userInConvex } = useCurrentUser();
+function RoleProtectedRoute({ allowedRoles, children }: { children: JSX.Element; allowedRoles: string[] }) {
+  const { isLoaded, isSignedIn } = useAuth()
+  const { userInConvex } = useCurrentUser()
 
   // While auth state is loading, render a loading indicator
   if (!isLoaded)
     return (
-      <div
-        aria-live="polite"
-        role="status"
-        style={{ textAlign: 'center', padding: '1em' }}
-      >
+      <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
         Chargement...
       </div>
-    );
+    )
 
   // Check if user is signed in first
-  if (!isSignedIn) return <Navigate to="/" replace />;
+  if (!isSignedIn) return <Navigate to="/" replace />
 
   // Check if user has one of the required roles
-  const userRole = userInConvex?.role as Roles;
+  const userRole = userInConvex?.role as Roles
 
   // If userRoles is undefined, we can't check roles, so deny access
   if (!userRole) {
-    console.warn('User roles could not be determined');
-    return <Navigate to="/dashboards" replace />;
+    console.warn('User roles could not be determined')
+    return <Navigate to="/dashboards" replace />
   }
 
-  const hasRequiredRole = allowedRoles.includes(userRole);
+  const hasRequiredRole = allowedRoles.includes(userRole)
 
-  return hasRequiredRole ? children : <Navigate to="/dashboards" replace />;
+  return hasRequiredRole ? children : <Navigate to="/dashboards" replace />
 }
 
 function App() {
@@ -111,9 +95,7 @@ function App() {
       <Route
         path="/dashboards/admin"
         element={
-          <RoleProtectedRoute
-            allowedRoles={['Administrator', 'Board of directors']}
-          >
+          <RoleProtectedRoute allowedRoles={['Administrator', 'Board of directors']}>
             <Suspense fallback={<RouteLoading />}>
               <AdminDashboard />
             </Suspense>
@@ -132,7 +114,7 @@ function App() {
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  );
+  )
 }
 
-export default App;
+export default App

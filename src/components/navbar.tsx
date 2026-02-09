@@ -1,16 +1,13 @@
-import { Github, Globe, Instagram, Twitter } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router'
+import { Github, Globe, Instagram, Twitter } from 'lucide-react'
 
 export default function NavBar({ children }: { children?: React.ReactNode }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <nav className="bg-white shadow-md py-3 fixed top-0 z-10 w-full">
       <div className="container mx-auto px-3 flex justify-between items-center">
-        <h1
-          className="text-2xl font-bold text-indigo-600 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
+        <h1 className="text-2xl font-bold text-indigo-600 cursor-pointer" onClick={() => navigate('/')}>
           StockMerch by UGS
         </h1>
         <div className="flex flex-wrap gap-2 break-all justify-end">
@@ -79,5 +76,5 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
         </NavigationMenuList>
       </NavigationMenu> */}
     </nav>
-  );
+  )
 }

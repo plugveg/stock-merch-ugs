@@ -1,114 +1,115 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { useScreenSize, useMobile } from "../useMobile";
+import { renderHook, act } from '@testing-library/react'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 
-describe("useScreenSize", () => {
+import { useScreenSize, useMobile } from '../useMobile'
+
+describe('useScreenSize', () => {
   const resizeWindow = (width: number) => {
-    (window.innerWidth as number) = width;
-    window.dispatchEvent(new Event("resize"));
-  };
+    ;(window.innerWidth as number) = width
+    window.dispatchEvent(new Event('resize'))
+  }
 
   afterEach(() => {
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
   const scenarios = [
     {
+      expected: 'xs',
+      isDesktop: false,
+      isMobile: true,
+      isTablet: false,
       width: 320,
-      expected: "xs",
-      isMobile: true,
-      isTablet: false,
-      isDesktop: false,
     },
     {
+      expected: 'sm',
+      isDesktop: false,
+      isMobile: true,
+      isTablet: false,
       width: 500,
-      expected: "sm",
-      isMobile: true,
-      isTablet: false,
-      isDesktop: false,
     },
     {
+      expected: 'md',
+      isDesktop: false,
+      isMobile: false,
+      isTablet: true,
       width: 700,
-      expected: "md",
-      isMobile: false,
-      isTablet: true,
-      isDesktop: false,
     },
     {
+      expected: 'lg',
+      isDesktop: false,
+      isMobile: false,
+      isTablet: true,
       width: 900,
-      expected: "lg",
-      isMobile: false,
-      isTablet: true,
-      isDesktop: false,
     },
     {
+      expected: 'xl',
+      isDesktop: true,
+      isMobile: false,
+      isTablet: false,
       width: 1100,
-      expected: "xl",
-      isMobile: false,
-      isTablet: false,
-      isDesktop: true,
     },
     {
-      width: 1400,
-      expected: "2xl",
+      expected: '2xl',
+      isDesktop: true,
       isMobile: false,
       isTablet: false,
-      isDesktop: true,
+      width: 1400,
     },
-  ];
+  ]
 
-  scenarios.forEach(({ width, expected, isMobile, isTablet, isDesktop }) => {
+  scenarios.forEach(({ expected, isDesktop, isMobile, isTablet, width }) => {
     it(`returns correct screen size '${expected}' for width ${width}`, () => {
-      const { result } = renderHook(() => useScreenSize());
+      const { result } = renderHook(() => useScreenSize())
 
       act(() => {
-        resizeWindow(width);
-      });
+        resizeWindow(width)
+      })
 
-      expect(result.current.screenSize).toBe(expected);
-      expect(result.current.windowWidth).toBe(width);
-      expect(result.current.isMobile).toBe(isMobile);
-      expect(result.current.isTablet).toBe(isTablet);
-      expect(result.current.isDesktop).toBe(isDesktop);
-    });
-  });
-});
+      expect(result.current.screenSize).toBe(expected)
+      expect(result.current.windowWidth).toBe(width)
+      expect(result.current.isMobile).toBe(isMobile)
+      expect(result.current.isTablet).toBe(isTablet)
+      expect(result.current.isDesktop).toBe(isDesktop)
+    })
+  })
+})
 
-describe("useMobile", () => {
+describe('useMobile', () => {
   const resizeWindow = (width: number) => {
-    (window.innerWidth as number) = width;
-    window.dispatchEvent(new Event("resize"));
-  };
+    ;(window.innerWidth as number) = width
+    window.dispatchEvent(new Event('resize'))
+  }
 
   beforeEach(() => {
-    vi.stubGlobal("innerWidth", 1024);
-  });
+    vi.stubGlobal('innerWidth', 1024)
+  })
 
   afterEach(() => {
-    vi.restoreAllMocks();
-  });
+    vi.restoreAllMocks()
+  })
 
-  it("returns true when screen is mobile (xs)", () => {
-    const { result } = renderHook(() => useMobile());
+  it('returns true when screen is mobile (xs)', () => {
+    const { result } = renderHook(() => useMobile())
     act(() => {
-      resizeWindow(300);
-    });
-    expect(result.current).toBe(true);
-  });
+      resizeWindow(300)
+    })
+    expect(result.current).toBe(true)
+  })
 
-  it("returns true when screen is mobile (sm)", () => {
-    const { result } = renderHook(() => useMobile());
+  it('returns true when screen is mobile (sm)', () => {
+    const { result } = renderHook(() => useMobile())
     act(() => {
-      resizeWindow(500);
-    });
-    expect(result.current).toBe(true);
-  });
+      resizeWindow(500)
+    })
+    expect(result.current).toBe(true)
+  })
 
-  it("returns false when screen is tablet or desktop", () => {
-    const { result } = renderHook(() => useMobile());
+  it('returns false when screen is tablet or desktop', () => {
+    const { result } = renderHook(() => useMobile())
     act(() => {
-      resizeWindow(900);
-    });
-    expect(result.current).toBe(false);
-  });
-});
+      resizeWindow(900)
+    })
+    expect(result.current).toBe(false)
+  })
+})

@@ -1,1 +1,3 @@
-convex/_generated
+convex/_generated/**
+dist/**
+coverage/**

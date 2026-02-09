@@ -4,10 +4,7 @@ _with React + TypeScript + Vite + Tailwind + Convex + TanStack Query + Clerk (fo
 
 ## Badges
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/80559360bc66475e92ee7d3df6803d31)](https://app.codacy.com/gh/plugveg/stock-merch-ugs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/plugveg/stock-merch-ugs/badge)](https://scorecard.dev/viewer/?uri=github.com/plugveg/stock-merch-ugs) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10495/badge)](https://www.bestpractices.dev/projects/10495)
 
 ## Table of contents of the README
 
@@ -56,7 +53,7 @@ The folder `docs` contains the documentation for the project. The documentation 
 
 ## Diagram for the database
 
-![](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
+![Diagram](https://app.eraser.io/workspace/do9LGbVDtteqDT7RNgEr/preview?elements=EvbIxxzfS2aiPggn8rcm-g&type=embed)
 
 ## How to run the project
 
@@ -105,16 +102,31 @@ Once you have Node.js & npm installed, you can run the project locally by follow
 4. Create a `.env.local` file in the root directory of the project and add the following variables:
 
 ```bash
-  # Convex for Development
-  CONVEX_DEPLOYMENT=<your_convex_deployment>
-  VITE_CONVEX_URL=<your_convex_url>
-  CONVEX_SITE_URL=<your_convex_site_url>
+# Deployment used by `npx convex dev`
+# Two lines auto-generated using `npx convex dev` command
+# Convex for Development
+CONVEX_DEPLOYMENT=XXXXXXX # team: pseudo, project: name of the project - DEV
+VITE_CONVEX_URL=XXXXXXX # DEV
+CONVEX_SITE_URL=XXXXXXX # DEV
 
-  # Clerk for Development
-  CLERK_WEBHOOK_SECRET=<your_clerk_webhook_secret> # Webhook secret for Clerk - DEV
-  VITE_CLERK_FRONTEND_API_URL=<your_clerk_frontend_api_url> #API URL for the Clerk frontend - DEV
-  VITE_CLERK_PUBLISHABLE_KEY=<your_clerk_publishable_key> # Publishable key for the Clerk frontend - DEV
-  VITE_CLERK_SECRET_KEY=<your_clerk_secret_key> # Secret key for the Clerk frontend - DEV
+# Convex for Production
+VITE_CONVEX_URL_PROD=XXXXXXX # PROD
+CONVEX_SITE_URL_PROD=XXXXXXX # PROD
+
+# Codacy Token
+CODACY_PROJECT_TOKEN=XXXXXXX
+
+# Clerk for Development
+CLERK_WEBHOOK_SECRET=XXXXXXX # Webhook secret for Clerk - DEV
+VITE_CLERK_FRONTEND_API_URL=XXXXXXX #API URL for the Clerk frontend - DEV
+VITE_CLERK_PUBLISHABLE_KEY=XXXXXXX # Publishable key for the Clerk frontend - DEV
+VITE_CLERK_SECRET_KEY=XXXXXXX # Secret key for the Clerk frontend - DEV
+
+# Clerk for Production
+CLERK_WEBHOOK_SECRET_PROD=XXXXXXX # Webhook secret for Clerk - PROD
+VITE_CLERK_FRONTEND_API_URL_PROD=XXXXXXX #API URL for the Clerk frontend - PROD
+VITE_CLERK_PUBLISHABLE_KEY_PROD=XXXXXXX # Publishable key for the Clerk frontend - PROD
+VITE_CLERK_SECRET_KEY_PROD=XXXXXXX # Secret key for the Clerk frontend - PROD
 ```
 
 5. Run the project using the command below:
@@ -170,10 +182,12 @@ There aren't always a ticket for each tech steps.
 - [x] Integrated Codecov into the CI/CD pipeline to track code coverage (see badge at the top for current status)
 - [x] Add a tutorial to launch the project locally [SETSUMAFU-139](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-139)
 - [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
-  - Major updates: `recharts` 2 → 3, `@types/node` 22 → 25
-  - Node.js: align project with the Node.js version required by the updated dependencies (see `engines` field and CI config)
-  - Notes: review and adapt any code using Recharts components or Node.js type definitions where breaking changes apply
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
+- [x] Add ESLINT & Prettier for code quality/formatting + Remove useless depencies like recharts [SETSUMAFU-172](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-172)
+  - Added a new ESLint flat config and Prettier configuration; updated package.json scripts and devDependencies accordingly.
+  - Reformatted TS/TSX/JSON/MD/CSS/YAML files to match the new formatter rules (single quotes, no semicolons, etc.).
+  - Removed charting/tabs-related components/tests/dependencies and simplified the Products page UI (analytics tab/charts removed).
+  - Added perfectionist to enforce consistent formatting for imports and code quality across the project.
 
 ## Tutorials
 
