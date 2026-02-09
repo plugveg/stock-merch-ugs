@@ -1,22 +1,24 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { ClerkProvider, useAuth } from '@clerk/clerk-react'
-import { ConvexProviderWithClerk } from 'convex/react-clerk'
-import { ConvexReactClient } from 'convex/react'
-import { ConvexQueryClient } from '@convex-dev/react-query'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { frFR } from '@clerk/localizations'
 import { BrowserRouter } from 'react-router'
+
+import './index.css'
+import { createRoot } from 'react-dom/client'
+import { ConvexReactClient } from 'convex/react'
+import { ClerkProvider, useAuth } from '@clerk/clerk-react'
+import { ConvexQueryClient } from '@convex-dev/react-query'
+import { ConvexProviderWithClerk } from 'convex/react-clerk'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+import App from './App.tsx'
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL)
 const convexQueryClient = new ConvexQueryClient(convex)
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryKeyHashFn: convexQueryClient.hashFn(),
       queryFn: convexQueryClient.queryFn(),
+      queryKeyHashFn: convexQueryClient.hashFn(),
     },
   },
 })

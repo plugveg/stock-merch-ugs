@@ -1,5 +1,5 @@
-import { Github, Globe, Instagram, Twitter } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { Github, Globe, Instagram, Twitter } from 'lucide-react'
 
 export default function NavBar({ children }: { children?: React.ReactNode }) {
   const navigate = useNavigate()

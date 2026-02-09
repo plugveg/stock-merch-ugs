@@ -1,7 +1,8 @@
+import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest'
+
 import { StockForm } from '@/components/stock-form'
-import userEvent from '@testing-library/user-event'
 
 beforeAll(() => {
   global.ResizeObserver = class {
@@ -37,26 +38,26 @@ import { Id } from 'convex/_generated/dataModel'
 import { Conditions, ProductTypes, Status } from 'convex/schema'
 
 const mockInitialData = {
-  _id: { __tableName: 'products' } as Id<'products'>,
   _creationTime: Date.now(),
-  productName: 'Test Product',
-  description: 'Test description',
-  quantity: 10,
-  photo: '',
-  storageLocation: 'Test Location',
-  condition: 'New' as Conditions,
-  licenseName: ['Test License'],
+  _id: { __tableName: 'products' } as Id<'products'>,
   characterName: ['Test Character'],
-  productType: ['Prepainted'] as ProductTypes[],
-  status: 'In Stock' as Status,
-  purchaseLocation: 'Test Store',
-  purchaseDate: new Date('2024-01-01').getTime(),
-  purchasePrice: 25.99,
-  threshold: 2,
-  sellLocation: '',
-  sellDate: undefined,
-  sellPrice: 0,
+  condition: 'New' as Conditions,
+  description: 'Test description',
+  licenseName: ['Test License'],
   ownerUserId: 'IdOfUSer' as Id<'users'>,
+  photo: '',
+  productName: 'Test Product',
+  productType: ['Prepainted'] as ProductTypes[],
+  purchaseDate: new Date('2024-01-01').getTime(),
+  purchaseLocation: 'Test Store',
+  purchasePrice: 25.99,
+  quantity: 10,
+  sellDate: undefined,
+  sellLocation: '',
+  sellPrice: 0,
+  status: 'In Stock' as Status,
+  storageLocation: 'Test Location',
+  threshold: 2,
 }
 
 const mockInitialDataWithSellDate = {
@@ -65,26 +66,26 @@ const mockInitialDataWithSellDate = {
 }
 
 const mockInitialDataError = {
-  _id: { __tableName: 'products' } as Id<'products'>,
   _creationTime: Date.now(),
-  productName: '',
-  description: 'dededed',
-  quantity: -1,
-  photo: '',
-  storageLocation: '',
-  condition: 'New' as Conditions,
-  licenseName: ['Test License'],
+  _id: { __tableName: 'products' } as Id<'products'>,
   characterName: ['Test Character'],
-  productType: ['Prepainted'] as ProductTypes[],
-  status: 'In Stock' as Status,
-  purchaseLocation: 'Test Store',
-  purchaseDate: new Date('2024-01-01').getTime(),
-  purchasePrice: -25.99,
-  threshold: -2,
-  sellLocation: '',
-  sellDate: undefined,
-  sellPrice: 0,
+  condition: 'New' as Conditions,
+  description: 'dededed',
+  licenseName: ['Test License'],
   ownerUserId: 'IdOfUSer' as Id<'users'>,
+  photo: '',
+  productName: '',
+  productType: ['Prepainted'] as ProductTypes[],
+  purchaseDate: new Date('2024-01-01').getTime(),
+  purchaseLocation: 'Test Store',
+  purchasePrice: -25.99,
+  quantity: -1,
+  sellDate: undefined,
+  sellLocation: '',
+  sellPrice: 0,
+  status: 'In Stock' as Status,
+  storageLocation: '',
+  threshold: -2,
 }
 
 describe('StockForm', () => {

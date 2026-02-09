@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from 'convex/server'
 import { Infer, v } from 'convex/values'
+import { defineSchema, defineTable } from 'convex/server'
 
 // These constants are used to define the schema for the roles, conditions, status, and productTypes entities.
 // They are used to validate the data that is being stored in the database. (ENUM)
@@ -66,29 +66,115 @@ export const productTypes = v.union(
 
 // This is the schema for the entities in the database.
 export default defineSchema({
-  roles: defineTable({
-    name: roles,
+  collections: defineTable({
+    collectionName: v.string(),
+    numberOfGoodiesInCollection: v.number(),
+    totalValue: v.number(),
+    userId: v.id('users'), // Foreign key to user who owns this collection
   }),
 
   conditions: defineTable({
     name: conditions,
   }),
 
-  status: defineTable({
-    name: status,
-  }),
+  eventParticipants: defineTable({
+    eventId: v.id('events'),
+    role: roles,
+    userId: v.id('users'),
+  })
+    .index('by_eventId', ['eventId'])
+    .index('by_userId', ['userId'])
+    .index('by_eventId_and_userId', ['eventId', 'userId'])
+    .index('by_eventId_and_role', ['eventId', 'role']),
+
+  eventProducts: defineTable({
+    eventId: v.id('events'),
+    productId: v.id('products'),
+    salePrice: v.optional(v.number()),
+    status: status,
+  })
+    .index('by_eventId', ['eventId'])
+    .index('by_productId', ['productId'])
+    .index('by_eventId_and_productId', ['eventId', 'productId'])
+    .index('by_eventId_and_status', ['eventId', 'status']),
+
+  events: defineTable({
+    adminId: v.id('users'),
+    description: v.string(),
+    endTime: v.number(),
+    location: v.string(),
+    name: v.string(),
+    startTime: v.number(),
+  }).index('by_adminId', ['adminId']),
+
+  products: defineTable({
+    characterName: v.array(v.string()),
+    collectionId: v.optional(v.id('collections')),
+    condition: conditions,
+    description: v.string(),
+    licenseName: v.array(v.string()),
+    ownerUserId: v.id('users'),
+    photo: v.optional(v.string()),
+    productName: v.string(),
+    productType: v.array(productTypes),
+    purchaseDate: v.number(),
+    purchaseLocation: v.string(),
+    purchasePrice: v.number(),
+    quantity: v.number(),
+    sellDate: v.optional(v.number()),
+    sellLocation: v.optional(v.string()),
+    sellPrice: v.optional(v.number()),
+    status: status,
+    storageLocation: v.string(),
+    threshold: v.number(),
+  })
+    .index('by_ownerId', ['ownerUserId'])
+    .index('by_status', ['status'])
+    .index('by_productType', ['productType']),
 
   productTypes: defineTable({
     name: productTypes,
   }),
 
+  roles: defineTable({
+    name: roles,
+  }),
+
+  status: defineTable({
+    name: status,
+  }),
+
+  transactionProducts: defineTable({
+    productId: v.id('products'),
+    transactionId: v.id('transactions'),
+  })
+    .index('by_transaction', ['transactionId'])
+    .index('by_product', ['productId'])
+    .index('by_transaction_and_product', ['transactionId', 'productId']),
+
+  transactions: defineTable({
+    quantity: v.number(),
+    soldDate: v.number(),
+    soldLocation: v.string(),
+    soldPrice: v.number(),
+    transactionName: v.string(),
+  }).index('by_soldDate', ['soldDate']),
+
+  userBuyerTransactions: defineTable({
+    buyerUserId: v.id('users'),
+    transactionId: v.id('transactions'),
+  })
+    .index('by_buyer', ['buyerUserId'])
+    .index('by_transaction', ['transactionId'])
+    .index('by_buyer_and_transaction', ['buyerUserId', 'transactionId']),
+
   users: defineTable({
+    email: v.string(),
     firstName: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
     lastName: v.optional(v.string()),
     nickname: v.optional(v.string()),
-    email: v.string(),
     phoneNumber: v.optional(v.string()),
-    imageUrl: v.optional(v.string()),
     // this the Clerk ID, stored in the subject JWT field
     externalId: v.string(),
     role: roles,
@@ -96,99 +182,13 @@ export default defineSchema({
     .index('email', ['email'])
     .index('byExternalId', ['externalId']),
 
-  products: defineTable({
-    productName: v.string(),
-    description: v.string(),
-    quantity: v.number(),
-    photo: v.optional(v.string()),
-    storageLocation: v.string(),
-    condition: conditions,
-    licenseName: v.array(v.string()),
-    characterName: v.array(v.string()),
-    productType: v.array(productTypes),
-    status: status,
-    purchaseLocation: v.string(),
-    purchaseDate: v.number(),
-    purchasePrice: v.number(),
-    threshold: v.number(),
-    sellLocation: v.optional(v.string()),
-    sellDate: v.optional(v.number()),
-    sellPrice: v.optional(v.number()),
-    collectionId: v.optional(v.id('collections')),
-    ownerUserId: v.id('users'),
-  })
-    .index('by_ownerId', ['ownerUserId'])
-    .index('by_status', ['status'])
-    .index('by_productType', ['productType']),
-
-  transactions: defineTable({
-    transactionName: v.string(),
-    quantity: v.number(),
-    soldPrice: v.number(),
-    soldDate: v.number(),
-    soldLocation: v.string(),
-  }).index('by_soldDate', ['soldDate']),
-
-  transactionProducts: defineTable({
-    transactionId: v.id('transactions'),
-    productId: v.id('products'),
-  })
-    .index('by_transaction', ['transactionId'])
-    .index('by_product', ['productId'])
-    .index('by_transaction_and_product', ['transactionId', 'productId']),
-
-  userBuyerTransactions: defineTable({
-    transactionId: v.id('transactions'),
-    buyerUserId: v.id('users'),
-  })
-    .index('by_buyer', ['buyerUserId'])
-    .index('by_transaction', ['transactionId'])
-    .index('by_buyer_and_transaction', ['buyerUserId', 'transactionId']),
-
   userSellerTransactions: defineTable({
-    transactionId: v.id('transactions'),
     sellerUserId: v.id('users'),
+    transactionId: v.id('transactions'),
   })
     .index('by_seller', ['sellerUserId'])
     .index('by_transaction', ['transactionId'])
     .index('by_seller_and_transaction', ['sellerUserId', 'transactionId']),
-
-  collections: defineTable({
-    collectionName: v.string(),
-    totalValue: v.number(),
-    numberOfGoodiesInCollection: v.number(),
-    userId: v.id('users'), // Foreign key to user who owns this collection
-  }),
-
-  events: defineTable({
-    name: v.string(),
-    description: v.string(),
-    startTime: v.number(),
-    endTime: v.number(),
-    location: v.string(),
-    adminId: v.id('users'),
-  }).index('by_adminId', ['adminId']),
-
-  eventProducts: defineTable({
-    eventId: v.id('events'),
-    productId: v.id('products'),
-    status: status,
-    salePrice: v.optional(v.number()),
-  })
-    .index('by_eventId', ['eventId'])
-    .index('by_productId', ['productId'])
-    .index('by_eventId_and_productId', ['eventId', 'productId'])
-    .index('by_eventId_and_status', ['eventId', 'status']),
-
-  eventParticipants: defineTable({
-    eventId: v.id('events'),
-    userId: v.id('users'),
-    role: roles,
-  })
-    .index('by_eventId', ['eventId'])
-    .index('by_userId', ['userId'])
-    .index('by_eventId_and_userId', ['eventId', 'userId'])
-    .index('by_eventId_and_role', ['eventId', 'role']),
 })
 
 // This is a type-safe way to access the schema in your code.

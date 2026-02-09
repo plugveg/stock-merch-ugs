@@ -1,34 +1,35 @@
 /* eslint-disable no-console */
-import { useState, FormEvent } from 'react'
-import { useMutation, useQuery } from 'convex/react'
-import { api } from '../convex/_generated/api'
-import { Id } from '../convex/_generated/dataModel'
-import NavBar from './components/navbar'
-import { UserButton } from '@clerk/clerk-react'
-import { RoleBadge } from './components/role-badge'
-import { useCurrentUser } from './hooks/useCurrentUser'
-import Footer from './components/footer'
-import { StockForm } from './components/stock-form'
-import { ResponsiveDialog } from './components/responsive-dialog'
-import { Button } from './components/ui/button'
 import { Plus } from 'lucide-react'
+import { useState, FormEvent } from 'react'
+import { UserButton } from '@clerk/clerk-react'
+import { useMutation, useQuery } from 'convex/react'
 import { Conditions, ProductTypes, Status } from 'convex/schema'
 
+import NavBar from './components/navbar'
+import Footer from './components/footer'
+import { api } from '../convex/_generated/api'
+import { Button } from './components/ui/button'
+import { Id } from '../convex/_generated/dataModel'
+import { RoleBadge } from './components/role-badge'
+import { StockForm } from './components/stock-form'
+import { useCurrentUser } from './hooks/useCurrentUser'
+import { ResponsiveDialog } from './components/responsive-dialog'
+
 interface ProductFormData {
+  status: Status
+  quantity: number
   productName: string
   description: string
-  quantity: number
-  storageLocation: string
   condition: Conditions
   licenseName: string[]
+  storageLocation: string
   characterName: string[]
-  productType: ProductTypes[]
-  status: Status
   purchaseLocation: string
+  productType: ProductTypes[]
   /** UNIX timestamp en millisecondes */
+  threshold: number
   purchaseDate: number
   purchasePrice: number
-  threshold: number
   ownerUserId: Id<'users'>
 }
 
@@ -83,9 +84,9 @@ export default function UserDashboard() {
 
       // Then set availability for the event
       await setProductAvailability({
-        productId: selectedProductId as Id<'products'>,
-        eventId: selectedEventIdForProduct as Id<'events'>,
         available: isAvailable,
+        eventId: selectedEventIdForProduct as Id<'events'>,
+        productId: selectedProductId as Id<'products'>,
       })
 
       alert(

@@ -1,22 +1,24 @@
-import NavBar from '@/components/navbar'
+import { useState, useMemo } from 'react'
+import { Info, Plus } from 'lucide-react'
 import { UserButton } from '@clerk/clerk-react'
-import { useCurrentUser } from './hooks/useCurrentUser'
+import { Doc } from 'convex/_generated/dataModel'
+import { Label } from '@radix-ui/react-dropdown-menu'
+
+import NavBar from '@/components/navbar'
+import { Button } from '@/components/ui/button'
+import { StockForm } from '@/components/stock-form'
+import { RoleBadge } from '@/components/role-badge'
+import { StockTable } from '@/components/stock-table'
 import { StockOverview } from '@/components/stock-overview'
 import { ResponsiveDialog } from '@/components/responsive-dialog'
-import { StockTable } from '@/components/stock-table'
-import { StockForm } from '@/components/stock-form'
-import { useState, useMemo } from 'react'
-import useProducts from './hooks/useProducts'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Info, Plus } from 'lucide-react'
-import { Doc } from 'convex/_generated/dataModel'
-import { RoleBadge } from '@/components/role-badge'
-import { useUsersLite } from './hooks/useUsersLite'
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select'
-import { Label } from '@radix-ui/react-dropdown-menu'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
 import Footer from './components/footer'
+import useProducts from './hooks/useProducts'
+import { useUsersLite } from './hooks/useUsersLite'
+import { useCurrentUser } from './hooks/useCurrentUser'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
 
 export default function Products() {
   const { userInConvex } = useCurrentUser()
@@ -26,13 +28,12 @@ export default function Products() {
 
   const usersLite = useUsersLite(10)
 
-  const { products, addProduct, updateProduct, deleteProduct } = useProducts({
+  const { addProduct, deleteProduct, products, updateProduct } = useProducts({
     userId: selectedUserId,
   })
   const [addDialogOpen, setAddDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [itemToEdit, setItemToEdit] = useState<Doc<'products'> | null>(null)
-  const [tabValue] = useState<'inventory' | 'analytics'>('inventory')
 
   // Memoize low stock items calculation
   const lowStockItems = useMemo(
@@ -99,12 +100,10 @@ export default function Products() {
         </div>
 
         <div className="flex items-center justify-between flex-col mb-6 md:flex-row">
-          {tabValue === 'inventory' && (
-            <Button onClick={() => setAddDialogOpen(true)} size="sm">
-              <Plus className="mr-2 h-4 w-4" />
-              Ajouter un produit
-            </Button>
-          )}
+          <Button onClick={() => setAddDialogOpen(true)} size="sm">
+            <Plus className="mr-2 h-4 w-4" />
+            Ajouter un produit
+          </Button>
         </div>
         <ResponsiveDialog
           open={addDialogOpen}

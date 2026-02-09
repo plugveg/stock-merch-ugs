@@ -1,20 +1,21 @@
 'use client'
 
 import type React from 'react'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+
 import { useScreenSize } from '@/hooks/useMobile'
 import { getSizeClass } from '@/lib/getSizeClass'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface ResponsiveDialogProps {
   open: boolean
-  onOpenChange: (open: boolean) => void
   title: string
   description?: string
   children: React.ReactNode
+  onOpenChange: (open: boolean) => void
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
-export function ResponsiveDialog({ open, onOpenChange, title, description, children, size = 'md' }: ResponsiveDialogProps) {
+export function ResponsiveDialog({ children, description, onOpenChange, open, size = 'md', title }: ResponsiveDialogProps) {
   const { screenSize } = useScreenSize()
 
   const sizeClass = getSizeClass(screenSize, size)

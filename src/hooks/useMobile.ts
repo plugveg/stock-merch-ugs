@@ -44,11 +44,11 @@ export function useScreenSize(): {
   }, [])
 
   return {
-    screenSize,
-    windowWidth: window.innerWidth,
+    isDesktop: screenSize === 'xl' || screenSize === '2xl',
     isMobile: screenSize === 'xs' || screenSize === 'sm',
     isTablet: screenSize === 'md' || screenSize === 'lg',
-    isDesktop: screenSize === 'xl' || screenSize === '2xl',
+    screenSize,
+    windowWidth: window.innerWidth,
   }
 }
 

@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom'
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
-import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { useAuth } from '@clerk/clerk-react'
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 
 import { useCurrentUser } from '../hooks/useCurrentUser'
 
@@ -11,8 +11,8 @@ vi.mock('@clerk/clerk-react', async () => {
   const actual = await vi.importActual('@clerk/clerk-react')
   return {
     ...actual,
-    useAuth: vi.fn(),
     SignInButton: () => <button>Sign In</button>,
+    useAuth: vi.fn(),
   }
 })
 
@@ -22,18 +22,18 @@ vi.mock('convex/react', async () => {
   type ChildrenProps = React.PropsWithChildren<object>
   return {
     ...actual,
-    AuthLoading: ({ children }: ChildrenProps) => <div data-testid="auth-loading">{children}</div>,
     Authenticated: ({ children }: ChildrenProps) => <div data-testid="authenticated">{children}</div>,
-    Unauthenticated: ({ children }: ChildrenProps) => <div data-testid="unauthenticated">{children}</div>,
+    AuthLoading: ({ children }: ChildrenProps) => <div data-testid="auth-loading">{children}</div>,
     ConvexReactClient: actual.ConvexReactClient,
+    Unauthenticated: ({ children }: ChildrenProps) => <div data-testid="unauthenticated">{children}</div>,
   }
 })
 
 // Mock custom hooks
 vi.mock('../hooks/useCurrentUser', () => ({
   useCurrentUser: vi.fn(() => ({
-    isLoading: false,
     isAuthenticated: false,
+    isLoading: false,
     userInConvex: null,
   })),
 }))
@@ -61,8 +61,8 @@ describe('App routing', () => {
   beforeEach(() => {
     vi.resetAllMocks()
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: false,
+      isLoading: false,
       userInConvex: null,
     })
   })
@@ -70,8 +70,8 @@ describe('App routing', () => {
   it('redirects to home if not signed in on RoleProtectedRoute', async () => {
     ;(useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: false })
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: false,
+      isLoading: false,
       userInConvex: null,
     })
 
@@ -111,8 +111,8 @@ describe('App routing', () => {
   it('allows access to Products for authenticated user', async () => {
     ;(useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true })
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
+      isLoading: false,
       userInConvex: { id: 'user-123' },
     })
 
@@ -154,9 +154,9 @@ describe('App routing', () => {
   it('allows access to admin dashboard for allowed role', async () => {
     ;(useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true })
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
-      userInConvex: { role: 'Administrator', nickname: 'Admin' },
+      isLoading: false,
+      userInConvex: { nickname: 'Admin', role: 'Administrator' },
     })
 
     render(
@@ -171,9 +171,9 @@ describe('App routing', () => {
   it('redirects to dashboards when user role is not allowed', async () => {
     ;(useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true })
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
-      userInConvex: { role: 'Guest', nickname: 'GuestUser' },
+      isLoading: false,
+      userInConvex: { nickname: 'GuestUser', role: 'Guest' },
     })
 
     render(
@@ -200,8 +200,8 @@ describe('App routing', () => {
   it('redirects to dashboards if user role is undefined', async () => {
     ;(useAuth as Mock).mockReturnValue({ isLoaded: true, isSignedIn: true })
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
+      isLoading: false,
       userInConvex: null, // pas de rôle
     })
 

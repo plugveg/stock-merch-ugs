@@ -1,15 +1,16 @@
-import { mutation, query } from './_generated/server'
 import { v } from 'convex/values'
+
+import { mutation, query } from './_generated/server'
 import { roles, Roles, status, Status } from './schema'
 
 // Admin: Create a new event
 export const createEvent = mutation({
   args: {
-    name: v.string(),
     description: v.string(),
-    startTime: v.number(),
     endTime: v.number(),
     location: v.string(),
+    name: v.string(),
+    startTime: v.number(),
   },
   handler: async (ctx, args) => {
     const me = await ctx.auth.getUserIdentity()
@@ -24,19 +25,19 @@ export const createEvent = mutation({
     if (!meDoc) throw new Error('User not found')
 
     const eventId = await ctx.db.insert('events', {
-      name: args.name,
+      adminId: meDoc._id,
       description: args.description,
-      startTime: args.startTime,
       endTime: args.endTime,
       location: args.location || 'A déterminer', // Default location if not provided
-      adminId: meDoc._id,
+      name: args.name,
+      startTime: args.startTime,
     })
 
     // Automatically add the creator as an organizer
     await ctx.db.insert('eventParticipants', {
       eventId: eventId,
-      userId: meDoc._id,
       role: 'Board of directors' as Roles,
+      userId: meDoc._id,
     })
 
     return eventId
@@ -46,8 +47,8 @@ export const createEvent = mutation({
 // Admin: Add a user to an event (as organizer or participant)
 export const addUserToEvent = mutation({
   args: {
-    eventId: v.id('events'),
     emailToAdd: v.string(), // Add user by email
+    eventId: v.id('events'),
     role: v.union(roles),
   },
   handler: async (ctx, args) => {
@@ -98,8 +99,8 @@ export const addUserToEvent = mutation({
 
     return await ctx.db.insert('eventParticipants', {
       eventId: args.eventId,
-      userId: userToAdd._id,
       role: args.role as Roles,
+      userId: userToAdd._id,
     })
   },
 })
@@ -200,7 +201,7 @@ export const addProductToEventSale = mutation({
     const organizers = await ctx.db
       .query('eventParticipants')
       .withIndex('by_eventId_and_userId', (q) => q.eq('eventId', args.eventId).eq('userId', meDoc._id))
-      .filter((q) => q.eq(q.field('role'), 'organizer'))
+      .filter((q) => q.or(q.eq(q.field('role'), 'Administrator'), q.eq(q.field('role'), 'Board of directors')))
       .collect()
     if (organizers.length === 0 && event.adminId !== meDoc._id) {
       throw new Error('Only event organizers can add products to the event sale.')
@@ -220,16 +221,16 @@ export const addProductToEventSale = mutation({
     if (existingEventProduct) {
       // If it exists, update it (e.g. price or status)
       return await ctx.db.patch(existingEventProduct._id, {
-        status: 'On Sale' as Status,
         salePrice: args.salePrice,
+        status: 'On Sale' as Status,
       })
     } else {
       // If not, insert new
       return await ctx.db.insert('eventProducts', {
         eventId: args.eventId,
         productId: args.productId,
-        status: 'On Sale' as Status,
         salePrice: args.salePrice,
+        status: 'On Sale' as Status,
       })
     }
   },
@@ -262,7 +263,7 @@ export const updateEventProductStatus = mutation({
     const organizers = await ctx.db
       .query('eventParticipants')
       .withIndex('by_eventId_and_userId', (q) => q.eq('eventId', eventProduct.eventId).eq('userId', meDoc._id))
-      .filter((q) => q.eq(q.field('role'), 'organizer'))
+      .filter((q) => q.or(q.eq(q.field('role'), 'Administrator'), q.eq(q.field('role'), 'Board of directors')))
       .collect()
     if (organizers.length === 0 && event.adminId !== meDoc._id) {
       throw new Error('Only event organizers can update product status.')
@@ -317,9 +318,9 @@ export const getEventDetails = query({
         // const imageUrl = product?.imageStorageId ? await ctx.storage.getUrl(product.imageStorageId) : null;
         return {
           ...ep,
-          productName: product?.productName ?? 'Unknown Product',
-          productDescription: product?.description ?? '',
           originalPrice: product?.purchasePrice ?? 0,
+          productDescription: product?.description ?? '',
+          productName: product?.productName ?? 'Unknown Product',
           // imageUrl,
         }
       })
@@ -402,7 +403,7 @@ export const removeProductFromEventSale = mutation({
     const organizers = await ctx.db
       .query('eventParticipants')
       .withIndex('by_eventId_and_userId', (q) => q.eq('eventId', eventProduct.eventId).eq('userId', meDoc._id))
-      .filter((q) => q.eq(q.field('role'), 'organizer'))
+      .filter((q) => q.or(q.eq(q.field('role'), 'Administrator'), q.eq(q.field('role'), 'Board of directors')))
       .collect()
 
     if (organizers.length === 0 && event.adminId !== meDoc._id) {
@@ -418,8 +419,8 @@ export const removeProductFromEventSale = mutation({
 export const updateUserRoleInEvent = mutation({
   args: {
     eventId: v.id('events'),
-    userId: v.id('users'),
     newRole: v.union(roles),
+    userId: v.id('users'),
   },
   handler: async (ctx, args) => {
     const me = await ctx.auth.getUserIdentity()

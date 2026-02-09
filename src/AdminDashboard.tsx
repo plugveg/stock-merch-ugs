@@ -1,37 +1,38 @@
 /* eslint-disable no-console */
+import { Bar } from 'react-chartjs-2'
+import { UserButton } from '@clerk/clerk-react'
 import { useState, FormEvent, useMemo } from 'react'
 import { useMutation, useQuery } from 'convex/react'
-import { api } from '../convex/_generated/api'
-import { Id } from '../convex/_generated/dataModel'
-import { Bar } from 'react-chartjs-2'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
-import { Conditions, getOptions, ProductTypes, Roles, roles, Status } from '../convex/schema'
+
 import NavBar from './components/navbar'
-import { UserButton } from '@clerk/clerk-react'
-import { useCurrentUser } from './hooks/useCurrentUser'
-import { RoleBadge } from './components/role-badge'
 import Footer from './components/footer'
+import { api } from '../convex/_generated/api'
 import { Button } from './components/ui/button'
+import { Id } from '../convex/_generated/dataModel'
+import { RoleBadge } from './components/role-badge'
+import { useCurrentUser } from './hooks/useCurrentUser'
+import { Conditions, getOptions, ProductTypes, Roles, roles, Status } from '../convex/schema'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 interface ProductFormData {
+  status: Status
+  quantity: number
   productName: string
   description: string
-  quantity: number
-  storageLocation: string
   condition: Conditions
   licenseName: string[]
+  storageLocation: string
   characterName: string[]
-  productType: ProductTypes[]
-  status: Status
   purchaseLocation: string
+  productType: ProductTypes[]
   /** UNIX timestamp en millisecondes */
+  threshold: number
+  _id: Id<'products'>
   purchaseDate: number
   purchasePrice: number
-  threshold: number
   ownerUserId: Id<'users'>
-  _id: Id<'products'>
 }
 
 export default function AdminDashboard() {
@@ -94,11 +95,11 @@ export default function AdminDashboard() {
     }
     try {
       await createEvent({
-        name: newEventName,
         description: newEventDesc,
-        startTime: new Date(newEventStart).getTime(),
         endTime: new Date(newEventEnd).getTime(),
         location: newEventLocation || 'A déterminer',
+        name: newEventName,
+        startTime: new Date(newEventStart).getTime(),
       })
       setNewEventName('')
       setNewEventDesc('')
@@ -117,8 +118,8 @@ export default function AdminDashboard() {
     if (!selectedEventId || !userEmailToAdd) return
     try {
       await addUserToEvent({
-        eventId: selectedEventId,
         emailToAdd: userEmailToAdd,
+        eventId: selectedEventId,
         role: userRoleToAdd,
       })
       setUserEmailToAdd('')
@@ -185,8 +186,8 @@ export default function AdminDashboard() {
     try {
       await updateUserRoleInEvent({
         eventId: selectedEventId,
-        userId,
         newRole,
+        userId,
       })
       setEditingUserRole(null)
       alert("Rôle de l'utilisateur mis à jour !")
@@ -198,21 +199,21 @@ export default function AdminDashboard() {
 
   const analyticsChartData = eventAnalytics
     ? {
-        labels: ['En vente', 'Vendus'],
         datasets: [
           {
-            label: 'Nombre de produits',
-            data: [eventAnalytics.productsOnSaleCount, eventAnalytics.productsSoldCount],
             backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+            data: [eventAnalytics.productsOnSaleCount, eventAnalytics.productsSoldCount],
+            label: 'Nombre de produits',
           },
           {
-            label: 'Valeur totale (€)',
-            data: [eventAnalytics.totalValueOnSale, eventAnalytics.totalValueSold],
             backgroundColor: ['rgba(255, 159, 64, 0.6)', 'rgba(153, 102, 255, 0.6)'],
+            data: [eventAnalytics.totalValueOnSale, eventAnalytics.totalValueSold],
+            label: 'Valeur totale (€)',
           },
         ],
+        labels: ['En vente', 'Vendus'],
       }
-    : { labels: [], datasets: [] }
+    : { datasets: [], labels: [] }
 
   const { userInConvex } = useCurrentUser()
 
@@ -471,8 +472,8 @@ export default function AdminDashboard() {
                           <Button
                             onClick={() =>
                               setEditingUserRole({
-                                userId: p.userId,
                                 currentRole: p.role,
+                                userId: p.userId,
                               })
                             }
                             size="sm"
@@ -524,7 +525,6 @@ export default function AdminDashboard() {
                     <Bar
                       data={analyticsChartData}
                       options={{
-                        responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                           legend: { position: 'top' as const },
@@ -533,6 +533,7 @@ export default function AdminDashboard() {
                             text: 'Statut et valeur des produits',
                           },
                         },
+                        responsive: true,
                       }}
                     />
                   </div>

@@ -1,39 +1,41 @@
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Plus } from 'lucide-react'
-import { conditions, status, productTypes, getOptions } from '../../convex/schema'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 import { Doc } from '../../convex/_generated/dataModel'
+import { conditions, status, productTypes, getOptions } from '../../convex/schema'
 
 interface StockFormProps {
+  onCancel: () => void
   initialData?: Doc<'products'>
   onSubmit: (data: Doc<'products'>) => void
-  onCancel: () => void
 }
 
-export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
+export function StockForm({ initialData, onCancel, onSubmit }: StockFormProps) {
   const [formData, setFormData] = useState({
-    name: initialData?.productName || '',
     description: initialData?.description || '',
+    name: initialData?.productName || '',
     quantity: initialData?.quantity,
     // photo: initialData?.photo || "",
-    storageLocation: initialData?.storageLocation || '',
+    characterName: initialData?.characterName || ([] as string[]),
     condition: initialData?.condition || '',
     licenseName: initialData?.licenseName || ([] as string[]),
-    characterName: initialData?.characterName || ([] as string[]),
     productType: initialData?.productType || ([] as string[]),
-    status: initialData?.status || '',
-    purchaseLocation: initialData?.purchaseLocation || '',
     purchaseDate: initialData?.purchaseDate ? new Date(initialData.purchaseDate).toISOString().slice(0, 10) : '',
+    purchaseLocation: initialData?.purchaseLocation || '',
     purchasePrice: initialData?.purchasePrice,
-    threshold: initialData?.threshold,
-    sellLocation: initialData?.sellLocation || '',
     sellDate: initialData?.sellDate ? new Date(initialData.sellDate).toISOString().slice(0, 10) : '',
+    sellLocation: initialData?.sellLocation || '',
     sellPrice: initialData?.sellPrice,
+    status: initialData?.status || '',
+    storageLocation: initialData?.storageLocation || '',
+    threshold: initialData?.threshold,
     // Missing the possibily to link to a user's collection
   })
 
@@ -137,25 +139,25 @@ export function StockForm({ initialData, onSubmit, onCancel }: StockFormProps) {
     if (validateForm()) {
       // Build payload with correct types and field names
       const payload = {
-        productName: formData.name,
         description: formData.description,
+        productName: formData.name,
         quantity: formData.quantity,
         // photo: formData.photo || undefined,
-        storageLocation: formData.storageLocation,
+        characterName: formData.characterName,
         condition: formData.condition,
         licenseName: formData.licenseName,
-        characterName: formData.characterName,
         productType: formData.productType,
-        status: formData.status,
         purchaseLocation: formData.purchaseLocation,
+        status: formData.status,
+        storageLocation: formData.storageLocation,
         // Convert "YYYY‑MM‑DD" to a Unix timestamp (ms). Cause Convex work with Unix timestamp (ms).
         purchaseDate: Date.parse(formData.purchaseDate),
         purchasePrice: formData.purchasePrice,
         threshold: formData.threshold,
         ...(initialData && {
           id: initialData._id,
-          sellLocation: formData.sellLocation,
           sellDate: Date.parse(formData.sellDate),
+          sellLocation: formData.sellLocation,
           sellPrice: formData.sellPrice,
         }),
       }

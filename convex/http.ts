@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
-import { httpRouter } from 'convex/server'
-import { httpAction } from './_generated/server'
-import { internal } from './_generated/api'
 import type { WebhookEvent } from '@clerk/backend'
+
 import { Webhook } from 'svix'
+import { httpRouter } from 'convex/server'
+
+import { internal } from './_generated/api'
+import { httpAction } from './_generated/server'
 
 const http = httpRouter()
 
 http.route({
-  path: '/clerk-users-webhook',
-  method: 'POST',
   handler: httpAction(async (ctx, request) => {
     const event = await validateRequest(request)
     if (!event) {
@@ -40,6 +40,8 @@ http.route({
 
     return new Response(null, { status: 200 })
   }),
+  method: 'POST',
+  path: '/clerk-users-webhook',
 })
 
 async function validateRequest(req: Request): Promise<WebhookEvent | null> {
@@ -55,8 +57,8 @@ async function validateRequest(req: Request): Promise<WebhookEvent | null> {
 
   const svixHeaders = {
     'svix-id': svixId,
-    'svix-timestamp': svixTimestamp,
     'svix-signature': svixSignature,
+    'svix-timestamp': svixTimestamp,
   }
   const clerkWebhookSecret = process.env.CLERK_WEBHOOK_SECRET
   if (!clerkWebhookSecret) {

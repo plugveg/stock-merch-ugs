@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import Products from '@/Products'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ConvexProviderWithClerk } from 'convex/react-clerk'
 import { ClerkProvider } from '@clerk/clerk-react'
+import userEvent from '@testing-library/user-event'
+import { ConvexProviderWithClerk } from 'convex/react-clerk'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+
+import Products from '@/Products'
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -23,16 +24,16 @@ vi.mock('@clerk/clerk-react', async () => {
   const actual = await vi.importActual<object>('@clerk/clerk-react')
   return {
     ...actual,
+    UserButton: () => <div>UserButton</div>,
     useUser: () => ({
       user: {
-        id: 'user_123',
         fullName: 'Mocky',
+        id: 'user_123',
         primaryEmailAddress: {
           emailAddress: 'mocky@example.com',
         },
       },
     }),
-    UserButton: () => <div>UserButton</div>,
   }
 })
 
@@ -51,8 +52,8 @@ vi.mock('@/hooks/useCurrentUser', () => ({
   useCurrentUser: () => ({
     userInConvex: {
       _id: 'admin_1',
-      nickname: 'Admin',
       email: 'admin@example.com',
+      nickname: 'Admin',
       role: 'Administrator',
     },
   }),
@@ -72,8 +73,8 @@ vi.mock('@/components/navbar', () => ({
 
 // Mock RoleBadge
 vi.mock('@/components/role-badge', () => ({
-  RoleBadge: ({ role }: { role: string }) => <div>RoleBadge: {role}</div>,
   default: ({ role }: { role: string }) => <div>RoleBadge: {role}</div>,
+  RoleBadge: ({ role }: { role: string }) => <div>RoleBadge: {role}</div>,
 }))
 
 // Mock StockOverview
@@ -90,8 +91,8 @@ vi.mock('@/components/responsive-dialog', () => ({
 vi.mock('@/components/stock-form', () => ({
   StockForm: ({
     initialData,
-    onSubmit,
     onCancel,
+    onSubmit,
   }: {
     initialData?: { _id?: string; name?: string; quantity?: number }
     onSubmit: (_data: { _id?: string; name: string; quantity: number }) => void
@@ -117,8 +118,8 @@ vi.mock('@/components/stock-form', () => ({
 // Mock StockTable
 vi.mock('@/components/stock-table', () => ({
   StockTable: ({
-    onEdit,
     onDelete,
+    onEdit,
   }: {
     onEdit: (_item: { _id: string; name: string; quantity: number; threshold: number }) => void
     onDelete: (_id: string) => void
@@ -139,15 +140,15 @@ vi.mock('@/components/stock-charts', () => ({
 // Mock useProducts
 vi.mock('@/hooks/useProducts', () => ({
   default: () => ({
+    addProduct: { mutate: addMutateSpy },
+    deleteProduct: { mutate: deleteMutateSpy },
+    error: null,
+    isLoading: false,
     products: [
       { _id: '1', name: 'Product 1', quantity: 1, threshold: 2 },
       { _id: '2', name: 'Product 2', quantity: 3, threshold: 1 },
     ],
-    isLoading: false,
-    error: null,
-    addProduct: { mutate: addMutateSpy },
     updateProduct: { mutate: updateMutateSpy },
-    deleteProduct: { mutate: deleteMutateSpy },
   }),
 }))
 
@@ -182,9 +183,9 @@ vi.mock('@/components/ui/select', () => {
   // ...existing code...
 
   const Select = ({
-    value,
-    onValueChange,
     children,
+    onValueChange,
+    value,
   }: {
     value: string
     onValueChange: (_nextValue: string) => void
@@ -214,7 +215,7 @@ vi.mock('@/components/ui/select', () => {
 
   const SelectTrigger = ({ children }: { children: React.ReactNode }) => <>{children}</>
   const SelectContent = ({ children }: { children: React.ReactNode }) => <>{children}</>
-  const SelectItem = ({ value, children }: { value: string; children: React.ReactNode }) => (
+  const SelectItem = ({ children, value }: { value: string; children: React.ReactNode }) => (
     <option value={value}>{children}</option>
   )
 
@@ -223,17 +224,17 @@ vi.mock('@/components/ui/select', () => {
   SelectTrigger.displayName = 'SelectTrigger'
   SelectContent.displayName = 'SelectContent'
 
-  return { Select, SelectTrigger, SelectContent, SelectItem }
+  return { Select, SelectContent, SelectItem, SelectTrigger }
 })
 
 function renderWithProviders() {
   // Provide a mock useAuth function that matches the expected UseAuth type
   const mockUseAuth = () => ({
-    isAuthenticated: true,
-    isLoading: false,
-    isLoaded: true,
-    isSignedIn: true,
     getToken: async () => 'mock-token',
+    isAuthenticated: true,
+    isLoaded: true,
+    isLoading: false,
+    isSignedIn: true,
     orgId: undefined,
     orgRole: undefined,
     orgSlug: undefined,
@@ -244,8 +245,8 @@ function renderWithProviders() {
   const mockConvexClient = {
     // Add only the properties/methods required by your components/tests
     // For example, subscribe: jest.fn(), query: jest.fn(), mutation: jest.fn(), etc.
-    setAuth: vi.fn(),
     clearAuth: vi.fn(),
+    setAuth: vi.fn(),
   } as unknown as {
     setAuth: () => void
     clearAuth: () => void

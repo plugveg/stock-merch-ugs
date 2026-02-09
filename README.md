@@ -102,16 +102,31 @@ Once you have Node.js & npm installed, you can run the project locally by follow
 4. Create a `.env.local` file in the root directory of the project and add the following variables:
 
 ```bash
-  # Convex for Development
-  CONVEX_DEPLOYMENT=<your_convex_deployment>
-  VITE_CONVEX_URL=<your_convex_url>
-  CONVEX_SITE_URL=<your_convex_site_url>
+# Deployment used by `npx convex dev`
+# Two lines auto-generated using `npx convex dev` command
+# Convex for Development
+CONVEX_DEPLOYMENT=XXXXXXX # team: pseudo, project: name of the project - DEV
+VITE_CONVEX_URL=XXXXXXX # DEV
+CONVEX_SITE_URL=XXXXXXX # DEV
 
-  # Clerk for Development
-  CLERK_WEBHOOK_SECRET=<your_clerk_webhook_secret> # Webhook secret for Clerk - DEV
-  VITE_CLERK_FRONTEND_API_URL=<your_clerk_frontend_api_url> #API URL for the Clerk frontend - DEV
-  VITE_CLERK_PUBLISHABLE_KEY=<your_clerk_publishable_key> # Publishable key for the Clerk frontend - DEV
-  VITE_CLERK_SECRET_KEY=<your_clerk_secret_key> # Secret key for the Clerk frontend - DEV
+# Convex for Production
+VITE_CONVEX_URL_PROD=XXXXXXX # PROD
+CONVEX_SITE_URL_PROD=XXXXXXX # PROD
+
+# Codacy Token
+CODACY_PROJECT_TOKEN=XXXXXXX
+
+# Clerk for Development
+CLERK_WEBHOOK_SECRET=XXXXXXX # Webhook secret for Clerk - DEV
+VITE_CLERK_FRONTEND_API_URL=XXXXXXX #API URL for the Clerk frontend - DEV
+VITE_CLERK_PUBLISHABLE_KEY=XXXXXXX # Publishable key for the Clerk frontend - DEV
+VITE_CLERK_SECRET_KEY=XXXXXXX # Secret key for the Clerk frontend - DEV
+
+# Clerk for Production
+CLERK_WEBHOOK_SECRET_PROD=XXXXXXX # Webhook secret for Clerk - PROD
+VITE_CLERK_FRONTEND_API_URL_PROD=XXXXXXX #API URL for the Clerk frontend - PROD
+VITE_CLERK_PUBLISHABLE_KEY_PROD=XXXXXXX # Publishable key for the Clerk frontend - PROD
+VITE_CLERK_SECRET_KEY_PROD=XXXXXXX # Secret key for the Clerk frontend - PROD
 ```
 
 5. Run the project using the command below:
@@ -169,6 +184,10 @@ There aren't always a ticket for each tech steps.
 - [x] Update all dependencies to the latest version [SETSUMAFU-168](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-168)
 - [x] Remove Codecov & add Codacy [SETSUMAFU-170](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-170)
 - [x] Add ESLINT & Prettier for code quality and formatting [SETSUMAFU-172](https://setsumafuyu.atlassian.net/browse/SETSUMAFU-172)
+  - Added a new ESLint flat config and Prettier configuration; updated package.json scripts and devDependencies accordingly.
+  - Reformatted TS/TSX/JSON/MD/CSS/YAML files to match the new formatter rules (single quotes, no semicolons, etc.).
+  - Removed charting/tabs-related components/tests/dependencies and simplified the Products page UI (analytics tab/charts removed).
+  - Added perfectionist to enforce consistent formatting for imports and code quality across the project.
 
 ## Tutorials
 

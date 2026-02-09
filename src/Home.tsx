@@ -1,13 +1,15 @@
-import { useCurrentUser } from './hooks/useCurrentUser'
+import { Link } from 'react-router'
 import { SignInButton, UserButton } from '@clerk/clerk-react'
 import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react'
-import { Button } from '@/components/ui/button'
+
 import NavBar from '@/components/navbar'
+import { Button } from '@/components/ui/button'
+
 import Footer from './components/footer'
-import { Link } from 'react-router'
+import { useCurrentUser } from './hooks/useCurrentUser'
 
 function App() {
-  const { isLoading, isAuthenticated, userInConvex } = useCurrentUser()
+  const { isAuthenticated, isLoading, userInConvex } = useCurrentUser()
   return (
     <main>
       {isLoading ? (

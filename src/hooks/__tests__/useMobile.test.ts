@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+
 import { useScreenSize, useMobile } from '../useMobile'
 
 describe('useScreenSize', () => {
@@ -14,50 +15,50 @@ describe('useScreenSize', () => {
 
   const scenarios = [
     {
-      width: 320,
       expected: 'xs',
+      isDesktop: false,
       isMobile: true,
       isTablet: false,
-      isDesktop: false,
+      width: 320,
     },
     {
-      width: 500,
       expected: 'sm',
+      isDesktop: false,
       isMobile: true,
       isTablet: false,
-      isDesktop: false,
+      width: 500,
     },
     {
-      width: 700,
       expected: 'md',
+      isDesktop: false,
       isMobile: false,
       isTablet: true,
-      isDesktop: false,
+      width: 700,
     },
     {
-      width: 900,
       expected: 'lg',
+      isDesktop: false,
       isMobile: false,
       isTablet: true,
-      isDesktop: false,
+      width: 900,
     },
     {
-      width: 1100,
       expected: 'xl',
+      isDesktop: true,
       isMobile: false,
       isTablet: false,
-      isDesktop: true,
+      width: 1100,
     },
     {
-      width: 1400,
       expected: '2xl',
+      isDesktop: true,
       isMobile: false,
       isTablet: false,
-      isDesktop: true,
+      width: 1400,
     },
   ]
 
-  scenarios.forEach(({ width, expected, isMobile, isTablet, isDesktop }) => {
+  scenarios.forEach(({ expected, isDesktop, isMobile, isTablet, width }) => {
     it(`returns correct screen size '${expected}' for width ${width}`, () => {
       const { result } = renderHook(() => useScreenSize())
 

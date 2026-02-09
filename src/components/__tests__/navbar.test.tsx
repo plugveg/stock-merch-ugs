@@ -1,8 +1,9 @@
+import * as ReactRouter from 'react-router'
+import { BrowserRouter } from 'react-router'
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
+
 import NavBar from '../navbar'
-import { BrowserRouter } from 'react-router'
-import * as ReactRouter from 'react-router'
 
 // Mock useNavigate
 const mockedNavigate = vi.fn()

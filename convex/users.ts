@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-import { internalMutation, query, QueryCtx } from './_generated/server'
 import { UserJSON } from '@clerk/backend'
 import { v, Validator } from 'convex/values'
-import { Roles } from './schema'
 import { paginationOptsValidator } from 'convex/server'
+
+import { Roles } from './schema'
+import { internalMutation, query, QueryCtx } from './_generated/server'
 
 export const current = query({
   args: {},
@@ -17,13 +18,13 @@ export const upsertFromClerk = internalMutation({
   async handler(ctx, { data }) {
     // Convertit null → undefined et cast le role
     const userAttributes = {
+      email: data.email_addresses[0].email_address, // obligatoire
+      externalId: data.id,
       firstName: data.first_name ?? undefined,
+      imageUrl: data.image_url,
       lastName: data.last_name ?? undefined,
       nickname: data.username ?? undefined,
-      email: data.email_addresses[0].email_address, // obligatoire
       phoneNumber: data.phone_numbers[0]?.phone_number ?? undefined,
-      imageUrl: data.image_url,
-      externalId: data.id,
       // Si public_metadata.role n'est pas dans UserRole, on retombe sur "Guest"
       role: (data.public_metadata?.role as Roles) ?? 'Guest',
     }
@@ -79,7 +80,7 @@ export const listUsersLite = query({
     // Transform only the page property, keep pagination metadata
     return {
       ...results,
-      page: results.page.map(({ _id, nickname, email }) => ({
+      page: results.page.map(({ _id, email, nickname }) => ({
         _id,
         label: nickname ?? email,
       })),
@@ -99,8 +100,8 @@ export const listAllUsers = query({
     const users = await ctx.db.query('users').collect()
     return users.map((user) => ({
       _id: user._id,
-      nickname: user.nickname,
       email: user.email,
+      nickname: user.nickname,
     }))
   },
 })

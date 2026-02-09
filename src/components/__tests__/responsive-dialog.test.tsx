@@ -5,49 +5,49 @@ const screenSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 const sizes = ['sm', 'md', 'lg', 'xl', 'full'] as const
 
 const expectedClasses: Record<string, Record<string, string>> = {
-  xs: {
-    sm: 'w-[calc(100%-2rem)] sm:max-w-full',
-    md: 'w-[calc(100%-2rem)] sm:max-w-full',
-    lg: 'w-[calc(100%-2rem)] sm:max-w-full',
-    xl: 'w-[calc(100%-2rem)] sm:max-w-full',
-    full: 'w-[calc(100%-2rem)] sm:max-w-full',
-  },
-  sm: {
-    sm: 'w-[calc(100%-2rem)] sm:max-w-sm',
-    md: 'w-[calc(100%-2rem)] sm:max-w-full',
-    lg: 'w-[calc(100%-2rem)] sm:max-w-full',
-    xl: 'w-[calc(100%-2rem)] sm:max-w-full',
-    full: 'w-[calc(100%-2rem)] sm:max-w-full',
+  lg: {
+    full: 'sm:max-w-2xl',
+    lg: 'sm:max-w-3xl',
+    md: 'sm:max-w-md',
+    sm: 'sm:max-w-sm',
+    xl: 'sm:max-w-xl',
   },
   md: {
-    sm: 'sm:max-w-sm',
-    md: 'sm:max-w-md',
-    lg: 'sm:max-w-lg',
-    xl: 'sm:max-w-xl',
     full: 'sm:max-w-lg',
-  },
-  lg: {
-    sm: 'sm:max-w-sm',
+    lg: 'sm:max-w-lg',
     md: 'sm:max-w-md',
-    lg: 'sm:max-w-3xl',
+    sm: 'sm:max-w-sm',
     xl: 'sm:max-w-xl',
-    full: 'sm:max-w-2xl',
+  },
+  sm: {
+    full: 'w-[calc(100%-2rem)] sm:max-w-full',
+    lg: 'w-[calc(100%-2rem)] sm:max-w-full',
+    md: 'w-[calc(100%-2rem)] sm:max-w-full',
+    sm: 'w-[calc(100%-2rem)] sm:max-w-sm',
+    xl: 'w-[calc(100%-2rem)] sm:max-w-full',
   },
   xl: {
-    sm: 'sm:max-w-sm',
-    md: 'sm:max-w-md',
-    lg: 'sm:max-w-3xl',
-    xl: 'sm:max-w-xl',
     full: 'sm:max-w-3xl',
+    lg: 'sm:max-w-3xl',
+    md: 'sm:max-w-md',
+    sm: 'sm:max-w-sm',
+    xl: 'sm:max-w-xl',
+  },
+  xs: {
+    full: 'w-[calc(100%-2rem)] sm:max-w-full',
+    lg: 'w-[calc(100%-2rem)] sm:max-w-full',
+    md: 'w-[calc(100%-2rem)] sm:max-w-full',
+    sm: 'w-[calc(100%-2rem)] sm:max-w-full',
+    xl: 'w-[calc(100%-2rem)] sm:max-w-full',
   },
 }
 
 // Mock Dialog UI Components
 vi.mock('@/components/ui/dialog', () => ({
   Dialog: ({
-    open,
-    onOpenChange,
     children,
+    onOpenChange,
+    open,
   }: React.PropsWithChildren<{
     open: boolean
     onOpenChange: (_nextOpen: boolean) => void
@@ -62,9 +62,9 @@ vi.mock('@/components/ui/dialog', () => ({
       {children}
     </div>
   ),
+  DialogDescription: ({ children }: React.PropsWithChildren<object>) => <p>{children}</p>,
   DialogHeader: ({ children }: React.PropsWithChildren<object>) => <div>{children}</div>,
   DialogTitle: ({ children }: React.PropsWithChildren<object>) => <h2>{children}</h2>,
-  DialogDescription: ({ children }: React.PropsWithChildren<object>) => <p>{children}</p>,
 }))
 
 describe('ResponsiveDialog', () => {

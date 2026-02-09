@@ -1,6 +1,7 @@
-import { query } from './_generated/server'
 import { v } from 'convex/values'
+
 import { Status } from './schema'
+import { query } from './_generated/server'
 
 // Admin: Analytics for a specific event
 export const getEventAnalytics = query({
@@ -28,7 +29,7 @@ export const getEventAnalytics = query({
     const organizers = await ctx.db
       .query('eventParticipants')
       .withIndex('by_eventId_and_userId', (q) => q.eq('eventId', args.eventId).eq('userId', meDoc?._id))
-      .filter((q) => q.eq(q.field('role'), 'organizer'))
+      .filter((q) => q.or(q.eq(q.field('role'), 'Administrator'), q.eq(q.field('role'), 'Board of directors')))
       .collect()
     if (organizers.length === 0 && event.adminId !== meDoc._id) {
       throw new Error('Only event organizers or the event admin can view analytics.')
@@ -63,9 +64,9 @@ export const getEventAnalytics = query({
       participants.map(async (p) => {
         const user = await ctx.db.get(p.userId)
         return {
-          userId: p.userId,
-          role: p.role,
           nickname: user?.nickname ?? user?.email ?? 'Unknown',
+          role: p.role,
+          userId: p.userId,
         }
       })
     )
@@ -73,16 +74,16 @@ export const getEventAnalytics = query({
     const timeRemaining = Math.max(0, event.endTime - Date.now()) // in milliseconds
 
     return {
-      eventName: event.name,
-      startTime: event.startTime,
       endTime: event.endTime,
-      totalValueOnSale,
-      totalValueSold,
-      productsOnSaleCount,
-      productsSoldCount,
+      eventName: event.name,
       participantCount: participants.length,
       participants: participantDetails,
+      productsOnSaleCount,
+      productsSoldCount,
+      startTime: event.startTime,
       timeRemaining, // ms
+      totalValueOnSale,
+      totalValueSold,
     }
   },
 })

@@ -1,42 +1,55 @@
 import js from '@eslint/js'
 import globals from 'globals'
-import tseslint from 'typescript-eslint'
-import pluginReact from 'eslint-plugin-react'
-import tsparser from '@typescript-eslint/parser'
+import css from '@eslint/css'
 import json from '@eslint/json'
 import markdown from '@eslint/markdown'
-import css from '@eslint/css'
+import tseslint from 'typescript-eslint'
 import { defineConfig } from 'eslint/config'
+import pluginReact from 'eslint-plugin-react'
+import tsparser from '@typescript-eslint/parser'
 import stylistic from '@stylistic/eslint-plugin'
 import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
+import perfectionist from 'eslint-plugin-perfectionist'
 
 export default defineConfig([
   {
     ignores: ['convex/_generated/**', 'dist/**', 'coverage/**', 'src/index.css'],
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    plugins: { js, '@stylistic': stylistic, prettier: prettierPlugin, react: pluginReact },
     extends: ['js/recommended'],
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     languageOptions: {
       globals: { ...globals.browser, ...globals.node },
       parser: tsparser,
     },
-    settings: {
-      react: { version: 'detect' },
-    },
+    plugins: { '@stylistic': stylistic, js, perfectionist, prettier: prettierPlugin, react: pluginReact },
     rules: {
       ...prettierConfig.rules,
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      'no-undef': 'error',
-      'no-console': 'error',
-      '@stylistic/quotes': ['error', 'single', { avoidEscape: true, allowTemplateLiterals: 'always' }],
-      'jsx-quotes': ['error', 'prefer-double'],
-      'prettier/prettier': 'error',
-      'no-unused-expressions': 'off',
+      '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
       '@typescript-eslint/no-unused-expressions': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'jsx-quotes': ['error', 'prefer-double'],
+      'no-console': 'error',
+      'no-undef': 'error',
+      'no-unused-expressions': 'off',
+      'no-unused-vars': 'off',
+      'perfectionist/sort-imports': 'error',
+      'perfectionist/sort-interfaces': ['error'],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          type: 'alphabetical',
+        },
+      ],
+      'prettier/prettier': 'error',
+    },
+    settings: {
+      perfectionist: {
+        partitionByComment: true,
+        type: 'line-length',
+      },
+      react: { version: 'detect' },
     },
   },
   tseslint.configs.eslintRecommended,
@@ -49,10 +62,10 @@ export default defineConfig([
   { files: ['**/*.jsonc'], ...json.configs.recommended },
   { files: ['**/*.json5'], ...json.configs.recommended },
   {
-    files: ['**/*.md'],
-    plugins: { markdown },
-    language: 'markdown/gfm',
     extends: ['markdown/recommended'],
+    files: ['**/*.md'],
+    language: 'markdown/gfm',
+    plugins: { markdown },
     rules: {
       'markdown/no-duplicate-headings': 'error',
     },
@@ -60,16 +73,16 @@ export default defineConfig([
   {
     files: ['CHANGELOG.md'],
     rules: {
-      'markdown/no-duplicate-headings': 'off',
-      'markdown/no-multiple-h1': 'off',
       'markdown/heading-increment': 'off',
+      'markdown/no-duplicate-headings': 'off',
       'markdown/no-missing-label-refs': 'off',
+      'markdown/no-multiple-h1': 'off',
     },
   },
   {
-    files: ['**/*.css'],
-    plugins: { css },
-    language: 'css/css',
     extends: ['css/recommended'],
+    files: ['**/*.css'],
+    language: 'css/css',
+    plugins: { css },
   },
 ])

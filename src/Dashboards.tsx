@@ -1,10 +1,11 @@
-import { useCurrentUser } from './hooks/useCurrentUser'
-import { Button } from './components/ui/button'
+import { Link } from 'react-router'
+import { UserButton } from '@clerk/clerk-react'
+
 import NavBar from './components/navbar'
 import Footer from './components/footer'
-import { UserButton } from '@clerk/clerk-react'
+import { Button } from './components/ui/button'
 import { RoleBadge } from './components/role-badge'
-import { Link } from 'react-router'
+import { useCurrentUser } from './hooks/useCurrentUser'
 
 export default function Dashboards() {
   const { userInConvex } = useCurrentUser()

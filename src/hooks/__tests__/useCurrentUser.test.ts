@@ -1,7 +1,8 @@
 import { renderHook } from '@testing-library/react'
-import { useCurrentUser } from '../useCurrentUser'
-import { describe, expect, it, beforeEach, afterEach, vi, type Mock } from 'vitest'
 import { useConvexAuth, useQuery } from 'convex/react'
+import { describe, expect, it, beforeEach, afterEach, vi, type Mock } from 'vitest'
+
+import { useCurrentUser } from '../useCurrentUser'
 
 // Mock the convex/react module
 vi.mock('convex/react', async () => {
@@ -20,8 +21,8 @@ describe('useCurrentUser hook', () => {
   beforeEach(() => {
     // By default, user is not loading nor authenticated, and query returns null
     mockUseConvexAuth.mockReturnValue({
-      isLoading: false,
       isAuthenticated: false,
+      isLoading: false,
     })
     mockUseQuery.mockReturnValue(null)
   })
@@ -32,8 +33,8 @@ describe('useCurrentUser hook', () => {
 
   it('returns loading true while auth is loading', () => {
     mockUseConvexAuth.mockReturnValue({
-      isLoading: true,
       isAuthenticated: false,
+      isLoading: true,
     })
     const { result } = renderHook(() => useCurrentUser())
     expect(result.current.isLoading).toBe(true)
@@ -44,8 +45,8 @@ describe('useCurrentUser hook', () => {
   it('returns not loading and not authenticated when auth done but no user', () => {
     // auth done, not authenticated (or no user)
     mockUseConvexAuth.mockReturnValue({
-      isLoading: false,
       isAuthenticated: false,
+      isLoading: false,
     })
     mockUseQuery.mockReturnValue(null)
     const { result } = renderHook(() => useCurrentUser())
@@ -56,8 +57,8 @@ describe('useCurrentUser hook', () => {
 
   it('returns loading true when authenticated but user query still null', () => {
     mockUseConvexAuth.mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
+      isLoading: false,
     })
     mockUseQuery.mockReturnValue(null)
     const { result } = renderHook(() => useCurrentUser())
@@ -70,8 +71,8 @@ describe('useCurrentUser hook', () => {
   it('returns loaded and authenticated when user is returned', () => {
     const fakeUser = { id: '1', name: 'Alice' }
     mockUseConvexAuth.mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
+      isLoading: false,
     })
     mockUseQuery.mockReturnValue(fakeUser)
     const { result } = renderHook(() => useCurrentUser())

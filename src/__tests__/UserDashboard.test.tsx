@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
-import UserDashboard from '../UserDashboard'
 import { MemoryRouter } from 'react-router'
+import userEvent from '@testing-library/user-event'
 import { useQuery, useMutation } from 'convex/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
+
+import UserDashboard from '../UserDashboard'
 import { useCurrentUser } from '../hooks/useCurrentUser'
 
 // Mock hooks and modules
@@ -23,7 +24,7 @@ vi.mock('../components/role-badge', () => ({
 }))
 
 vi.mock('../components/stock-form', () => ({
-  StockForm: ({ onSubmit, onCancel }: { onSubmit: () => void; onCancel: () => void }) => (
+  StockForm: ({ onCancel, onSubmit }: { onSubmit: () => void; onCancel: () => void }) => (
     <div data-testid="stock-form">
       <button onClick={() => onSubmit()}>Submit Stock Form</button>
       <button onClick={onCancel}>Cancel Stock Form</button>
@@ -32,7 +33,7 @@ vi.mock('../components/stock-form', () => ({
 }))
 
 vi.mock('../components/responsive-dialog', () => ({
-  ResponsiveDialog: ({ open, children, title }: { open: boolean; children: React.ReactNode; title: string }) => (
+  ResponsiveDialog: ({ children, open, title }: { open: boolean; children: React.ReactNode; title: string }) => (
     <div data-testid="responsive-dialog" data-open={open}>
       {open && (
         <div>
@@ -77,9 +78,9 @@ describe('UserDashboard', () => {
 
   const mockUser = {
     _id: 'user1',
+    email: 'test@example.com',
     nickname: 'TestUser',
     role: 'Member',
-    email: 'test@example.com',
   }
 
   interface MockProduct {
@@ -103,14 +104,14 @@ describe('UserDashboard', () => {
   const mockProducts: MockProduct[] = [
     {
       _id: 'product1',
-      productName: 'Test Product 1',
       description: 'Description 1',
+      productName: 'Test Product 1',
       purchasePrice: 10.5,
     },
     {
       _id: 'product2',
-      productName: 'Test Product 2',
       description: 'Description 2',
+      productName: 'Test Product 2',
       purchasePrice: 25.0,
     },
   ]
@@ -136,9 +137,9 @@ describe('UserDashboard', () => {
 
   // Helper function to setup mocks for each test
   const setupMocks = ({
-    products = [],
     events = [],
     myEvents = [],
+    products = [],
   }: {
     products?: MockProduct[]
     events?: MockEvent[]
@@ -165,9 +166,9 @@ describe('UserDashboard', () => {
 
   it('renders the dashboard with user information', () => {
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -189,9 +190,9 @@ describe('UserDashboard', () => {
 
   it('displays products list correctly', () => {
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -204,9 +205,9 @@ describe('UserDashboard', () => {
 
   it('shows message when no products exist', () => {
     setupMocks({
-      products: [],
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: [],
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -263,9 +264,9 @@ describe('UserDashboard', () => {
 
   it('displays my events participation', () => {
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -278,9 +279,9 @@ describe('UserDashboard', () => {
 
   it('shows message when no event participation', () => {
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: [],
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -293,9 +294,9 @@ describe('UserDashboard', () => {
     ;(global.confirm as Mock).mockReturnValue(true)
     mockRemoveUserFromEvent.mockResolvedValue(undefined)
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -318,9 +319,9 @@ describe('UserDashboard', () => {
 
     // Setup mocks to show events data
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -341,9 +342,9 @@ describe('UserDashboard', () => {
 
     // Setup mocks to show events data
     setupMocks({
-      products: mockProducts,
       events: mockEvents,
       myEvents: mockMyEvents,
+      products: mockProducts,
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -387,9 +388,9 @@ describe('UserDashboard', () => {
 
     // Setup mocks with empty data for this test
     setupMocks({
-      products: [], // Empty products
       events: [], // Empty events
       myEvents: [], // Empty my events
+      products: [], // Empty products
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })
@@ -407,9 +408,9 @@ describe('UserDashboard', () => {
 
   it('handles empty products and events arrays', () => {
     setupMocks({
-      products: [],
       events: [],
       myEvents: [],
+      products: [],
     })
 
     render(<UserDashboard />, { wrapper: MemoryRouter })

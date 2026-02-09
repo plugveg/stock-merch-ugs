@@ -1,7 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { convexQuery, useConvexMutation } from '@convex-dev/react-query'
-import { api } from '../../convex/_generated/api'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+
 import type { Id } from '../../convex/_generated/dataModel'
+
+import { api } from '../../convex/_generated/api'
 export interface UseProductsOptions {
   /**
    *  ID de l’utilisateur dont on veut afficher les produits.
@@ -24,8 +26,8 @@ export const useProducts = ({ userId }: UseProductsOptions = {}) => {
 
   const {
     data: rawData,
-    isLoading,
     error,
+    isLoading,
   } = useQuery({
     ...productsQueryConfig,
     gcTime: 15_000,
@@ -63,12 +65,12 @@ export const useProducts = ({ userId }: UseProductsOptions = {}) => {
   })
 
   return {
-    products,
-    isLoading,
-    error,
     addProduct,
-    updateProduct,
     deleteProduct,
+    error,
+    isLoading,
+    products,
+    updateProduct,
   }
 }
 

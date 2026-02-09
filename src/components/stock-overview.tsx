@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Doc } from 'convex/_generated/dataModel'
 import { AlertCircle, ArrowUp, DollarSign, Package } from 'lucide-react'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface StockOverviewProps {
   stock: Doc<'products'>[]
@@ -17,7 +18,7 @@ export function StockOverview({ stock }: StockOverviewProps) {
   const lowStockItems = stock.filter((item) => item.quantity <= item.threshold).length
 
   // Calculate categories
-  const categories = new Set(stock.map((item) => item.productType)).size
+  const categories = new Set(stock.flatMap((item) => item.productType)).size
 
   return (
     <>

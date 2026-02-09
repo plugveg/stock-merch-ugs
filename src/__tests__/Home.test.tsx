@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom'
-import { describe, it, vi, expect, beforeEach, Mock } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import { useCurrentUser } from '../hooks/useCurrentUser'
-import App from '../Home'
-import { MemoryRouter } from 'react-router'
 import React from 'react'
+import { MemoryRouter } from 'react-router'
+import { render, screen } from '@testing-library/react'
+import { describe, it, vi, expect, beforeEach, Mock } from 'vitest'
+
+import App from '../Home'
+import { useCurrentUser } from '../hooks/useCurrentUser'
 
 // Mocks de Clerk et Convex
 vi.mock('@clerk/clerk-react', async () => {
@@ -21,8 +22,8 @@ vi.mock('convex/react', async () => {
   type ChildrenProps = React.PropsWithChildren<object>
   return {
     Authenticated: ({ children }: ChildrenProps) => <>{children}</>,
-    Unauthenticated: ({ children }: ChildrenProps) => <>{children}</>,
     AuthLoading: ({ children }: ChildrenProps) => <>{children}</>,
+    Unauthenticated: ({ children }: ChildrenProps) => <>{children}</>,
   }
 })
 
@@ -46,8 +47,8 @@ describe('Home Component', () => {
 
   it('renders SignIn page when unauthenticated', () => {
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: false,
+      isLoading: false,
     })
 
     render(
@@ -60,8 +61,8 @@ describe('Home Component', () => {
 
   it('renders main content when authenticated', () => {
     ;(useCurrentUser as Mock).mockReturnValue({
-      isLoading: false,
       isAuthenticated: true,
+      isLoading: false,
       userInConvex: { email: 'test@example.com' },
     })
 

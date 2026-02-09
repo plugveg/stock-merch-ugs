@@ -1,9 +1,10 @@
-import { render, screen, fireEvent, waitFor, configure } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, vi, beforeEach, expect, beforeAll } from 'vitest'
-import { StockTable } from '@/components/stock-table'
 import { Doc, Id } from 'convex/_generated/dataModel'
 import { Conditions, ProductTypes, Status } from 'convex/schema'
+import { describe, it, vi, beforeEach, expect, beforeAll } from 'vitest'
+import { render, screen, fireEvent, waitFor, configure } from '@testing-library/react'
+
+import { StockTable } from '@/components/stock-table'
 
 beforeAll(() => {
   configure({ defaultHidden: true })
@@ -11,58 +12,58 @@ beforeAll(() => {
 
 const mockStock: Doc<'products'>[] = [
   {
-    _id: { __tableName: 'products', id: '1' } as unknown as Id<'products'>,
     _creationTime: Date.now(),
+    _id: { __tableName: 'products', id: '1' } as unknown as Id<'products'>,
+    characterName: [],
+    condition: 'New' as Conditions,
+    description: '',
+    licenseName: [],
+    ownerUserId: 'IdOfUSer' as Id<'users'>,
     productName: 'T-Shirt',
     productType: ['Linen'] as ProductTypes[],
-    quantity: 5,
-    threshold: 10,
-    purchasePrice: 20,
-    status: 'In Stock' as Status,
-    description: '',
-    storageLocation: '',
-    condition: 'New' as Conditions,
-    licenseName: [],
-    characterName: [],
-    purchaseLocation: '',
     purchaseDate: 0,
-    ownerUserId: 'IdOfUSer' as Id<'users'>,
+    purchaseLocation: '',
+    purchasePrice: 20,
+    quantity: 5,
+    status: 'In Stock' as Status,
+    storageLocation: '',
+    threshold: 10,
   },
   {
-    _id: { __tableName: 'products', id: '2' } as unknown as Id<'products'>,
     _creationTime: Date.now(),
+    _id: { __tableName: 'products', id: '2' } as unknown as Id<'products'>,
+    characterName: [],
+    condition: 'New' as Conditions,
+    description: '',
+    licenseName: [],
+    ownerUserId: 'IdOfUSer' as Id<'users'>,
     productName: 'Mug',
     productType: ['Plushie'] as ProductTypes[],
-    quantity: 15,
-    threshold: 5,
-    purchasePrice: 8,
-    status: 'In Stock' as Status,
-    description: '',
-    storageLocation: '',
-    condition: 'New' as Conditions,
-    licenseName: [],
-    characterName: [],
-    purchaseLocation: '',
     purchaseDate: 0,
-    ownerUserId: 'IdOfUSer' as Id<'users'>,
+    purchaseLocation: '',
+    purchasePrice: 8,
+    quantity: 15,
+    status: 'In Stock' as Status,
+    storageLocation: '',
+    threshold: 5,
   },
   {
-    _id: { __tableName: 'products', id: '3' } as unknown as Id<'products'>,
     _creationTime: Date.now(),
+    _id: { __tableName: 'products', id: '3' } as unknown as Id<'products'>,
+    characterName: [],
+    condition: 'New' as Conditions,
+    description: '',
+    licenseName: [],
+    ownerUserId: 'IdOfUSer' as Id<'users'>,
     productName: 'Poster',
     productType: ['Accessory'] as ProductTypes[], // string, not array
-    quantity: 2,
-    threshold: 1,
-    purchasePrice: 5,
-    status: 'In Stock' as Status,
-    description: '',
-    storageLocation: '',
-    condition: 'New' as Conditions,
-    licenseName: [],
-    characterName: [],
-    purchaseLocation: '',
     purchaseDate: 0,
-    ownerUserId: 'IdOfUSer' as Id<'users'>,
+    purchaseLocation: '',
+    purchasePrice: 5,
+    quantity: 2,
+    status: 'In Stock' as Status,
+    storageLocation: '',
+    threshold: 1,
   },
 ]
 

@@ -1,4 +1,9 @@
 import { useState } from 'react'
+import { Doc, Id } from 'convex/_generated/dataModel'
+import { MoreHorizontal, Edit, Trash2, ChevronUp, ChevronDown, Search, AlertCircle } from 'lucide-react'
+
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import {
   DropdownMenu,
@@ -7,21 +12,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { MoreHorizontal, Edit, Trash2, ChevronUp, ChevronDown, Search, AlertCircle } from 'lucide-react'
-import { Doc, Id } from 'convex/_generated/dataModel'
 
 interface StockTableProps {
   stock: Doc<'products'>[]
-  onEdit: (item: Doc<'products'>) => void
   onDelete: (id: Id<'products'>) => void
+  onEdit: (item: Doc<'products'>) => void
 }
 
 type SortField = 'productName' | 'productType' | 'quantity' | 'purchasePrice'
 type SortDirection = 'asc' | 'desc'
 
-export function StockTable({ stock, onEdit, onDelete }: StockTableProps) {
+export function StockTable({ onDelete, onEdit, stock }: StockTableProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [sortField, setSortField] = useState<SortField>('productName')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')

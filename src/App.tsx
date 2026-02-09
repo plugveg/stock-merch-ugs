@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-import { Routes, Route, Navigate } from 'react-router'
+import { Roles } from 'convex/schema'
 import { JSX, Suspense, lazy } from 'react'
 import { useAuth } from '@clerk/clerk-react'
+import { Routes, Route, Navigate } from 'react-router'
+
 import { useCurrentUser } from './hooks/useCurrentUser'
-import { Roles } from 'convex/schema'
 
 const Home = lazy(() => import('./Home'))
 const Products = lazy(() => import('./Products'))
@@ -13,7 +14,7 @@ const UserDashboard = lazy(() => import('./UserDashboard'))
 
 function RouteLoading() {
   return (
-    <div aria-live="polite" role="status" style={{ textAlign: 'center', padding: '1em' }}>
+    <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
       Chargement...
     </div>
   )
@@ -24,21 +25,21 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
   // While auth state is loading, render a loading indicator
   if (!isLoaded)
     return (
-      <div aria-live="polite" role="status" style={{ textAlign: 'center', padding: '1em' }}>
+      <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
         Chargement...
       </div>
     )
   return isSignedIn ? children : <Navigate to="/" replace />
 }
 
-function RoleProtectedRoute({ children, allowedRoles }: { children: JSX.Element; allowedRoles: string[] }) {
+function RoleProtectedRoute({ allowedRoles, children }: { children: JSX.Element; allowedRoles: string[] }) {
   const { isLoaded, isSignedIn } = useAuth()
   const { userInConvex } = useCurrentUser()
 
   // While auth state is loading, render a loading indicator
   if (!isLoaded)
     return (
-      <div aria-live="polite" role="status" style={{ textAlign: 'center', padding: '1em' }}>
+      <div aria-live="polite" role="status" style={{ padding: '1em', textAlign: 'center' }}>
         Chargement...
       </div>
     )

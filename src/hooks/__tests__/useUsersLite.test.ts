@@ -10,6 +10,7 @@ vi.mock('convex/react', () => {
 
 // We need to import AFTER the mock so that the hook picks up the mocked version
 import { usePaginatedQuery } from 'convex/react'
+
 import { useUsersLite } from '../useUsersLite'
 
 const mockedUsePaginatedQuery = usePaginatedQuery as unknown as Mock
@@ -21,9 +22,9 @@ describe('useUsersLite', () => {
 
   it('passes the initialNumItems argument through to usePaginatedQuery', () => {
     const paginatedValue = {
+      loadMore: vi.fn(),
       results: [{ _id: '1', label: 'Mock user' }],
       status: 'Loaded',
-      loadMore: vi.fn(),
     }
 
     mockedUsePaginatedQuery.mockReturnValue(paginatedValue)
@@ -45,9 +46,9 @@ describe('useUsersLite', () => {
 
   it('defaults initialNumItems to 10 when no argument is provided', () => {
     const paginatedValue = {
+      loadMore: vi.fn(),
       results: [],
       status: 'Loaded',
-      loadMore: vi.fn(),
     }
 
     mockedUsePaginatedQuery.mockReturnValue(paginatedValue)

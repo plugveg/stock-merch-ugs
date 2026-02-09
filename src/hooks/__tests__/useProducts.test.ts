@@ -1,18 +1,19 @@
-import { renderHook, act } from '@testing-library/react'
-import { useProducts } from '../useProducts'
-import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useConvexMutation, convexQuery } from '@convex-dev/react-query'
-import { Conditions, ProductTypes, Status } from 'convex/schema'
 import { Id } from 'convex/_generated/dataModel'
+import { renderHook, act } from '@testing-library/react'
+import { Conditions, ProductTypes, Status } from 'convex/schema'
+import { useConvexMutation, convexQuery } from '@convex-dev/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
+
+import { useProducts } from '../useProducts'
 
 vi.mock('@tanstack/react-query', async () => {
   const actual = await vi.importActual('@tanstack/react-query')
   return {
     ...actual,
+    useMutation: vi.fn(),
     useQuery: vi.fn(),
     useQueryClient: vi.fn(),
-    useMutation: vi.fn(),
   }
 })
 
@@ -40,8 +41,8 @@ describe('useProducts hook', () => {
 
     mockUseQuery.mockImplementation(() => ({
       data: mockedProducts,
-      isLoading: false,
       error: null,
+      isLoading: false,
     }))
 
     mockUseMutation.mockReturnValue({ mutateAsync: vi.fn() })
@@ -67,13 +68,13 @@ describe('useProducts hook', () => {
     mockUseQuery
       .mockReturnValueOnce({
         data: undefined,
-        isLoading: true,
         error: null,
+        isLoading: true,
       })
       .mockReturnValueOnce({
         data: undefined,
-        isLoading: true,
         error: null,
+        isLoading: true,
       })
 
     const { rerender } = renderHook(() => useProducts())
@@ -92,26 +93,26 @@ describe('useProducts hook', () => {
     const { result } = renderHook(() => useProducts())
 
     const validProductInput = {
-      sellLocation: 'store',
-      sellDate: Date.now(),
-      sellPrice: 100,
-      collectionId: 'collection-id' as Id<'collections'>,
-      threshold: 10,
-      status: 'In Stock' as Status,
-      productName: 'Test Product',
-      description: 'A test product',
-      quantity: 5,
-      storageLocation: 'Warehouse A',
-      condition: 'New' as Conditions,
-      licenseName: ['Marvel'],
       characterName: ['Spider-Man'],
-      seriesName: 'Series 1',
+      collectionId: 'collection-id' as Id<'collections'>,
+      condition: 'New' as Conditions,
+      description: 'A test product',
+      licenseName: ['Marvel'],
       material: 'Plastic',
-      productType: ['Accessory'] as ProductTypes[],
-      purchaseLocation: 'Online Store',
-      purchaseDate: Date.now(),
-      purchasePrice: 80,
       ownerUserId: 'user-id' as Id<'users'>,
+      productName: 'Test Product',
+      productType: ['Accessory'] as ProductTypes[],
+      purchaseDate: Date.now(),
+      purchaseLocation: 'Online Store',
+      purchasePrice: 80,
+      quantity: 5,
+      sellDate: Date.now(),
+      sellLocation: 'store',
+      sellPrice: 100,
+      seriesName: 'Series 1',
+      status: 'In Stock' as Status,
+      storageLocation: 'Warehouse A',
+      threshold: 10,
     }
 
     await act(async () => {
@@ -173,8 +174,8 @@ describe('useProducts hook', () => {
     it('returns raw array as‑is', () => {
       mockUseQuery.mockReturnValueOnce({
         data: ['a', 'b'],
-        isLoading: false,
         error: null,
+        isLoading: false,
       })
 
       const { result } = renderHook(() => useProducts())
@@ -184,9 +185,9 @@ describe('useProducts hook', () => {
     it('unwraps `page` property when data is paginated', () => {
       const page = [{ id: 1 }, { id: 2 }]
       mockUseQuery.mockReturnValueOnce({
-        data: { page, nextCursor: null },
-        isLoading: false,
+        data: { nextCursor: null, page },
         error: null,
+        isLoading: false,
       })
 
       const { result } = renderHook(() => useProducts())
@@ -196,8 +197,8 @@ describe('useProducts hook', () => {
     it('falls back to empty array when data is undefined', () => {
       mockUseQuery.mockReturnValueOnce({
         data: undefined,
-        isLoading: false,
         error: null,
+        isLoading: false,
       })
 
       const { result } = renderHook(() => useProducts())
@@ -223,19 +224,19 @@ describe('useProducts hook', () => {
 
     await act(async () => {
       await result.current.addProduct.mutateAsync({
-        productName: 'X',
-        threshold: 1,
-        status: 'In Stock',
-        description: '',
-        quantity: 0,
-        storageLocation: '',
-        condition: 'New',
-        licenseName: [],
         characterName: [],
+        condition: 'New',
+        description: '',
+        licenseName: [],
+        productName: 'X',
         productType: [],
-        purchaseLocation: '',
         purchaseDate: 0,
+        purchaseLocation: '',
         purchasePrice: 0,
+        quantity: 0,
+        status: 'In Stock',
+        storageLocation: '',
+        threshold: 1,
       })
     })
 

@@ -1,30 +1,31 @@
 /* eslint-disable no-console */
 import { v } from 'convex/values'
+
 import { mutation, query } from '../_generated/server'
 import { productTypes, Status, status, conditions, Roles } from '../schema'
 
 // CREATE: Add a new product
 export const create = mutation({
   args: {
-    productName: v.string(),
-    description: v.string(),
-    quantity: v.number(),
-    photo: v.optional(v.string()),
-    storageLocation: v.string(),
-    condition: conditions, // Assuming conditions is a union of string literals
-    licenseName: v.array(v.string()),
     characterName: v.array(v.string()),
-    productType: v.array(productTypes), // Assuming productTypes is a union of string literals
-    status: status, // Assuming status is a union of string literals
-    purchaseLocation: v.string(),
-    purchaseDate: v.number(),
-    purchasePrice: v.number(),
-    threshold: v.number(),
-    sellLocation: v.optional(v.string()),
-    sellDate: v.optional(v.number()),
-    sellPrice: v.optional(v.number()),
     collectionId: v.optional(v.id('collections')),
+    condition: conditions, // Assuming conditions is a union of string literals
+    description: v.string(),
+    licenseName: v.array(v.string()),
+    photo: v.optional(v.string()),
+    productName: v.string(),
+    productType: v.array(productTypes), // Assuming productTypes is a union of string literals
+    purchaseDate: v.number(),
+    purchaseLocation: v.string(),
+    purchasePrice: v.number(),
+    quantity: v.number(),
+    sellDate: v.optional(v.number()),
+    sellLocation: v.optional(v.string()),
+    sellPrice: v.optional(v.number()),
+    status: status, // Assuming status is a union of string literals
+    storageLocation: v.string(),
     targetUserId: v.optional(v.id('users')), // admin → voir un autre user
+    threshold: v.number(),
   },
   handler: async (ctx, args) => {
     const me = await ctx.auth.getUserIdentity()
@@ -105,11 +106,11 @@ export const getByProductType = query({
 
 export const listProducts = query({
   args: {
-    targetUserId: v.optional(v.id('users')), // admin → voir un autre user
-    pageSize: v.number(), // 10 ou 20
     cursor: v.optional(v.any()), // renvoyé par la page préc.
+    pageSize: v.number(), // 10 ou 20
+    targetUserId: v.optional(v.id('users')), // admin → voir un autre user
   },
-  handler: async (ctx, { targetUserId, pageSize, cursor }) => {
+  handler: async (ctx, { cursor, pageSize, targetUserId }) => {
     const me = await ctx.auth.getUserIdentity()
     if (!me) throw new Error('Not authenticated')
 
@@ -130,14 +131,14 @@ export const listProducts = query({
       q = ctx.db.query('products')
     }
 
-    const { page, continueCursor } = await q
+    const { continueCursor, page } = await q
       .order('desc') // le plus récent d’abord
       .paginate({
         cursor,
         numItems: pageSize,
       })
 
-    return { page, nextCursor: continueCursor }
+    return { nextCursor: continueCursor, page }
   },
 })
 
@@ -146,25 +147,25 @@ export const update = mutation({
   args: {
     id: v.id('products'),
     // All fields are optional for updates
-    productName: v.optional(v.string()),
-    description: v.optional(v.string()),
-    quantity: v.optional(v.number()),
-    photo: v.optional(v.string()),
-    storageLocation: v.optional(v.string()),
-    condition: v.optional(conditions),
-    licenseName: v.optional(v.array(v.string())),
     characterName: v.optional(v.array(v.string())),
-    productType: v.optional(v.array(productTypes)),
-    status: v.optional(status),
-    purchaseLocation: v.optional(v.string()),
-    purchaseDate: v.optional(v.number()),
-    purchasePrice: v.optional(v.number()),
-    threshold: v.optional(v.number()),
-    sellLocation: v.optional(v.string()),
-    sellDate: v.optional(v.number()),
-    sellPrice: v.optional(v.number()),
     collectionId: v.optional(v.id('collections')),
+    condition: v.optional(conditions),
+    description: v.optional(v.string()),
+    licenseName: v.optional(v.array(v.string())),
     ownerUserId: v.optional(v.id('users')),
+    photo: v.optional(v.string()),
+    productName: v.optional(v.string()),
+    productType: v.optional(v.array(productTypes)),
+    purchaseDate: v.optional(v.number()),
+    purchaseLocation: v.optional(v.string()),
+    purchasePrice: v.optional(v.number()),
+    quantity: v.optional(v.number()),
+    sellDate: v.optional(v.number()),
+    sellLocation: v.optional(v.string()),
+    sellPrice: v.optional(v.number()),
+    status: v.optional(status),
+    storageLocation: v.optional(v.string()),
+    threshold: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const me = await ctx.auth.getUserIdentity()
@@ -232,9 +233,9 @@ export const remove = mutation({
 // This function allows a user to express intent or perhaps remove their product if it's not yet sold.
 export const setProductAvailabilityForEvent = mutation({
   args: {
-    productId: v.id('products'),
-    eventId: v.id('events'),
     available: v.boolean(), // true to make available, false to make unavailable
+    eventId: v.id('events'),
+    productId: v.id('products'),
     // salePrice: v.optional(v.number()), // User might suggest a price
   },
   handler: async (ctx, args) => {
@@ -333,8 +334,8 @@ export const participateInEvent = mutation({
 
     return await ctx.db.insert('eventParticipants', {
       eventId: args.eventId,
-      userId: meDoc._id,
       role: 'Guest' as Roles,
+      userId: meDoc._id,
     })
   },
 })
@@ -353,10 +354,10 @@ export const getProductsForEventSale = query({
         const product = await ctx.db.get(ep.productId)
         return {
           ...ep,
-          productName: product?.productName ?? 'Unknown Product',
-          productDescription: product?.description ?? '',
-          ownerId: product?.ownerUserId,
           originalPrice: product?.purchasePrice ?? 0,
+          ownerId: product?.ownerUserId,
+          productDescription: product?.description ?? '',
+          productName: product?.productName ?? 'Unknown Product',
         }
       })
     )

@@ -1,10 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { describe, it, vi, beforeEach, expect, Mock } from 'vitest'
-import AdminDashboard from '../AdminDashboard'
-import { useCurrentUser } from '../hooks/useCurrentUser'
-import { useQuery, useMutation } from 'convex/react'
 import { MemoryRouter } from 'react-router'
 import { Doc } from 'convex/_generated/dataModel'
+import { useQuery, useMutation } from 'convex/react'
+import { describe, it, vi, beforeEach, expect, Mock } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+
+import AdminDashboard from '../AdminDashboard'
+import { useCurrentUser } from '../hooks/useCurrentUser'
 
 vi.mock('convex/react')
 vi.mock('../hooks/useCurrentUser', () => ({
@@ -81,11 +82,11 @@ describe('AdminDashboard', () => {
       if (q.operationName === 'events/getEventDetails' && args && (args as Doc<'eventParticipants'>).eventId) {
         return {
           _id: (args as Doc<'eventParticipants'>).eventId,
-          name: 'Event Details',
           description: 'Some description',
-          startTime: Date.now(),
           endTime: Date.now() + 1000000,
+          name: 'Event Details',
           products: [],
+          startTime: Date.now(),
         }
       }
 
@@ -96,9 +97,9 @@ describe('AdminDashboard', () => {
           participants: [],
           productsOnSaleCount: 2,
           productsSoldCount: 1,
+          timeRemaining: 1000000,
           totalValueOnSale: 100,
           totalValueSold: 50,
-          timeRemaining: 1000000,
         }
       }
 
