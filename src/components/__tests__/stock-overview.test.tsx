@@ -15,7 +15,7 @@ const mockStock: Doc<'products'>[] = [
     licenseName: [],
     ownerUserId: 'IdOfUSer' as Id<'users'>,
     productName: 'Item A',
-    productType: ['Prepainted'] as ProductTypes[],
+    productType: ['Plushie'] as ProductTypes[],
     purchaseDate: 0,
     purchaseLocation: '',
     purchasePrice: 10,
